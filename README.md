@@ -1,4 +1,4 @@
-## [FE] Onboarding
+## [FE] Dear Moment
 
 ### 실행 방법
 
@@ -27,7 +27,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### branch 작명 방법
 
 ```bash
-feature/bod-1 // Jira 이슈 넘버
+feature/dm-? // Github 이슈 타이틀
 ```
 
 ### PR 요청 방법
@@ -37,7 +37,7 @@ feature 브랜치로 github에 push 한 뒤, 해당 브랜치에서 develop 브�
 ```
 # PR 요청 양식
 
-제목: [BOD-1] 작업 내용 요약
+제목: [dm-?] 작업 내용 요약
 
 내용
 
