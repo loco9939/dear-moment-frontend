@@ -61,3 +61,23 @@ https://~ (지라 작업 링크)
 
 - 기타 등등..
 ```
+
+## shadcn 사용방법
+
+1. 필요한 컴포넌트 설치
+
+```bash
+npx shadcn@latest add button
+```
+
+/app/components/ui/button.tsx 파일 생성
+
+생성된 파일에 디자인 시스템 적용하기
+
+2. 컴포넌트 사용
+
+```js
+import { Button } from "@/components/ui/button";
+
+<Button variant="outline">Button</Button>;
+```
