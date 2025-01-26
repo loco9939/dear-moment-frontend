@@ -81,3 +81,8 @@ import { Button } from "@/components/ui/button";
 
 <Button variant="outline">Button</Button>;
 ```
+
+## 디자인 시스템
+
+- 모바일 퍼스트 디자인 320px 기준(반응형 x)
+- 1rem = 10px
