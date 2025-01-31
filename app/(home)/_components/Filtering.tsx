@@ -10,6 +10,16 @@ export default function Filtering() {
   const [open, setOpen] = useState(false);
   // 현재 선택된 필터 타입 관리
   const [filterType, setFilterType] = useState<FilterType>("정렬");
+  // 각 섹션별 선택된 필터 상태 관리
+  const [selectedFilters, setSelectedFilters] = useState<
+    Record<FilterType, string | number>
+  >({
+    정렬: "",
+    촬영시기: "",
+    스타일: "",
+    패키지: "",
+    가격: 0,
+  });
 
   // 필터 버튼 클릭 핸들러
   const handleFilterClick = (type: FilterType) => {
@@ -55,6 +65,8 @@ export default function Filtering() {
         open={open}
         onOpenChange={setOpen}
         filterType={filterType}
+        selectedFilters={selectedFilters}
+        setSelectedFilters={setSelectedFilters}
       />
     </>
   );

@@ -6,6 +6,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { Dispatch, SetStateAction } from "react";
 import { FilterType } from "../type";
 import FilteringTabs from "./FilteringTabs";
 
@@ -13,12 +14,18 @@ interface FilteringModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   filterType: FilterType;
+  selectedFilters: Record<FilterType, string | number>;
+  setSelectedFilters: Dispatch<
+    SetStateAction<Record<FilterType, string | number>>
+  >;
 }
 
 export default function FilteringModal({
   open,
   onOpenChange,
   filterType,
+  selectedFilters,
+  setSelectedFilters,
 }: FilteringModalProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -31,14 +38,12 @@ export default function FilteringModal({
         </SheetHeader>
         {/* 스크롤 가능한 컨테이너 추가 */}
         <div className="overflow-y-auto h-[calc(80vh-80px)]">
-          <FilteringTabs filterType={filterType} />
-        </div>
-        <div className="mt-4">
-          {filterType === "정렬" && <div>{/* 정렬 옵션들 */}</div>}
-          {filterType === "촬영시기" && <div>{/* 촬영시기 옵션들 */}</div>}
-          {filterType === "스타일" && <div>{/* 스타일 옵션들 */}</div>}
-          {filterType === "패키지" && <div>{/* 패키지 옵션들 */}</div>}
-          {filterType === "가격" && <div>{/* 가격 옵션들 */}</div>}
+          <FilteringTabs
+            filterType={filterType}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            onOpenChange={onOpenChange}
+          />
         </div>
       </SheetContent>
     </Sheet>
