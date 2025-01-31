@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { FilterType } from "../type";
 import FilteringModal from "./FilteringModal";
@@ -35,30 +36,35 @@ export default function Filtering() {
           onClick={() => handleFilterClick("정렬")}
         >
           정렬
+          <ChevronDownIcon className="w-4 h-4" />
         </Button>
         <Button
           className="bg-gray-500"
           onClick={() => handleFilterClick("촬영시기")}
         >
           촬영시기
+          <ChevronDownIcon className="w-4 h-4" />
         </Button>
         <Button
           className="bg-gray-500"
           onClick={() => handleFilterClick("스타일")}
         >
           스타일
+          <ChevronDownIcon className="w-4 h-4" />
         </Button>
         <Button
           className="bg-gray-500"
           onClick={() => handleFilterClick("패키지")}
         >
           패키지
+          <ChevronDownIcon className="w-4 h-4" />
         </Button>
         <Button
           className="bg-gray-500"
           onClick={() => handleFilterClick("가격")}
         >
           가격
+          <ChevronDownIcon className="w-4 h-4" />
         </Button>
       </div>
       <FilteringModal
