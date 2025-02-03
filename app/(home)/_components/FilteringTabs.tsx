@@ -5,7 +5,7 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dispatch, SetStateAction } from "react";
 import { useFilteringTabsController } from "../controllers/FilteringTabsController";
-import { PRICE_RANGE_MAP } from "../models/FilteringModel";
+import { FilteringService } from "../services/FilteringService";
 import { FilterType, FilterValue } from "../type";
 
 interface FilteringTabsProps {
@@ -53,7 +53,7 @@ export default function FilteringTabs({
         <section id="정렬">
           <h2 className="text-lg font-semibold mb-3">정렬</h2>
           <div className="flex gap-2 flex-wrap">
-            {["최신순", "인기순", "좋아요순"].map((value) => (
+            {FilteringService.getSortOptions().map((value) => (
               <Button
                 key={value}
                 variant="outline"
@@ -72,50 +72,46 @@ export default function FilteringTabs({
         <section id="촬영시기">
           <h2 className="text-lg font-semibold mb-3">촬영시기</h2>
           <div className="flex gap-2 flex-wrap">
-            {["2025년 상반기", "2025년 하반기", "2026년 상반기"].map(
-              (value) => (
-                <Button
-                  key={value}
-                  variant="outline"
-                  className={
-                    tempFilters.촬영시기 === value
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }
-                  onClick={() => handleFilterSelect("촬영시기", value)}
-                >
-                  {value}
-                </Button>
-              )
-            )}
+            {FilteringService.getShootingPeriodOptions().map((value) => (
+              <Button
+                key={value}
+                variant="outline"
+                className={
+                  tempFilters.촬영시기 === value
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                }
+                onClick={() => handleFilterSelect("촬영시기", value)}
+              >
+                {value}
+              </Button>
+            ))}
           </div>
         </section>
         <section id="스타일">
           <h2 className="text-lg font-semibold mb-3">스타일</h2>
           <div className="flex gap-2 flex-wrap">
-            {["빈티지한", "우아한", "따뜻한", "모던한", "클래식한"].map(
-              (value) => (
-                <Button
-                  key={value}
-                  variant="outline"
-                  className={
-                    Array.isArray(tempFilters.스타일) &&
-                    tempFilters.스타일.includes(value)
-                      ? "bg-primary text-primary-foreground"
-                      : ""
-                  }
-                  onClick={() => handleFilterSelect("스타일", value)}
-                >
-                  {value}
-                </Button>
-              )
-            )}
+            {FilteringService.getStyleOptions().map((value) => (
+              <Button
+                key={value}
+                variant="outline"
+                className={
+                  Array.isArray(tempFilters.스타일) &&
+                  tempFilters.스타일.includes(value)
+                    ? "bg-primary text-primary-foreground"
+                    : ""
+                }
+                onClick={() => handleFilterSelect("스타일", value)}
+              >
+                {value}
+              </Button>
+            ))}
           </div>
         </section>
         <section id="패키지">
           <h2 className="text-lg font-semibold mb-3">패키지</h2>
           <div className="flex gap-2 flex-wrap">
-            {["있음", "없음"].map((value) => (
+            {FilteringService.getPackageOptions().map((value) => (
               <Button
                 key={value}
                 variant="outline"
@@ -135,7 +131,7 @@ export default function FilteringTabs({
           <h2 className="text-lg font-semibold mb-3">가격</h2>
           <div className="space-y-6 mb-8">
             <div className="flex gap-2 flex-wrap">
-              {Object.keys(PRICE_RANGE_MAP).map((value) => (
+              {FilteringService.getPriceRangeOptions().map((value) => (
                 <Button
                   key={value}
                   variant="outline"

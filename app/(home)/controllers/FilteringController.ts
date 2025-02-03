@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FilteringService } from "../services/FilteringService";
 import { FilterType, FilterValue } from "../type";
 
 export function useFilteringController() {
@@ -6,13 +7,7 @@ export function useFilteringController() {
   const [filterType, setFilterType] = useState<FilterType>("정렬");
   const [selectedFilters, setSelectedFilters] = useState<
     Record<FilterType, FilterValue>
-  >({
-    정렬: "",
-    촬영시기: "",
-    스타일: [],
-    패키지: "",
-    가격: 0,
-  });
+  >(FilteringService.getInitialFilterState());
 
   const handleFilterClick = (type: FilterType) => {
     setFilterType(type);
