@@ -7,17 +7,15 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Dispatch, SetStateAction } from "react";
-import { FilterType } from "../type";
+import { FilterType, FilterValue } from "../type";
 import FilteringTabs from "./FilteringTabs";
 
 interface FilteringModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   filterType: FilterType;
-  selectedFilters: Record<FilterType, string | number>;
-  setSelectedFilters: Dispatch<
-    SetStateAction<Record<FilterType, string | number>>
-  >;
+  selectedFilters: Record<FilterType, FilterValue>;
+  setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
 }
 
 export default function FilteringModal({

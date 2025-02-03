@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { FilterType } from "../type";
+import { FilterType, FilterValue } from "../type";
 
 export default function FilteringTabs({
   filterType,
@@ -13,15 +13,13 @@ export default function FilteringTabs({
   onOpenChange,
 }: {
   filterType: FilterType;
-  selectedFilters: Record<FilterType, string | number>;
-  setSelectedFilters: Dispatch<
-    SetStateAction<Record<FilterType, string | number>>
-  >;
+  selectedFilters: Record<FilterType, FilterValue>;
+  setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
   onOpenChange: (open: boolean) => void;
 }) {
   // 임시 필터 상태 관리
   const [tempFilters, setTempFilters] =
-    useState<Record<FilterType, string | number>>(selectedFilters);
+    useState<Record<FilterType, FilterValue>>(selectedFilters);
 
   // 가격 버튼별 범위 매핑
   const priceRangeMap = {
@@ -44,9 +42,22 @@ export default function FilteringTabs({
       if (range) {
         setTempFilters((prev) => ({
           ...prev,
-          가격: range[0], // 숫자 값 저장
+          가격: range[0],
         }));
       }
+    } else if (section === "스타일") {
+      // 스타일 다중 선택 로직
+      setTempFilters((prev) => {
+        const currentStyles = Array.isArray(prev[section]) ? prev[section] : [];
+        const updatedStyles = currentStyles.includes(value)
+          ? currentStyles.filter((style) => style !== value)
+          : [...currentStyles, value];
+
+        return {
+          ...prev,
+          [section]: updatedStyles,
+        };
+      });
     } else {
       setTempFilters((prev) => ({
         ...prev,
@@ -76,7 +87,7 @@ export default function FilteringTabs({
     setTempFilters({
       정렬: "",
       촬영시기: "",
-      스타일: "",
+      스타일: [], // 빈 배열로 초기화
       패키지: "",
       가격: 0,
     });
@@ -172,7 +183,8 @@ export default function FilteringTabs({
                   key={value}
                   variant="outline"
                   className={
-                    tempFilters.스타일 === value
+                    Array.isArray(tempFilters.스타일) &&
+                    tempFilters.스타일.includes(value)
                       ? "bg-primary text-primary-foreground"
                       : ""
                   }
