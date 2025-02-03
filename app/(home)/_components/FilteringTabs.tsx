@@ -3,122 +3,38 @@
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
+import { useFilteringTabsController } from "../controllers/FilteringTabsController";
+import { PRICE_RANGE_MAP } from "../models/FilteringModel";
 import { FilterType, FilterValue } from "../type";
+
+interface FilteringTabsProps {
+  filterType: FilterType;
+  selectedFilters: Record<FilterType, FilterValue>;
+  setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
+  onOpenChange: (open: boolean) => void;
+}
 
 export default function FilteringTabs({
   filterType,
   selectedFilters,
   setSelectedFilters,
   onOpenChange,
-}: {
-  filterType: FilterType;
-  selectedFilters: Record<FilterType, FilterValue>;
-  setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
-  onOpenChange: (open: boolean) => void;
-}) {
-  // 임시 필터 상태 관리
-  const [tempFilters, setTempFilters] =
-    useState<Record<FilterType, FilterValue>>(selectedFilters);
-
-  // 가격 버튼별 범위 매핑
-  const priceRangeMap = {
-    "20만원 이하": [0, 20],
-    "20~40만원대": [21, 40],
-    "40~60만원대": [41, 60],
-    "60~80만원대": [61, 80],
-    "80만원 이상": [81, 100],
-  };
-
-  const handleApply = () => {
-    setSelectedFilters(tempFilters);
-    onOpenChange(false);
-  };
-
-  // 필터 선택 핸들러
-  const handleFilterSelect = (section: FilterType, value: string) => {
-    if (section === "가격") {
-      const range = priceRangeMap[value as keyof typeof priceRangeMap];
-      if (range) {
-        setTempFilters((prev) => ({
-          ...prev,
-          가격: range[0],
-        }));
-      }
-    } else if (section === "스타일") {
-      // 스타일 다중 선택 로직
-      setTempFilters((prev) => {
-        const currentStyles = Array.isArray(prev[section]) ? prev[section] : [];
-        const updatedStyles = currentStyles.includes(value)
-          ? currentStyles.filter((style) => style !== value)
-          : [...currentStyles, value];
-
-        return {
-          ...prev,
-          [section]: updatedStyles,
-        };
-      });
-    } else {
-      setTempFilters((prev) => ({
-        ...prev,
-        [section]: prev[section] === value ? "" : value,
-      }));
-    }
-  };
-
-  // 슬라이더 값 변경 핸들러
-  const handleSliderChange = (value: number[]) => {
-    setTempFilters((prev) => ({
-      ...prev,
-      가격: value[0], // 슬라이더 값을 직접 저장
-    }));
-  };
-
-  // 현재 가격에 해당하는 버튼 범위 찾기
-  const getCurrentPriceButton = (price: number) => {
-    const selectedRange = Object.entries(priceRangeMap).find(([, range]) => {
-      return price >= range[0] && price <= range[1];
-    });
-    return selectedRange ? selectedRange[0] : "";
-  };
-
-  // 초기화 핸들러
-  const handleReset = () => {
-    setTempFilters({
-      정렬: "",
-      촬영시기: "",
-      스타일: [], // 빈 배열로 초기화
-      패키지: "",
-      가격: 0,
-    });
-  };
-
-  // 탭 변경 시 해당 섹션으로 스크롤
-  const handleTabChange = (value: string) => {
-    const element = document.getElementById(value);
-    if (element) {
-      // 스크롤 컨테이너를 찾아서 스크롤
-      const scrollContainer = element.closest(".overflow-y-auto");
-      if (scrollContainer) {
-        const topOffset = element.offsetTop;
-        scrollContainer.scrollTo({
-          top: topOffset - 60, // 헤더 높이를 고려한 오프셋
-          behavior: "smooth",
-        });
-      }
-    }
-  };
-
-  // 모달이 열릴 때마다 임시 필터 상태를 현재 선택된 필터로 초기화
-  useEffect(() => {
-    setTempFilters(selectedFilters);
-  }, [selectedFilters]);
-
-  // 초기 렌더링 시 선택된 탭으로 스크롤 이동
-  useEffect(() => {
-    handleTabChange(filterType);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+}: FilteringTabsProps) {
+  const {
+    tempFilters,
+    handleFilterSelect,
+    handleSliderChange,
+    getCurrentPriceButton,
+    handleReset,
+    handleApply,
+    handleTabChange,
+  } = useFilteringTabsController({
+    filterType,
+    selectedFilters,
+    setSelectedFilters,
+    onOpenChange,
+  });
 
   return (
     <Tabs
@@ -219,7 +135,7 @@ export default function FilteringTabs({
           <h2 className="text-lg font-semibold mb-3">가격</h2>
           <div className="space-y-6 mb-8">
             <div className="flex gap-2 flex-wrap">
-              {Object.keys(priceRangeMap).map((value) => (
+              {Object.keys(PRICE_RANGE_MAP).map((value) => (
                 <Button
                   key={value}
                   variant="outline"

@@ -3,14 +3,10 @@
 import { Badge } from "@/components/ui/badge";
 import { HeartIcon } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useAuthorCardController } from "../controllers/AuthorCardController";
 
 export default function AuthorCard() {
-  const [isLiked, setIsLiked] = useState(false);
-
-  const onClickHeart = () => {
-    setIsLiked(!isLiked);
-  };
+  const { isLiked, onClickHeart } = useAuthorCardController();
 
   return (
     <div className="w-full p-4 bg-white rounded-lg shadow-sm">
