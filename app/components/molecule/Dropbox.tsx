@@ -6,7 +6,7 @@ import { useState } from "react";
 // 드롭박스 타입
 interface DropboxProps {
   placeholder?: string; // 드롭박스 플레이스홀더 텍스트
-  dropdownItems: Array<{ id: string; label: string; value: string | number }>; // 드롭박스 아이템 타입(label은 메뉴 아이템 표시 텍스트, value는 선택된 값)
+  dropdownItems?: Array<{ id: string; label: string; value: string | number }>; // 드롭박스 아이템 타입(label은 메뉴 아이템 표시 텍스트, value는 선택된 값)
   onChangeProps?: (value?: string) => void; // 드롭박스 값 변경 시 호출될 함수 (인자를 받아서 호출될 수도 있고 안받고 호출될 수 있음)
   onFocusProps?: (e?: React.FocusEvent<HTMLInputElement>) => void; // 드롭박스 포커스 시 호출될 함수 "
   onBlurProps?: (e?: React.FocusEvent<HTMLInputElement>) => void; // 드롭박스 블러 시 호출될 함수 "
@@ -14,7 +14,7 @@ interface DropboxProps {
 }
 
 export const Dropbox = ({
-  dropdownItems,
+  dropdownItems = [],
   placeholder = "입력",
   onChangeProps,
   onFocusProps,
@@ -25,6 +25,7 @@ export const Dropbox = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const isFilled = value !== "";
+  const isEmptyItems = dropdownItems.length === 0;
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -53,7 +54,7 @@ export const Dropbox = ({
       <label
         className={`
           relative flex items-center rounded-[0.4rem]
-          ${isOpen && "rounded-b-none"}
+          ${isOpen && !isEmptyItems && "rounded-b-none"}
           pl-[1.45rem] pr-[0.85rem] py-[1.3rem]
           bg-gray-10
 					border
@@ -77,8 +78,9 @@ export const Dropbox = ({
       </label>
 
       {/* 메뉴 */}
-      <menu
-        className={`
+      {!isEmptyItems && (
+        <menu
+          className={`
           absolute w-full bg-gray-10 rounded-[0.4rem] rounded-t-none py-2
           border border-gray-30 border-t-0
           transition-all duration-200 ease-in-out
@@ -89,17 +91,18 @@ export const Dropbox = ({
               : "max-h-0 opacity-0 py-0 pointer-events-none"
           }
         `}
-      >
-        {dropdownItems.map((item) => (
-          <li
-            key={item.id}
-            className="pl-[1.3rem] pr-[0.7rem] py-[1.8rem] hover:bg-gray-10 cursor-pointer text-body2Normal relative text-gray-70"
-            onMouseDown={onMouseDownItem(item.label)}
-          >
-            <span>{item.label}</span>
-          </li>
-        ))}
-      </menu>
+        >
+          {dropdownItems.map((item) => (
+            <li
+              key={item.id}
+              className="pl-[1.3rem] pr-[0.7rem] py-[1.8rem] hover:bg-gray-10 cursor-pointer text-body2Normal relative text-gray-70"
+              onMouseDown={onMouseDownItem(item.label)}
+            >
+              <span>{item.label}</span>
+            </li>
+          ))}
+        </menu>
+      )}
     </div>
   );
 };
