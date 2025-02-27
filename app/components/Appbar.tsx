@@ -53,7 +53,7 @@ export const Appbar = ({
 }: AppbarProps) => {
 	const styles = {
 		container: cn(
-			"flex items-center justify-between p-[1.6rem] relative",
+			"flex items-center justify-between px-[2rem] h-[5.4rem] relative",
 			className
 		),
 		logoWrapper: "w-[14rem] h-[2.4rem]",
