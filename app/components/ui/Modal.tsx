@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalProps {
@@ -33,17 +33,9 @@ interface ModalProps {
  * ```
  */
 export const Modal = ({ isOpen, title, description, actionBtn1, actionBtn2 }: ModalProps) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted || !isOpen) return null;
-
   const modalRoot = document.getElementById('modal');
 
-  if (!modalRoot) return null;
+  if (!modalRoot || !isOpen) return null;
 
   return createPortal(
     <aside className="space-y-[1.4rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[20rem] bg-common-0 z-10 px-[2rem] pt-[2.6rem] pb-[2.2rem]">
