@@ -1,15 +1,29 @@
 import type { NextConfig } from "next";
+import type { Configuration as WebpackConfig } from "webpack";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   compiler: {
     // 컴파일러 옵션들...
   },
-  webpack: (config) => {
+  webpack: (config: WebpackConfig) => {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [
+        {
+          loader: '@svgr/webpack',
+          options: {
+            typescript: true,
+            dimensions: false,
+          },
+        },
+      ],
+    });
+
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@": "/app", // app 디렉토리에 대한 절대 경로 설정
+      "@": "/app",
     };
+
     return config;
   },
 };
