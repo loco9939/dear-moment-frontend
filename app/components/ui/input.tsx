@@ -1,22 +1,90 @@
-import * as React from "react"
+import { useState, useMemo, forwardRef } from 'react';
+import { cn } from '@/lib/utils';
 
-import { cn } from "@/lib/utils"
+interface InputProps extends React.ComponentProps<'input'> {
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
-  ({ className, type, ...props }, ref) => {
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, type = 'text', value, maxLength = 15, onChange, ...props }, ref) => {
+    // type별 크기 설정
+    const sizeClasses = {
+      text: 'h-[52px]',
+      textarea: 'h-[256px]',
+    };
+
+    const [inputValue, setInputValue] = useState<string>('');
+    const [isFocused, setIsFocused] = useState(false);
+    const [maxLengthOver, setMaxLengthOver] = useState(false);
+
+    const warningMessage = useMemo(() => `최대 ${maxLength}자까지 입력가능해요`, [maxLength]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+
+      if (maxLength && value.length > maxLength) {
+        setMaxLengthOver(true);
+      } else {
+        setMaxLengthOver(false);
+        setInputValue(e.target.value);
+        onChange?.(e);
+      }
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+      setIsFocused(false);
+      setMaxLengthOver(false);
+      onChange?.(e);
+    };
+
     return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Input.displayName = "Input"
+      <div className="w-[320px] text-[12px] text-base font-normal">
+        <input
+          type={type}
+          className={cn(
+            'flex w-full rounded-lg border gap-[19px] transition-all',
+            'bg-gray-10', // 배경색
+            'px-[12px] py-[16px]', // padding 좌우 12px, 위아래 16px
+            'text-label1Reading',
+            maxLengthOver && isFocused
+              ? 'border-red-50 ring-1 ring-red-50 focus:outline-none' // 15자 초과 → 빨간 테두리
+              : isFocused
+              ? 'border-gray-600 focus:border-gray-600 focus:ring-1 focus:ring-gray-400 focus:outline-none' // 기본은 테두리 없음 → 포커스 시 회색 테두리
+              : 'border-transparent', // 포커스 없고 15자 이하 -> 테두리 없음
+            sizeClasses[type as keyof typeof sizeClasses] || 'h-[52px]',
+            className
+          )}
+          ref={ref}
+          value={inputValue}
+          onFocus={() => setIsFocused(true)}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          {...props}
+        />
 
-export { Input }
+        {/* 여백 */}
+        <div className="h-[6px]"></div>
+
+        {/* 경고문구 및 글자수 표시 */}
+        <div className="flex justify-between h-[17px] text-gray-500">
+          <span className={maxLengthOver && isFocused ? 'text-red-50' : ''}>
+            {maxLengthOver && isFocused ? warningMessage : ''}
+          </span>
+          <span>
+            <span
+              className={
+                maxLengthOver && isFocused ? 'text-red-50' : inputValue.length > 0 ? 'text-black' : 'text-gray'
+              }
+            >
+              {inputValue.length}
+            </span>
+            <span className={maxLengthOver ? 'text-black' : 'text-gray'}> / {maxLength}</span>
+          </span>
+        </div>
+      </div>
+    );
+  }
+);
+Input.displayName = 'Input';
+
+export { Input };
