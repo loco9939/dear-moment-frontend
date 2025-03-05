@@ -3,30 +3,29 @@ import { cn } from '@/lib/utils';
 
 interface InputProps extends React.ComponentProps<'input'> {
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = 'text', value, maxLength = 15, onChange, ...props }, ref) => {
+  ({ className, type = 'text', value = '', maxLength = 15, onChange, ...props }, ref) => {
     // type별 크기 설정
     const sizeClasses = {
       text: 'h-[52px]',
       textarea: 'h-[256px]',
     };
 
-    const [inputValue, setInputValue] = useState<string>('');
     const [isFocused, setIsFocused] = useState(false);
     const [maxLengthOver, setMaxLengthOver] = useState(false);
 
     const warningMessage = useMemo(() => `최대 ${maxLength}자까지 입력가능해요`, [maxLength]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
+      const inputValue = e.target.value;
 
-      if (maxLength && value.length > maxLength) {
+      if (maxLength && inputValue.length > maxLength) {
         setMaxLengthOver(true);
       } else {
         setMaxLengthOver(false);
-        setInputValue(e.target.value);
         onChange?.(e);
       }
     };
@@ -55,7 +54,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className
           )}
           ref={ref}
-          value={inputValue}
+          value={value}
           onFocus={() => setIsFocused(true)}
           onBlur={handleBlur}
           onChange={handleChange}
@@ -66,19 +65,19 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <div className="h-[6px]"></div>
 
         {/* 경고문구 및 글자수 표시 */}
-        <div className="flex justify-between h-[17px] text-gray-500">
+        <div className="flex justify-between h-[17px] text-gray-50">
           <span className={maxLengthOver && isFocused ? 'text-red-50' : ''}>
             {maxLengthOver && isFocused ? warningMessage : ''}
           </span>
           <span>
             <span
               className={
-                maxLengthOver && isFocused ? 'text-red-50' : inputValue.length > 0 ? 'text-black' : 'text-gray'
+                maxLengthOver && isFocused ? 'text-red-50' : value.length > 0 ? 'text-gray-90' : 'text-gray-50'
               }
             >
-              {inputValue.length}
+              {value.length}
             </span>
-            <span className={maxLengthOver ? 'text-black' : 'text-gray'}> / {maxLength}</span>
+            <span className={maxLengthOver ? 'text-gray-90' : 'text-gray-50'}> / {maxLength}</span>
           </span>
         </div>
       </div>
