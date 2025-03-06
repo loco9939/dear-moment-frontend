@@ -31,7 +31,7 @@ export const Chip = ({
 			className
 		),
 		label: cn(
-			'text-body3Normal',
+			'text-body3Normal whitespace-nowrap', 
 			isInverse ? 'font-semibold' : 'font-regular'
 		),
 	};
