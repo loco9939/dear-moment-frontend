@@ -54,16 +54,17 @@ export const Dropbox = ({
       <label
         className={`
           relative flex items-center rounded-[0.4rem]
+          w-[32rem] h-[5rem]
           ${isOpen && !isEmptyItems && "rounded-b-none"}
           pl-[1.45rem] pr-[0.85rem] py-[1.3rem]
           bg-gray-10
 					border
-          ${isFilled ? "border-gray-50" : "border-gray-20"}
+          ${isFilled ? "border-gray-50" : "border-gray-30"}
           placeholder:text-gray-50
         `}
       >
         <input
-          className="w-full rounded-md text-body2Normal font-medium outline-none bg-transparent relative text-gray-95"
+          className="w-full rounded-md text-body2Normal font-medium outline-none bg-transparent relative text-common-100"
           placeholder={placeholder}
           value={value}
           onChange={onChange}
@@ -81,7 +82,7 @@ export const Dropbox = ({
       {!isEmptyItems && (
         <menu
           className={`
-          absolute w-full bg-gray-10 rounded-[0.4rem] rounded-t-none py-2
+          absolute w-full bg-gray-10 rounded-[0.4rem] rounded-t-none z-10
           border border-gray-30 border-t-0
           transition-all duration-200 ease-in-out
           overflow-y-auto scrollbar-hide
@@ -95,7 +96,7 @@ export const Dropbox = ({
           {dropdownItems.map((item) => (
             <li
               key={item.id}
-              className="pl-[1.3rem] pr-[0.7rem] py-[1.8rem] hover:bg-gray-10 cursor-pointer text-body2Normal relative text-gray-70"
+              className="h-[5rem] pl-[1.3rem] pr-[0.7rem] py-[1.8rem] hover:bg-gray-10 cursor-pointer text-body2Normal relative text-gray-70"
               onMouseDown={onMouseDownItem(item.label)}
             >
               <span>{item.label}</span>
