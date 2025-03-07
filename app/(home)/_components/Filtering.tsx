@@ -9,37 +9,40 @@ export default function Filtering() {
     useFilteringController();
 
   const { 정렬, 촬영시기, 카메라종류, 보정스타일, 패키지, 가격 } = selectedFilters;
-  console.log('보정스타일: ', 보정스타일);
   return (
     <section>
       <menu className="overflow-x-auto scroll">
         <div className="flex gap-2">
           <Chip
-            label="정렬"
+            label={Boolean(정렬) ? (정렬 as string) : '정렬'}
             active
             background={Boolean(정렬) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('정렬')}
           />
           <Chip
-            label="촬영 시기"
+            label={Boolean(촬영시기) ? (촬영시기 as string) : '촬영 시기'}
             active
             background={Boolean(촬영시기) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('촬영시기')}
           />
           <Chip
-            label="카메라 종류"
+            label={Boolean(카메라종류) ? (카메라종류 as string) : '카메라 종류'}
             active
             background={Boolean(카메라종류) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('카메라종류')}
           />
           <Chip
-            label="보정 스타일"
+            label={
+              Boolean((보정스타일 as string[]).length)
+                ? `${(보정스타일 as string[])[0]} 외 ${(보정스타일 as string[]).length - 1}`
+                : '보정 스타일'
+            }
             active
             background={Boolean((보정스타일 as string[]).length) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('보정스타일')}
           />
           <Chip
-            label="패키지"
+            label={Boolean(패키지) ? (패키지 as string) : '패키지'}
             active
             background={Boolean(패키지) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('패키지')}
