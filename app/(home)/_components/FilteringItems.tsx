@@ -1,10 +1,11 @@
 'use client';
 
 import { Chip } from '@/components/ui/Chip';
+import { Slider } from '@/components/ui/slider';
 import { Dispatch, SetStateAction } from 'react';
-import { useFilteringTabsController } from '../controllers/FilteringTabsController';
+import { useFilteringItemsController } from '../controllers/FilteringItemsController';
 import { FilteringService } from '../services/FilteringService';
-import { FilterType, FilterValue } from '../type';
+import { FilterType, FilterValue, PriceRange } from '../type';
 
 interface FilteringItemsProps {
   onOpenChange: (open: boolean) => void;
@@ -19,20 +20,13 @@ export const FilteringItems = ({
   selectedFilters,
   setSelectedFilters,
 }: FilteringItemsProps) => {
-  const {
-    tempFilters,
-    handleFilterSelect,
-    handleSliderChange,
-    getCurrentPriceButton,
-    handleReset,
-    handleApply,
-    handleTabChange,
-  } = useFilteringTabsController({
-    filterType,
-    selectedFilters,
-    setSelectedFilters,
-    onOpenChange,
-  });
+  const { tempFilters, handleFilterSelect, handleSliderChange, handleReset, handleApply, handleTabChange } =
+    useFilteringItemsController({
+      filterType,
+      selectedFilters,
+      setSelectedFilters,
+      onOpenChange,
+    });
 
   const {
     getSortOptions,
@@ -52,6 +46,9 @@ export const FilteringItems = ({
     가격: getPriceRangeOptions(),
   };
 
+  const 가격 = tempFilters.가격 as PriceRange;
+  const 가격범위텍스트 = !가격.min && !가격.max ? '-' : `${가격.min}만원 - ${가격.max}만원`;
+
   return (
     <div className="space-y-[2.2rem]">
       {Object.keys(tempFilters).map(title => {
@@ -65,6 +62,20 @@ export const FilteringItems = ({
           />
         );
       })}
+      {/* 가격 슬라이더 */}
+      <div className="relative pt-[1.8rem]">
+        <div className="absolute -top-3 left-4 text-label1Normal font-medium text-common-100">0 만원</div>
+        <div className="absolute -top-3 right-4 text-label1Normal font-medium text-common-100">100 만원</div>
+        <Slider
+          defaultValue={[0, 100]}
+          min={0}
+          max={100}
+          step={1}
+          value={[가격.min ?? 0, 가격.max ?? 0]}
+          onValueChange={handleSliderChange}
+        />
+        <div className="mt-4 text-center text-label1Normal font-medium text-gray-70">{가격범위텍스트}</div>
+      </div>
       <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
         <button className="w-[8.9rem] bg-gray-80 h-[56px]" onClick={handleReset}>
           초기화
@@ -93,12 +104,20 @@ const Category = ({
       <p className="text-body2Normal font-semibold text-gray-95">{title}</p>
       <div className="flex flex-wrap gap-[0.6rem]">
         {items.map(item => {
-          // TODO: 선택한 요소 상태값 변경 및 UI 적용 [ ]
-          const isSelected = Array.isArray(tempFilters[title])
-            ? tempFilters[title].includes(item)
-            : tempFilters[title] === item;
+          let isSelected = false;
 
-          // TODO: 가격 핸들러 검토 [ ]
+          if (title === '가격') {
+            // 가격 범위 비교 로직
+            const currentRange = tempFilters[title] as PriceRange;
+            const buttonRange = FilteringService.getPriceRangeFromValue(item);
+            isSelected = currentRange.min === buttonRange.min && currentRange.max === buttonRange.max;
+          } else {
+            // 기존 로직 유지
+            isSelected = Array.isArray(tempFilters[title])
+              ? (tempFilters[title] as string[]).includes(item)
+              : tempFilters[title] === item;
+          }
+
           return (
             <Chip
               key={item}

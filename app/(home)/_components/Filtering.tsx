@@ -2,6 +2,7 @@
 
 import { Chip } from '@/components/ui/Chip';
 import { useFilteringController } from '../controllers/FilteringController';
+import { PriceRange } from '../type';
 import FilteringModal from './FilteringModal';
 
 export default function Filtering() {
@@ -9,6 +10,21 @@ export default function Filtering() {
     useFilteringController();
 
   const { 정렬, 촬영시기, 카메라종류, 보정스타일, 패키지, 가격 } = selectedFilters;
+
+  // 가격 범위 표시 텍스트 생성
+  const getPriceRangeText = (priceRange: PriceRange) => {
+    // 가격이 선택되지 않았거나 min, max가 없는 경우
+    if (priceRange.min === undefined || priceRange.max === undefined) return '가격';
+
+    if (priceRange.min === 0 && priceRange.max === 30) return '30만원 이하';
+    if (priceRange.min === 70) return '70만원 이상';
+    return `${priceRange.min}-${priceRange.max}만원`;
+  };
+
+  const 보정스타일선택값리스트 = 보정스타일 as string[];
+  const 보정스타일텍스트 = `${보정스타일선택값리스트[0]} ${
+    보정스타일선택값리스트.length > 1 ? `외 ${보정스타일선택값리스트.length - 1}` : ''
+  }`;
   return (
     <section>
       <menu className="overflow-x-auto scroll">
@@ -32,13 +48,9 @@ export default function Filtering() {
             onClick={() => handleFilterClick('카메라종류')}
           />
           <Chip
-            label={
-              Boolean((보정스타일 as string[]).length)
-                ? `${(보정스타일 as string[])[0]} 외 ${(보정스타일 as string[]).length - 1}`
-                : '보정 스타일'
-            }
+            label={Boolean(보정스타일선택값리스트.length) ? 보정스타일텍스트 : '보정 스타일'}
             active
-            background={Boolean((보정스타일 as string[]).length) ? 'inverse' : 'default'}
+            background={Boolean(보정스타일선택값리스트.length) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('보정스타일')}
           />
           <Chip
@@ -48,9 +60,9 @@ export default function Filtering() {
             onClick={() => handleFilterClick('패키지')}
           />
           <Chip
-            label="가격"
+            label={getPriceRangeText(가격 as PriceRange)}
             active
-            background={Boolean(가격) ? 'inverse' : 'default'}
+            background={Boolean((가격 as PriceRange).min && (가격 as PriceRange).max) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('가격')}
           />
         </div>

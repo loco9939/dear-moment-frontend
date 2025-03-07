@@ -1,6 +1,5 @@
 import {
   CAMERA_OPTIONS,
-  FilteringUtils,
   INITIAL_FILTER_STATE,
   PACKAGE_OPTIONS,
   PRICE_RANGE_MAP,
@@ -8,7 +7,7 @@ import {
   SORT_OPTIONS,
   STYLE_OPTIONS,
 } from '../models/FilteringModel';
-import { FilterType, FilterValue } from '../type';
+import { FilterType, FilterValue, PriceRange } from '../type';
 
 // 실제 서비스에서는 API 호출로 대체될 부분
 export class FilteringService {
@@ -40,11 +39,11 @@ export class FilteringService {
     return Object.keys(PRICE_RANGE_MAP);
   }
 
-  static getCurrentPriceButton(price: number): string {
-    return FilteringUtils.getCurrentPriceButton(price);
+  static getPriceRangeFromValue(value: string): PriceRange {
+    return PRICE_RANGE_MAP[value] || { min: undefined, max: undefined };
   }
 
-  static getPriceRange(value: string) {
-    return FilteringUtils.getPriceRange(value);
+  static getPriceRangeMap() {
+    return PRICE_RANGE_MAP;
   }
 }

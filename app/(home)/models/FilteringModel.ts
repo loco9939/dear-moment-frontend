@@ -1,12 +1,12 @@
-import { FilterType, FilterValue } from '../type';
+import { FilterType, FilterValue, PriceRange } from '../type';
 
 // 필터링 관련 상수와 타입 정의
-export const PRICE_RANGE_MAP = {
-  '20만원 이하': [0, 20],
-  '20~40만원대': [21, 40],
-  '40~60만원대': [41, 60],
-  '60~80만원대': [61, 80],
-  '80만원 이상': [81, 100],
+// 가격 범위 매핑 상수
+export const PRICE_RANGE_MAP: Record<string, PriceRange> = {
+  '30만원 이하': { min: 0, max: 30 },
+  '30-50만원': { min: 30, max: 50 },
+  '50-70만원': { min: 50, max: 70 },
+  '70만원 이상': { min: 70, max: 100 },
 } as const;
 
 export const SORT_OPTIONS = ['최신순', '인기순', '좋아요순'] as const;
@@ -22,19 +22,5 @@ export const INITIAL_FILTER_STATE: Record<FilterType, FilterValue> = {
   카메라종류: '',
   보정스타일: [],
   패키지: '',
-  가격: [],
+  가격: { min: undefined, max: undefined },
 };
-
-// 필터 관련 유틸리티 함수들
-export class FilteringUtils {
-  static getCurrentPriceButton(price: number): string {
-    const selectedRange = Object.entries(PRICE_RANGE_MAP).find(([, range]) => {
-      return price >= range[0] && price <= range[1];
-    });
-    return selectedRange ? selectedRange[0] : '';
-  }
-
-  static getPriceRange(value: string) {
-    return PRICE_RANGE_MAP[value as keyof typeof PRICE_RANGE_MAP];
-  }
-}
