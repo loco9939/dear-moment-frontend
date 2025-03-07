@@ -57,7 +57,7 @@ export const Appbar = ({
 			className
 		),
 		logoWrapper: "w-[14rem] h-[2.4rem]",
-		iconWrapper: "w-[2.4rem] h-[2.4rem] cursor-pointer",
+		iconWrapper: "w-[2.4rem] h-[2.4rem]",
 		title: "text-body1Normal font-bold absolute left-1/2 -translate-x-1/2",
 	};
 
@@ -68,7 +68,7 @@ export const Appbar = ({
 					<div className={styles.logoWrapper}>{logo}</div>
 				</Link>
 			)}
-			{leftIcon && <div className={styles.iconWrapper}>
+			{<div className={styles.iconWrapper}>
 				{leftIcon}
 			</div>}
 			{title && (
