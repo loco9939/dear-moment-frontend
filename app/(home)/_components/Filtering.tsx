@@ -27,7 +27,7 @@ export default function Filtering() {
   }`;
   return (
     <section>
-      <menu className="overflow-x-auto scroll scrollbar-hide">
+      <menu className="overflow-x-auto scroll scrollbar-hide px-[2rem]">
         <div className="flex gap-2">
           <Chip
             label={Boolean(정렬) ? (정렬 as string) : '정렬'}

@@ -20,13 +20,14 @@ export const FilteringItems = ({
   selectedFilters,
   setSelectedFilters,
 }: FilteringItemsProps) => {
-  const { tempFilters, handleFilterSelect, handleSliderChange, handleReset, handleApply, handleTabChange } =
-    useFilteringItemsController({
+  const { tempFilters, handleFilterSelect, handleSliderChange, handleReset, handleApply } = useFilteringItemsController(
+    {
       filterType,
       selectedFilters,
       setSelectedFilters,
       onOpenChange,
-    });
+    }
+  );
 
   const {
     getSortOptions,
@@ -77,10 +78,16 @@ export const FilteringItems = ({
         <div className="mt-4 text-center text-label1Normal font-medium text-gray-70">{가격범위텍스트}</div>
       </div>
       <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
-        <button className="w-[8.9rem] bg-gray-80 h-[56px]" onClick={handleReset}>
+        <button
+          className="w-[8.9rem] bg-gray-80 text-body1Normal font-semibold text-gray-10 h-[56px]"
+          onClick={handleReset}
+        >
           초기화
         </button>
-        <button className="w-[22.1rem] bg-common-100 h-[56px]" onClick={handleApply}>
+        <button
+          className="w-[22.1rem] bg-common-100 text-body1Normal font-semibold text-gray-10 h-[56px]"
+          onClick={handleApply}
+        >
           적용
         </button>
       </div>
