@@ -1,3 +1,4 @@
+import { NavigationBar } from '@/components/NavigationBar';
 import AuthorList from './_components/AuthorList';
 import Filtering from './_components/Filtering';
 
@@ -7,6 +8,8 @@ export default function HomePage() {
       <Filtering />
 
       <AuthorList />
+
+      <NavigationBar />
     </main>
   );
 }
