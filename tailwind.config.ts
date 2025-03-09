@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -142,6 +143,27 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        ".scrollbar-hide": {
+          /* IE and Edge */
+          "-ms-overflow-style": "none",
+          /* Firefox */
+          "scrollbar-width": "none",
+          /* Safari and Chrome */
+          "&::-webkit-scrollbar": {
+            display: "none",
+          },
+        },
+        ".scrollbar-show": {
+          "scrollbar-width": "thin",
+          "&::-webkit-scrollbar": {
+            display: "block",
+          },
+        },
+      });
+    }),
+  ],
 };
 export default config;
