@@ -39,7 +39,7 @@ export function useFilteringItemsController({
           [type]: priceRange,
         };
       });
-    } else if (type === '보정스타일') {
+    } else if (type === '보정스타일' || type === '촬영시기' || type === '카메라종류') {
       // 스타일 다중 선택 로직
       setTempFilters(prev => {
         const currentStyles = (Array.isArray(prev[type]) ? prev[type] : []) as string[];

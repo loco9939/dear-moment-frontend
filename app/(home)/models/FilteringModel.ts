@@ -18,8 +18,8 @@ export const PACKAGE_OPTIONS = ['있음', '없음'] as const;
 // 필터 초기 상태
 export const INITIAL_FILTER_STATE: Record<FilterType, FilterValue> = {
   정렬: '',
-  촬영시기: '',
-  카메라종류: '',
+  촬영시기: [],
+  카메라종류: [],
   보정스타일: [],
   패키지: '',
   가격: { min: undefined, max: undefined },

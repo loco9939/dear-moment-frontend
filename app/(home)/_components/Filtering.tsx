@@ -25,6 +25,14 @@ export default function Filtering() {
   const 보정스타일텍스트 = `${보정스타일선택값리스트[0]} ${
     보정스타일선택값리스트.length > 1 ? `외 ${보정스타일선택값리스트.length - 1}` : ''
   }`;
+  const 촬영시기선택값리스트 = 촬영시기 as string[];
+  const 촬영시기텍스트 = `${촬영시기선택값리스트[0]} ${
+    촬영시기선택값리스트.length > 1 ? `외 ${촬영시기선택값리스트.length - 1}` : ''
+  }`;
+  const 카메라종류선택값리스트 = 카메라종류 as string[];
+  const 카메라종류텍스트 = `${카메라종류선택값리스트[0]} ${
+    카메라종류선택값리스트.length > 1 ? `외 ${카메라종류선택값리스트.length - 1}` : ''
+  }`;
   return (
     <section>
       <menu className="overflow-x-auto scroll scrollbar-hide px-[2rem]">
@@ -36,15 +44,15 @@ export default function Filtering() {
             onClick={() => handleFilterClick('정렬')}
           />
           <Chip
-            label={Boolean(촬영시기) ? (촬영시기 as string) : '촬영 시기'}
+            label={Boolean(촬영시기선택값리스트.length) ? 촬영시기텍스트 : '촬영 시기'}
             active
-            background={Boolean(촬영시기) ? 'inverse' : 'default'}
+            background={Boolean(촬영시기선택값리스트.length) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('촬영시기')}
           />
           <Chip
-            label={Boolean(카메라종류) ? (카메라종류 as string) : '카메라 종류'}
+            label={Boolean(카메라종류선택값리스트.length) ? 카메라종류텍스트 : '카메라 종류'}
             active
-            background={Boolean(카메라종류) ? 'inverse' : 'default'}
+            background={Boolean(카메라종류선택값리스트.length) ? 'inverse' : 'default'}
             onClick={() => handleFilterClick('카메라종류')}
           />
           <Chip
