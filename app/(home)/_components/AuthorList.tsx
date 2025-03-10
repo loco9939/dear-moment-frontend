@@ -6,7 +6,7 @@ export default function AuthorList() {
       <p className="text-body1Normal font-bold text-gray-90 mt-[2.4rem] mb-[1rem]">지금 가장 HOT한 스냅 작가!</p>
       <ul className="space-y-[1.7rem]">
         <li>
-          <AuthorCard />
+          <AuthorCard isFirst />
         </li>
         <li>
           <AuthorCard />

@@ -3,14 +3,26 @@
 import { Icon_Calendar, Icon_Cancel_Circle_Filled, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthorCardController } from '../controllers/AuthorCardController';
 
-export default function AuthorCard() {
+export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
   const { isLiked, onClickHeart } = useAuthorCardController();
-  const [showNotification, setShowNotification] = useState(true);
+  const [showNotification, setShowNotification] = useState(false);
 
-  const closeNotification = () => setShowNotification(false);
+  // 첫번째 요소에만 Notification 띄우고 session 기간까지만 유지
+  // 현재는 mockData 사용중이라 새로고침 시 깜빡이는 이슈 존재하지만 실 데이터 API 연동 시 데이터 바인딩 후 AuthorCard 렌더링 되므로 깜빡이는 이슈 해결
+  useEffect(() => {
+    if (isFirst) {
+      const notificationState = sessionStorage.getItem('authorCardNotificationShown');
+      setShowNotification(notificationState !== 'hidden');
+    }
+  }, [isFirst]);
+
+  const closeNotification = () => {
+    sessionStorage.setItem('authorCardNotificationShown', 'hidden');
+    setShowNotification(false);
+  };
 
   return (
     <div className="w-full bg-white rounded-lg">
@@ -56,7 +68,7 @@ export default function AuthorCard() {
         </div>
 
         {/* 가격 툴팁 */}
-        {showNotification && <Notification closeNotification={closeNotification} />}
+        {isFirst && showNotification && <Notification closeNotification={closeNotification} />}
 
         {/* 날짜 옵션 */}
         <div className="flex gap-[0.5rem] mt-[0.6rem] items-center">
