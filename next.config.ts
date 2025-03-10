@@ -1,11 +1,10 @@
-import type { NextConfig } from "next";
-import type { Configuration as WebpackConfig } from "webpack";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   compiler: {
     // 컴파일러 옵션들...
   },
-  webpack: (config: WebpackConfig) => {
+  webpack: config => {
     config.module.rules.push({
       test: /\.svg$/,
       use: [
@@ -21,7 +20,7 @@ const nextConfig: NextConfig = {
 
     config.resolve.alias = {
       ...config.resolve.alias,
-      "@": "/app",
+      '@': '/app',
     };
 
     return config;
