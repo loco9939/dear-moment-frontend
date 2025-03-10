@@ -16,6 +16,9 @@ export default function AuthorCard() {
     <div className="w-full bg-white rounded-lg">
       {/* 사진 갤러리 레이아웃 */}
       <div className="flex gap-[0.2rem] h-[13.6rem] relative">
+        <div className="text-label1Normal font-semibold text-common-0 bg-red-40 absolute top-0 left-0 z-10 px-[0.8rem] py-[0.55rem]">
+          할인 프로모션
+        </div>
         <div className="relative flex-[2] overflow-hidden ">
           <Image src="/author_thumb.png" alt="메인 웨딩 사진" fill className="object-cover" />
         </div>
