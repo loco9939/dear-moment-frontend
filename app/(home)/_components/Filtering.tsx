@@ -70,7 +70,11 @@ export default function Filtering() {
           <Chip
             label={getPriceRangeText(가격 as PriceRange)}
             active
-            background={Boolean((가격 as PriceRange).min && (가격 as PriceRange).max) ? 'inverse' : 'default'}
+            background={
+              Boolean((가격 as PriceRange).min !== undefined && (가격 as PriceRange).max !== undefined)
+                ? 'inverse'
+                : 'default'
+            }
             onClick={() => handleFilterClick('가격')}
           />
         </div>
