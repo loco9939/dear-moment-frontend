@@ -117,7 +117,19 @@ const Category = ({
             // 가격 범위 비교 로직
             const currentRange = tempFilters[title] as PriceRange;
             const buttonRange = FilteringService.getPriceRangeFromValue(item);
-            isSelected = currentRange.min === buttonRange.min && currentRange.max === buttonRange.max;
+
+            // 현재 선택된 범위와 버튼의 범위가 겹치는지 확인
+            isSelected =
+              currentRange?.min !== undefined &&
+              currentRange?.max !== undefined &&
+              buttonRange.min !== undefined &&
+              buttonRange.max !== undefined &&
+              // 버튼의 최소값이 현재 범위 내에 있거나
+              ((buttonRange.min >= currentRange.min && buttonRange.min <= currentRange.max) ||
+                // 버튼의 최대값이 현재 범위 내에 있거나
+                (buttonRange.max >= currentRange.min && buttonRange.max <= currentRange.max) ||
+                // 버튼의 범위가 현재 범위를 포함하는 경우
+                (buttonRange.min <= currentRange.min && buttonRange.max >= currentRange.max));
           } else {
             // 기존 로직 유지
             isSelected = Array.isArray(tempFilters[title])

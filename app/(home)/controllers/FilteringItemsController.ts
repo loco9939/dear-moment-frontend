@@ -62,9 +62,11 @@ export function useFilteringItemsController({
 
   // 슬라이더 값 변경 핸들러
   const handleSliderChange = (values: number[]) => {
+    const [min, max] = values;
+
     setTempFilters(prev => ({
       ...prev,
-      가격: { min: values[0], max: values[1] } as PriceRange,
+      가격: { min, max } as PriceRange,
     }));
   };
 

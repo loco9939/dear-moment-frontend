@@ -4,8 +4,8 @@ import { FilterType, FilterValue, PriceRange } from '../type';
 // 가격 범위 매핑 상수
 export const PRICE_RANGE_MAP: Record<string, PriceRange> = {
   '30만원 이하': { min: 0, max: 30 },
-  '30-50만원': { min: 30, max: 50 },
-  '50-70만원': { min: 50, max: 70 },
+  '31-49만원': { min: 31, max: 49 },
+  '50-69만원': { min: 50, max: 69 },
   '70만원 이상': { min: 70, max: 100 },
 } as const;
 
