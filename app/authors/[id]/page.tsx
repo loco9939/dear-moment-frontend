@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
+'use client';
 
-import { AuthorDetail, mockAuthorData } from "@/mock/authorData";
-import { ChevronLeftIcon, HeartIcon } from "lucide-react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import AuthorTabs from "./_components/AuthorTabs";
+import { Icon_Check, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
+import { AuthorDetail, mockAuthorData } from '@/mock/authorData';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import AuthorTabs from './_components/AuthorTabs';
 
 export default function AuthorDetailPage() {
   const params = useParams();
@@ -23,7 +23,7 @@ export default function AuthorDetailPage() {
         const data = mockAuthorData;
         setAuthor(data);
       } catch (error) {
-        console.error("작가 정보를 불러오는데 실패했습니다:", error);
+        console.error('작가 정보를 불러오는데 실패했습니다:', error);
       } finally {
         setIsLoading(false);
       }
@@ -39,67 +39,77 @@ export default function AuthorDetailPage() {
     <div className="w-full max-w-screen-md mx-auto">
       {/* 대표 이미지 */}
       <div className="relative w-full h-[400px]">
-        <img
-          src={author.profileImage}
-          alt="대표 이미지"
-          className="w-full h-full object-cover"
-        />
-        {/* 뒤로가기 버튼 */}
-        <button className="absolute top-4 left-4 bg-black/80 p-2 rounded-full">
-          <ChevronLeftIcon className="w-6 h-6" />
-        </button>
+        <img src={author.profileImage} alt="대표 이미지" className="w-full h-full object-cover" />
       </div>
 
       {/* 작가 정보 섹션 */}
-      <div className="px-4 py-6">
-        {/* 작가명과 필터 태그 */}
-        <div className="mb-6 flex justify-between items-center">
-          <h1 className="text-xl font-bold">{author.name}</h1>
-          <div className="flex gap-2">
-            {Object.entries(author.filters).map(([type, value]) => {
-              if (Array.isArray(value)) {
-                return (
-                  <div className="flex gap-2" key={type}>
-                    {value.map((v) => (
-                      <span
-                        key={v}
-                        className="px-3 py-1 bg-gray-100 text-sm rounded-full text-black"
-                      >
-                        {v}
-                      </span>
-                    ))}
-                  </div>
-                );
-              }
-              return (
-                <span
-                  key={type}
-                  className="px-3 py-1 bg-gray-100 text-sm rounded-full text-black"
-                >
-                  {value}
-                </span>
-              );
-            })}
+      <div className="">
+        {/* 작가정보 헤더 */}
+        <div className="border-b border-gray-20 p-[2rem]">
+          <div className="flex items-center gap-[1rem]">
+            <div className="w-[5.7rem] h-[5.7rem] rounded-full bg-gray-40" />
+            <span className="text-gray-90 text-subtitle2 font-bold">오에브</span>
+            <button className="ml-auto" onClick={() => setIsLiked(!isLiked)}>
+              {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
+            </button>
+          </div>
+          <p className="text-body2Reading font-bold mt-[1rem]">&ldquo;당신의 낮과 밤을 모두 사랑해&ldquo;</p>
+          <div className="flex gap-[0.5rem] mt-[2rem]">
+            <div className="text-gray-80 text-label2 font-semibold bg-red-20 px-[0.8rem] py-[0.45rem]">우아한</div>
+            <div className="text-gray-80 text-label2 font-semibold bg-red-20 px-[0.8rem] py-[0.45rem]">빈티지한</div>
           </div>
         </div>
 
-        {/* 작가 소개 */}
-        <p className="text-white mb-8">{author.introduction}</p>
+        {/* 작가 정보 컨텐츠 */}
+        <div className="">
+          {/* 작가 특징 */}
+          <div className="mt-[2.8rem] px-[2rem]">
+            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브만의 차별화된 특징</p>
+            <div className="space-y-[0.7rem]">
+              <div className="flex gap-[0.8rem] items-center">
+                <Icon_Check className="fill-gray-60" width={18} height={18} />
+                <span>자체 스튜디오 보유</span>
+              </div>
+              <div className="flex gap-[0.8rem] items-center">
+                <Icon_Check className="fill-gray-60" width={18} height={18} />
+                <span>1인 작가</span>
+              </div>
+            </div>
+          </div>
 
+          {/* 작가 포트폴리오 */}
+          <div className="mt-[3.5rem] px-[2rem]">
+            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브의 포트폴리오</p>
+            <div className="flex gap-[0.2rem] flex-wrap">
+              {Array.from({ length: 9 }, (_, i) => i).map((item, index) => {
+                if (index > 7) return;
+                return (
+                  <div key={item} className="relative" role="button">
+                    <img src={author.profileImage} alt="대표 이미지" className="object-cover w-[7.8rem] h-[7.8rem]" />
+                    {index === 7 && (
+                      <div className="absolute w-full h-full bg-gray-30 top-0 left-0 opacity-90 flex justify-center items-center">
+                        <span className="text-body3Normal text-common-0">+{8 - index}</span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* 상품정보, 안내사항 탭 */}
         <AuthorTabs products={author.products} guidelines={author.guidelines} />
 
         {/* 문의하기 버튼 */}
-        <div className="flex gap-2 items-center">
+        <div className="h-[5.6rem] mb-[1.2rem] flex gap-[1rem] justify-between items-center px-[2rem]">
           <button
-            className="bg-gray-700 p-3 rounded-lg"
+            className="w-[6.8rem] h-full flex justify-center items-center bg-gray-80 rounded-[0.4rem] cursor-pointer"
             onClick={() => setIsLiked(!isLiked)}
           >
-            <HeartIcon
-              className="w-6 h-6"
-              fill={isLiked ? "currentColor" : "none"}
-            />
+            {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
           </button>
-          <button className="flex-1 bg-gray-700 p-3 rounded-lg">
+          <button className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-common-100 rounded-[0.4rem]">
             문의하기
           </button>
         </div>

@@ -1,7 +1,11 @@
+import { Icon_ChevronDown } from "@/assets/icons";
+import { Appbar } from "@/components/Appbar";
+import Link from "next/link";
+
 const AuthorsLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">작가 목록</h1>
+    <div className="container">
+      <Appbar leftIcon={<Link href='/'><Icon_ChevronDown className="rotate-90 cursor-pointer"/></Link>} className="absolute z-10"/>
       {children}
     </div>
   );

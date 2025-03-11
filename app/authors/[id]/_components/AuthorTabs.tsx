@@ -1,7 +1,8 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Product } from "@/mock/authorData";
-import { HeartIcon } from "lucide-react";
-import { useState } from "react";
+'use client';
+
+import { Product } from '@/mock/authorData';
+import { useRef, useState } from 'react';
+import { ProductCard } from './ProductCard';
 
 interface AuthorTabsProps {
   products: Product[];
@@ -9,97 +10,106 @@ interface AuthorTabsProps {
 }
 
 export default function AuthorTabs({ products, guidelines }: AuthorTabsProps) {
-  // 각 상품의 좋아요 상태를 관리하는 상태 객체
-  const [likedProducts, setLikedProducts] = useState<Record<string, boolean>>(
-    {}
-  );
+  // 활성화된 탭을 관리하는 상태
+  const [activeTab, setActiveTab] = useState<'products' | 'guidelines'>('products');
 
-  // 좋아요 토글 핸들러
-  const handleLikeToggle = (productId: string) => {
-    setLikedProducts((prev) => ({
-      ...prev,
-      [productId]: !prev[productId],
-    }));
+  // 각 섹션에 대한 ref 생성
+  const productsRef = useRef<HTMLDivElement>(null);
+  const guidelinesRef = useRef<HTMLDivElement>(null);
+
+  // 탭 높이(3.7rem = 59.2px) + 추가 여백(10px)을 고려한 스크롤 오프셋
+  const scrollOffset = -36;
+
+  // 탭 클릭 핸들러
+  const handleTabClick = (tab: 'products' | 'guidelines') => {
+    setActiveTab(tab);
+
+    // 해당 섹션으로 스크롤 시 탭 높이만큼 추가 오프셋 적용
+    if (tab === 'products' && productsRef.current) {
+      const elementPosition = productsRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition + scrollOffset,
+        behavior: 'smooth',
+      });
+    } else if (tab === 'guidelines' && guidelinesRef.current) {
+      const elementPosition = guidelinesRef.current.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({
+        top: elementPosition + scrollOffset,
+        behavior: 'smooth',
+      });
+    }
   };
 
   return (
-    <Tabs defaultValue="상품정보">
-      <TabsList className="w-full sticky top-[-1px] z-10 rounded-none border-b border-gray-800">
-        <TabsTrigger
-          value="상품정보"
-          className="flex-1 data-[state=active]:border-b-2 data-[state=active]:text-yellow-500"
-        >
-          상품정보
-        </TabsTrigger>
-        <TabsTrigger
-          value="안내사항"
-          className="flex-1 data-[state=active]:border-b-2 data-[state=active]:text-yellow-500"
-        >
-          안내사항
-        </TabsTrigger>
-      </TabsList>
+    <section className="mt-[4.5rem]">
+      <div className="w-full h-[3.7rem] sticky top-[-1px] z-10 flex border-b border-gray-20 bg-common-0 p-0">
+        <div className={`flex-1 h-full text-center`}>
+          <button
+            className={`h-full w-[11rem] text-body2Normal font-semibold ${
+              activeTab === 'products' ? 'text-gray-90 border-b-2 border-gray-90' : 'text-gray-50'
+            }`}
+            onClick={() => handleTabClick('products')}
+          >
+            상품정보
+          </button>
+        </div>
+        <div className={`flex-1 h-full text-center`}>
+          <button
+            className={`h-full w-[11rem]  text-body2Normal font-semibold ${
+              activeTab === 'guidelines' ? 'text-gray-90 border-b-2 border-gray-90' : 'text-gray-50'
+            }`}
+            onClick={() => handleTabClick('guidelines')}
+          >
+            안내사항
+          </button>
+        </div>
+      </div>
 
-      <TabsContent value="상품정보" className="my-6">
-        <ul>
-          {products.map((product) => (
-            <li
-              className="border border-gray-800 rounded-lg p-4 mb-4 cursor-pointer hover:bg-gray-800 transition-colors"
-              key={product.id}
-            >
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-bold text-white">{product.name}</span>
-                <button
-                  className={`transition-colors ${
-                    likedProducts[product.id] ? "text-red-500" : "text-gray-400"
-                  }`}
-                  onClick={() => handleLikeToggle(product.id)}
-                  aria-label={
-                    likedProducts[product.id] ? "좋아요 취소" : "좋아요"
-                  }
-                >
-                  <HeartIcon
-                    className="w-6 h-6"
-                    fill={likedProducts[product.id] ? "currentColor" : "none"}
-                  />
-                </button>
-              </div>
-
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-bold text-lg text-white">
-                  {product.price.toLocaleString()}원
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 gap-y-2 text-sm text-white">
-                <div className="flex justify-between pr-4">
-                  <span>시간</span>
-                  <span>{product.details.shootingTime}</span>
-                </div>
-                <div className="flex justify-between pr-4">
-                  <span>컷수</span>
-                  <span>{product.details.cut}</span>
-                </div>
-                <div className="flex justify-between pr-4">
-                  <span>의상</span>
-                  <span>{product.details.clothes}</span>
-                </div>
-                <div className="flex justify-between pr-4">
-                  <span>원본</span>
-                  <span>있음</span>
-                </div>
-              </div>
-            </li>
+      <div ref={productsRef} className="my-[5.2rem] px-[2rem]">
+        <p className="text-subtitle1 font-bold keep-all w-[17rem] text-gray-95 mb-[3.7rem]">
+          [오에브]만의 특별한 스냅 상품 정보
+        </p>
+        <ul className="space-y-[3rem]">
+          {products.map(product => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </ul>
-      </TabsContent>
+      </div>
 
-      <TabsContent value="안내사항" className="my-6">
-        <div className="space-y-4 text-white">
-          {guidelines.map((guideline, index) => (
-            <p key={index}>{guideline}</p>
-          ))}
+      <div ref={guidelinesRef} className="my-6 px-[2rem]">
+        <p className="text-subtitle1 font-bold text-gray-95">스냅 안내사항</p>
+        <div className="text-label1Reading font-semibold text-gray-70 my-[4rem]">
+          <p>모든 안내사항은 필독 부탁드립니다.</p>
+          <p>안내사항을 읽지 않아 생기는 불이익에 관해서는 책임지지 않습니다.</p>
         </div>
-      </TabsContent>
-    </Tabs>
+        <div className="">
+          <p className="text-body2Normal font-semibold text-gray-95">제휴샵 안내</p>
+          <ul className="list-disc list-inside my-[3rem]">
+            <li>헤어, 드레스, 메이크업</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+          </ul>
+        </div>
+        <div className="">
+          <p className="text-body2Normal font-semibold text-gray-95">필독 안내사항</p>
+          <ul className="list-disc list-inside my-[3rem]">
+            <li>헤어, 드레스, 메이크업</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+          </ul>
+        </div>
+        <div className="">
+          <p className="text-body2Normal font-semibold text-gray-95">취소 및 환불 규정</p>
+          <ul className="list-disc list-inside my-[3rem]">
+            <li>헤어, 드레스, 메이크업</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+            <li>Lorem ipsum dolor sit</li>
+          </ul>
+        </div>
+      </div>
+    </section>
   );
 }
