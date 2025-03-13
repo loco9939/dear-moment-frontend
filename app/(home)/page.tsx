@@ -1,5 +1,6 @@
-import AuthorList from "./_components/AuthorList";
-import Filtering from "./_components/Filtering";
+import { NavigationBar } from '@/components/NavigationBar';
+import AuthorList from './_components/AuthorList';
+import Filtering from './_components/Filtering';
 
 export default function HomePage() {
   return (
@@ -13,7 +14,7 @@ export default function HomePage() {
           <AuthorList />
         </section>
         <section>
-          <div>네비게이션</div>
+          <NavigationBar />
         </section>
       </main>
     </div>

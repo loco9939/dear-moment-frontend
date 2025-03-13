@@ -11,6 +11,7 @@ export { default as Icon_Heart_Filled } from './Icon_Heart_Filled';
 export { default as Icon_Help } from './Icon_Help';
 export { default as Icon_Home } from './Icon_Home';
 export { default as Icon_Home_Filled } from './Icon_Home_Filled';
+export { default as Icon_Kakao } from './Icon_Kakao';
 export { default as Icon_Logo } from './Icon_Logo';
 export { default as Icon_Refresh } from './Icon_Refresh';
 export { default as Icon_User } from './Icon_User';
