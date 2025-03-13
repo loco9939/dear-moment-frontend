@@ -55,8 +55,34 @@ https://~ (지라 작업 링크)
 ## 수정 사항
 
 - 버튼 컴포넌트 기능 구현
+- 버튼 컴포넌트 스타일 수정
 
 ## 기타
 
 - 기타 등등..
 ```
+
+## shadcn 사용방법
+
+1. 필요한 컴포넌트 설치
+
+```bash
+npx shadcn@latest add button
+```
+
+/app/components/ui/button.tsx 파일 생성
+
+생성된 파일에 디자인 시스템 적용하기
+
+2. 컴포넌트 사용
+
+```js
+import { Button } from "@/components/ui/button";
+
+<Button variant="outline">Button</Button>;
+```
+
+## 디자인 시스템
+
+- 모바일 퍼스트 디자인 320px 기준(반응형 x)
+- 1rem = 10px
