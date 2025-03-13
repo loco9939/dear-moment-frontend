@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
 // 드롭박스 타입
 interface DropboxProps {
@@ -11,6 +11,7 @@ interface DropboxProps {
   onFocusProps?: (e?: React.FocusEvent<HTMLInputElement>) => void; // 드롭박스 포커스 시 호출될 함수 "
   onBlurProps?: (e?: React.FocusEvent<HTMLInputElement>) => void; // 드롭박스 블러 시 호출될 함수 "
   onMouseDownItemProps?: (selectedValue?: string) => void; // 드롭박스 메뉴 아이템 클릭 시 호출될 함수 "
+  className?: string;
 }
 
 export const Dropbox = ({
@@ -20,6 +21,7 @@ export const Dropbox = ({
   onFocusProps,
   onBlurProps,
   onMouseDownItemProps,
+  className,
 }: DropboxProps) => {
   const [value, setValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -50,11 +52,10 @@ export const Dropbox = ({
   };
 
   return (
-    <div className="relative">
+    <div className={`relative w-[32rem] h-[5rem] ${className}`}>
       <label
         className={`
           relative flex items-center rounded-[0.4rem]
-          w-[32rem] h-[5rem]
           ${isOpen && !isEmptyItems && "rounded-b-none"}
           pl-[1.45rem] pr-[0.85rem] py-[1.3rem]
           bg-gray-10
