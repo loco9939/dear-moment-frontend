@@ -6,12 +6,14 @@ import { AuthorDetail, mockAuthorData } from '@/mock/authorData';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AuthorTabs from './_components/AuthorTabs';
+import { InquiryBottomSheet } from './_components/InquiryBottomSheet';
 
 export default function AuthorDetailPage() {
   const params = useParams();
   const [isLiked, setIsLiked] = useState(false);
   const [author, setAuthor] = useState<AuthorDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [openInquiry, setOpenInquiry] = useState(false);
 
   useEffect(() => {
     // 작가 정보를 가져오는 API 호출
@@ -109,11 +111,17 @@ export default function AuthorDetailPage() {
           >
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
           </button>
-          <button className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-common-100 rounded-[0.4rem]">
+          <button
+            className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-common-100 rounded-[0.4rem]"
+            onClick={() => setOpenInquiry(true)}
+          >
             문의하기
           </button>
         </div>
       </div>
+
+      {/* 문의하기 Popup */}
+      <InquiryBottomSheet open={openInquiry} onOpenChange={setOpenInquiry} isLiked={isLiked} setIsLiked={setIsLiked} />
     </div>
   );
 }

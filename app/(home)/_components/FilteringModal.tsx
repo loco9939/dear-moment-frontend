@@ -24,7 +24,7 @@ export default function FilteringModal({
 }: FilteringModalProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side="bottom" className="container h-full bg-common-0">
+      <SheetContent onOpenAutoFocus={e => e.preventDefault()} side="bottom" className="container h-full bg-common-0">
         <SheetTitle>
           <Appbar
             title="필터"

@@ -21,7 +21,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   const hasDcPrice = product.dcPrice !== undefined;
   return (
-    <li className="px-[2rem] py-[1.5rem]">
+    <li className="px-[2rem] py-[1.5rem] bg-gray-10">
       {/* 카드 헤더 */}
       <div className="flex justify-between items-start mb-[1.6rem]">
         <div className="flex gap-[1rem] items-center">
