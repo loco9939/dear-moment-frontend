@@ -1,6 +1,7 @@
 'use client';
 
 import { Icon_ChevronDown } from '@/assets/icons';
+import { useSwipe } from '@/hooks/useSwipe';
 import { useEffect, useState } from 'react';
 
 interface ImageViewerModalProps {
@@ -18,8 +19,6 @@ export function ImageViewerModal({ isOpen, onClose, images, initialImageIndex }:
     setCurrentIndex(initialImageIndex);
   }, [initialImageIndex]);
 
-  if (!isOpen) return null;
-
   // 이전 이미지로 이동
   const handlePrevious = () => {
     setCurrentIndex(prev => (prev > 0 ? prev - 1 : images.length - 1));
@@ -29,11 +28,24 @@ export function ImageViewerModal({ isOpen, onClose, images, initialImageIndex }:
   const handleNext = () => {
     setCurrentIndex(prev => (prev < images.length - 1 ? prev + 1 : 0));
   };
+
+  // useSwipe 훅 사용
+  const { handlers } = useSwipe({
+    onSwipeLeft: handleNext,
+    onSwipeRight: handlePrevious,
+  });
+
+  if (!isOpen) return null;
+
   return (
     // 모달 오버레이
     <div className="fixed inset-0 bg-gray-95 z-50 flex items-center justify-center">
       {/* 이미지 컨테이너 */}
-      <div className="relative container h-full flex items-center" onClick={e => e.stopPropagation()}>
+      <div
+        className="relative container h-full flex items-center"
+        onClick={e => e.stopPropagation()}
+        {...handlers} // 터치 이벤트 핸들러 추가
+      >
         {/* 이전 버튼 */}
         <button
           onClick={handlePrevious}
@@ -42,7 +54,12 @@ export function ImageViewerModal({ isOpen, onClose, images, initialImageIndex }:
           &#8249;
         </button>
         <div className="relative">
-          <img src={images[currentIndex]} alt="포트폴리오 이미지" className="w-[36rem] h-[52rem] object-contain" />
+          <img
+            src={images[currentIndex]}
+            alt="포트폴리오 이미지"
+            className="w-[36rem] h-[52rem] object-contain"
+            draggable={false} // 이미지 드래그 방지
+          />
           {/* 이미지 카운터 */}
           <div className="absolute bottom-[-3rem] left-1/2 transform -translate-x-1/2 text-white">
             {currentIndex + 1} / {images.length}
