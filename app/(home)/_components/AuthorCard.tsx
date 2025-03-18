@@ -1,7 +1,6 @@
 'use client';
 
 import { Icon_Calendar, Icon_Cancel_Circle_Filled, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
-import { Badge } from '@/components/ui/badge';
 import { AuthorDetail } from '@/mock/authorData';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -52,11 +51,11 @@ export default function AuthorCard({ author, isFirst = false }: { author: Author
       </div>
 
       {/* 하단 텍스트 정보 */}
-      <div className="mt-4">
+      <div className="mt-[0.8rem]">
         <div className="flex justify-between gap-2">
           <div className="flex items-center gap-[1rem]">
             {/* 작가 프로필 이미지 */}
-            <div className="w-[2.4rem] h-[2.4rem] bg-gray-50 rounded-full" />
+            {/* <div className="w-[2.4rem] h-[2.4rem] bg-gray-50 rounded-full" /> */}
             <h3 className="text-body2Normal font-semibold text-gray-90">{author.name}</h3>
           </div>
 
@@ -70,7 +69,8 @@ export default function AuthorCard({ author, isFirst = false }: { author: Author
           <CategoryLabel label="우아한" />
           <CategoryLabel label="빈티지한" />
         </div>
-        <div className="mt-[0.5rem] flex gap-[0.7rem]">
+        <div className="mt-[0.6rem] flex gap-[0.7rem]">
+          <span className="text-body1Normal font-bold text-red-40">43%</span>
           <span className="text-body1Normal font-semibold text-gray-90">500,000원</span>
           <span className="text-body1Normal font-bold text-gray-90">~</span>
           <span className="text-body1Normal font-semibold text-gray-90">1,400,000원</span>
@@ -98,9 +98,9 @@ export default function AuthorCard({ author, isFirst = false }: { author: Author
 
 const CategoryLabel = ({ label }: { label: string }) => {
   return (
-    <Badge className="bg-red-20 rounded-[0.2rem] text-label2 font-semibold px-[0.8rem] py-[0.45rem] border-none">
+    <div className="bg-red-20 rounded-[0.2rem] text-label2 font-semibold px-[0.8rem] py-[0.45rem] border-none text-gray-80">
       {label}
-    </Badge>
+    </div>
   );
 };
 
