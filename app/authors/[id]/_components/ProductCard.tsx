@@ -2,13 +2,16 @@
 
 import { Icon_ChevronDown, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import { Product } from '@/mock/authorData';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
+  authorId?: string;
 }
 
-export const ProductCard = ({ product }: ProductCardProps) => {
+export const ProductCard = ({ product, authorId }: ProductCardProps) => {
+  const router = useRouter();
   const [isLike, setIsLike] = useState(false);
 
   const displayContent: Record<string, string> = {
@@ -20,6 +23,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   };
 
   const hasDcPrice = product.dcPrice !== undefined;
+
+  const handleDetailClick = () => {
+    router.push(`/products/${authorId}/${product.id}`);
+  };
+
   return (
     <li className="px-[2rem] py-[1.5rem] bg-gray-10">
       {/* 카드 헤더 */}
@@ -61,7 +69,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       </div>
 
       {/* 자세히 보기 */}
-      <button className="w-full flex justify-center items-center gap-[0.6rem] mt-[1.6rem]">
+      <button className="w-full flex justify-center items-center gap-[0.6rem] mt-[1.6rem]" onClick={handleDetailClick}>
         <span className="text-body2Normal font-semibold text-gray-60">자세히 보기</span>
         <Icon_ChevronDown className="-rotate-90 fill-gray-60" width={18} height={18} />
       </button>

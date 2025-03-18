@@ -2,12 +2,13 @@
 
 import { Icon_Calendar, Icon_Cancel_Circle_Filled, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import { Badge } from '@/components/ui/badge';
+import { AuthorDetail } from '@/mock/authorData';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuthorCardController } from '../controllers/AuthorCardController';
 
-export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
+export default function AuthorCard({ author, isFirst = false }: { author: AuthorDetail; isFirst?: boolean }) {
   const router = useRouter();
   const { isLiked, onClickHeart } = useAuthorCardController();
   const [showNotification, setShowNotification] = useState(false);
@@ -33,10 +34,7 @@ export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
   };
 
   return (
-    <div
-      className="w-full bg-white rounded-lg cursor-pointer"
-      onClick={() => router.push('/authors/1')} // TODO: 임시로 id를 1로 설정. 실제로는 props로 받은 작가 ID를 사용해야 함
-    >
+    <div className="w-full bg-white rounded-lg cursor-pointer" onClick={() => router.push(`/authors/${author.id}`)}>
       {/* 사진 갤러리 레이아웃 */}
       <div className="flex gap-[0.2rem] h-[13.6rem] relative">
         <div className="text-label1Normal font-semibold text-common-0 bg-red-40 absolute top-0 left-0 z-10 px-[0.8rem] py-[0.55rem]">
@@ -59,7 +57,7 @@ export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
           <div className="flex items-center gap-[1rem]">
             {/* 작가 프로필 이미지 */}
             <div className="w-[2.4rem] h-[2.4rem] bg-gray-50 rounded-full" />
-            <h3 className="text-body2Normal font-semibold text-gray-90">글린트그라피</h3>
+            <h3 className="text-body2Normal font-semibold text-gray-90">{author.name}</h3>
           </div>
 
           {isLiked ? (

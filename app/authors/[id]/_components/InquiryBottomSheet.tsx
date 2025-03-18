@@ -37,12 +37,12 @@ export const InquiryBottomSheet = ({ open, onOpenChange, isLiked, setIsLiked }: 
         </div>
         <div className="h-[5.6rem] mt-[3.2rem] flex gap-[1rem] justify-between items-center">
           <button
-            className="w-[6.8rem] h-full flex justify-center items-center bg-gray-80 rounded-[0.4rem] cursor-pointer"
+            className="w-[6.8rem] h-full flex justify-center items-center bg-red-0 border border-red-40 rounded-[0.4rem] cursor-pointer"
             onClick={() => setIsLiked(!isLiked)}
           >
-            {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
+            {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
-          <button className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-common-100 rounded-[0.4rem]">
+          <button className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-red-40 rounded-[0.4rem]">
             문의하기
           </button>
         </div>

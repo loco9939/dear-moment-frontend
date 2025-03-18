@@ -79,13 +79,13 @@ export const FilteringItems = ({
       </div>
       <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
         <button
-          className="w-[8.9rem] bg-gray-80 text-body1Normal font-semibold text-gray-10 h-[56px]"
+          className="w-[8.9rem] bg-red-0 text-body1Normal font-semibold rounded-[0.4rem] border border-red-40 text-red-40 h-[56px]"
           onClick={handleReset}
         >
           초기화
         </button>
         <button
-          className="w-[22.1rem] bg-common-100 text-body1Normal font-semibold text-gray-10 h-[56px]"
+          className="w-[22.1rem] bg-red-40 text-body1Normal font-semibold rounded-[0.4rem] text-gray-10 h-[56px]"
           onClick={handleApply}
         >
           적용

@@ -1,15 +1,16 @@
 'use client';
 
-import { Product } from '@/mock/authorData';
+import { AuthorDetail, Product } from '@/mock/authorData';
 import { useRef, useState } from 'react';
 import { ProductCard } from './ProductCard';
 
 interface AuthorTabsProps {
   products: Product[];
   guidelines: string[];
+  author?: AuthorDetail;
 }
 
-export default function AuthorTabs({ products, guidelines }: AuthorTabsProps) {
+export default function AuthorTabs({ products, guidelines, author }: AuthorTabsProps) {
   // 활성화된 탭을 관리하는 상태
   const [activeTab, setActiveTab] = useState<'products' | 'guidelines'>('products');
 
@@ -67,11 +68,11 @@ export default function AuthorTabs({ products, guidelines }: AuthorTabsProps) {
 
       <div ref={productsRef} className="my-[5.2rem] px-[2rem]">
         <p className="text-subtitle1 font-bold keep-all w-[17rem] text-gray-95 mb-[3.7rem]">
-          [오에브]만의 특별한 스냅 상품 정보
+          [{author?.name}]만의 특별한 스냅 상품 정보
         </p>
         <ul className="space-y-[3rem]">
           {products.map((product, index) => (
-            <ProductCard key={index} product={product} />
+            <ProductCard key={index} product={product} authorId={author?.id} />
           ))}
         </ul>
       </div>

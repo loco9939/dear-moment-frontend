@@ -2,7 +2,7 @@
 'use client';
 
 import { Icon_Check, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
-import { AuthorDetail, mockAuthorData } from '@/mock/authorData';
+import { AuthorDetail, mockAuthorsData } from '@/mock/authorData';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AuthorTabs from './_components/AuthorTabs';
@@ -12,7 +12,7 @@ import { InquiryBottomSheet } from './_components/InquiryBottomSheet';
 export default function AuthorDetailPage() {
   const params = useParams();
   const [isLiked, setIsLiked] = useState(false);
-  const [author, setAuthor] = useState<AuthorDetail | null>(null);
+  const [author, setAuthor] = useState<AuthorDetail | null | undefined>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [openInquiry, setOpenInquiry] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
@@ -24,7 +24,7 @@ export default function AuthorDetailPage() {
         // TODO: API 엔드포인트를 실제 서버 주소로 변경해야 함
         // const response = await fetch(`/api/authors/${params.id}`);
         // const data = await response.json();
-        const data = mockAuthorData;
+        const data = mockAuthorsData.find(author => author.id === params.id);
         setAuthor(data);
       } catch (error) {
         console.error('작가 정보를 불러오는데 실패했습니다:', error);
@@ -54,7 +54,7 @@ export default function AuthorDetailPage() {
         <div className="border-b border-gray-20 p-[2rem]">
           <div className="flex items-center gap-[1rem]">
             <div className="w-[5.7rem] h-[5.7rem] rounded-full bg-gray-40" />
-            <span className="text-gray-90 text-subtitle2 font-bold">오에브</span>
+            <span className="text-gray-90 text-subtitle2 font-bold">{author.name}</span>
             <button className="ml-auto" onClick={() => setIsLiked(!isLiked)}>
               {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
             </button>
@@ -70,7 +70,7 @@ export default function AuthorDetailPage() {
         <div className="">
           {/* 작가 특징 */}
           <div className="mt-[2.8rem] px-[2rem]">
-            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브만의 차별화된 특징</p>
+            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">{author.name}만의 차별화된 특징</p>
             <div className="space-y-[0.7rem]">
               <div className="flex gap-[0.8rem] items-center">
                 <Icon_Check className="fill-gray-60" width={18} height={18} />
@@ -85,7 +85,7 @@ export default function AuthorDetailPage() {
 
           {/* 작가 포트폴리오 */}
           <div className="mt-[3.5rem] px-[2rem]">
-            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브의 포트폴리오</p>
+            <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">{author.name}의 포트폴리오</p>
             <div className="flex gap-[0.2rem] flex-wrap">
               {portfolioImages?.map((imgSrc, index) => {
                 if (index > 7) return;
@@ -105,18 +105,18 @@ export default function AuthorDetailPage() {
         </div>
 
         {/* 상품정보, 안내사항 탭 */}
-        <AuthorTabs products={author.products} guidelines={author.guidelines} />
+        <AuthorTabs products={author.products} guidelines={author.guidelines} author={author} />
 
         {/* 문의하기 버튼 */}
         <div className="h-[5.6rem] mb-[1.2rem] flex gap-[1rem] justify-between items-center px-[2rem]">
           <button
-            className="w-[6.8rem] h-full flex justify-center items-center bg-gray-80 rounded-[0.4rem] cursor-pointer"
+            className="w-[6.8rem] h-full flex justify-center items-center bg-red-0 border border-red-40 rounded-[0.4rem] cursor-pointer"
             onClick={() => setIsLiked(!isLiked)}
           >
-            {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
+            {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
           <button
-            className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-common-100 rounded-[0.4rem]"
+            className="w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 bg-red-40 rounded-[0.4rem]"
             onClick={() => setOpenInquiry(true)}
           >
             문의하기
