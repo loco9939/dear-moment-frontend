@@ -70,8 +70,8 @@ export default function AuthorTabs({ products, guidelines }: AuthorTabsProps) {
           [오에브]만의 특별한 스냅 상품 정보
         </p>
         <ul className="space-y-[3rem]">
-          {products.map(product => (
-            <ProductCard key={product.id} product={product} />
+          {products.map((product, index) => (
+            <ProductCard key={index} product={product} />
           ))}
         </ul>
       </div>

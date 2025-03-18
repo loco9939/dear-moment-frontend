@@ -3,10 +3,12 @@
 import { Icon_Calendar, Icon_Cancel_Circle_Filled, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuthorCardController } from '../controllers/AuthorCardController';
 
 export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
+  const router = useRouter();
   const { isLiked, onClickHeart } = useAuthorCardController();
   const [showNotification, setShowNotification] = useState(false);
 
@@ -24,8 +26,17 @@ export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
     setShowNotification(false);
   };
 
+  // 하트 아이콘 클릭 시 이벤트 버블링 방지
+  const handleHeartClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClickHeart();
+  };
+
   return (
-    <div className="w-full bg-white rounded-lg">
+    <div
+      className="w-full bg-white rounded-lg cursor-pointer"
+      onClick={() => router.push('/authors/1')} // TODO: 임시로 id를 1로 설정. 실제로는 props로 받은 작가 ID를 사용해야 함
+    >
       {/* 사진 갤러리 레이아웃 */}
       <div className="flex gap-[0.2rem] h-[13.6rem] relative">
         <div className="text-label1Normal font-semibold text-common-0 bg-red-40 absolute top-0 left-0 z-10 px-[0.8rem] py-[0.55rem]">
@@ -52,9 +63,9 @@ export default function AuthorCard({ isFirst = false }: { isFirst?: boolean }) {
           </div>
 
           {isLiked ? (
-            <Icon_Heart_Filled className="cursor-pointer" onClick={onClickHeart} />
+            <Icon_Heart_Filled className="cursor-pointer" onClick={handleHeartClick} />
           ) : (
-            <Icon_Heart className="cursor-pointer" onClick={onClickHeart} />
+            <Icon_Heart className="cursor-pointer" onClick={handleHeartClick} />
           )}
         </div>
         <div className="flex gap-[0.4rem] mt-[0.5rem]">

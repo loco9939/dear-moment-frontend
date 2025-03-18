@@ -87,11 +87,11 @@ export default function AuthorDetailPage() {
           <div className="mt-[3.5rem] px-[2rem]">
             <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브의 포트폴리오</p>
             <div className="flex gap-[0.2rem] flex-wrap">
-              {portfolioImages?.map((item, index) => {
+              {portfolioImages?.map((imgSrc, index) => {
                 if (index > 7) return;
                 return (
-                  <div key={item} className="relative cursor-pointer" onClick={() => setSelectedImageIndex(index)}>
-                    <img src={item} alt="대표 이미지" className="object-cover w-[7.8rem] h-[7.8rem]" />
+                  <div key={index} className="relative cursor-pointer" onClick={() => setSelectedImageIndex(index)}>
+                    <img src={imgSrc} alt="대표 이미지" className="object-cover w-[7.8rem] h-[7.8rem]" />
                     {index === 7 && (
                       <div className="absolute w-full h-full bg-gray-30 top-0 left-0 opacity-90 flex justify-center items-center">
                         <span className="text-body3Normal text-common-0">+{8 - index}</span>
