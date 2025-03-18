@@ -6,6 +6,7 @@ import { AuthorDetail, mockAuthorData } from '@/mock/authorData';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AuthorTabs from './_components/AuthorTabs';
+import { ImageViewerModal } from './_components/ImageViewerModal';
 import { InquiryBottomSheet } from './_components/InquiryBottomSheet';
 
 export default function AuthorDetailPage() {
@@ -14,6 +15,7 @@ export default function AuthorDetailPage() {
   const [author, setAuthor] = useState<AuthorDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [openInquiry, setOpenInquiry] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   useEffect(() => {
     // 작가 정보를 가져오는 API 호출
@@ -33,6 +35,8 @@ export default function AuthorDetailPage() {
 
     fetchAuthorData();
   }, [params.id]);
+
+  const portfolioImages = author?.products.map(p => p.thumbnailUrl);
 
   if (isLoading) return <div>로딩 중...</div>;
   if (!author) return <div>작가를 찾을 수 없습니다.</div>;
@@ -83,11 +87,11 @@ export default function AuthorDetailPage() {
           <div className="mt-[3.5rem] px-[2rem]">
             <p className="text-gray-95 text-body2Normal font-semibold mb-[2rem]">오에브의 포트폴리오</p>
             <div className="flex gap-[0.2rem] flex-wrap">
-              {Array.from({ length: 9 }, (_, i) => i).map((item, index) => {
+              {portfolioImages?.map((item, index) => {
                 if (index > 7) return;
                 return (
-                  <div key={item} className="relative" role="button">
-                    <img src={author.profileImage} alt="대표 이미지" className="object-cover w-[7.8rem] h-[7.8rem]" />
+                  <div key={item} className="relative cursor-pointer" onClick={() => setSelectedImageIndex(index)}>
+                    <img src={item} alt="대표 이미지" className="object-cover w-[7.8rem] h-[7.8rem]" />
                     {index === 7 && (
                       <div className="absolute w-full h-full bg-gray-30 top-0 left-0 opacity-90 flex justify-center items-center">
                         <span className="text-body3Normal text-common-0">+{8 - index}</span>
@@ -122,6 +126,14 @@ export default function AuthorDetailPage() {
 
       {/* 문의하기 Popup */}
       <InquiryBottomSheet open={openInquiry} onOpenChange={setOpenInquiry} isLiked={isLiked} setIsLiked={setIsLiked} />
+
+      {/* 이미지 뷰어 모달 */}
+      <ImageViewerModal
+        isOpen={selectedImageIndex !== null}
+        onClose={() => setSelectedImageIndex(null)}
+        images={portfolioImages ?? []}
+        initialImageIndex={selectedImageIndex || 0}
+      />
     </div>
   );
 }
