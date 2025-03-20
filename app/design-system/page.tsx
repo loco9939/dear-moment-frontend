@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export default function DesignSystemPage() {
   return (
@@ -9,6 +9,7 @@ export default function DesignSystemPage() {
         <div className="container flex h-14 items-center">
           <h1 className="text-lg font-semibold">디자인 시스템 테스트</h1>
         </div>
+        <p>Test Build2</p>
       </header>
 
       {/* 메인 콘텐츠 */}
@@ -40,15 +41,10 @@ export default function DesignSystemPage() {
         <section className="mb-8">
           <h2 className="text-2xl font-bold mb-4">반응형 그리드</h2>
           <div className="grid gricols-1 md:gricols-2 lg:gricols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((item) => (
-              <div
-                key={item}
-                className="p-4 roundelg border bg-card text-carforeground shadow"
-              >
+            {[1, 2, 3, 4, 5, 6].map(item => (
+              <div key={item} className="p-4 roundelg border bg-card text-carforeground shadow">
                 <p className="text-base font-medium">카드 {item}</p>
-                <p className="text-base text-muteforeground">
-                  반응형 그리드 시스템 데모
-                </p>
+                <p className="text-base text-muteforeground">반응형 그리드 시스템 데모</p>
               </div>
             ))}
           </div>
