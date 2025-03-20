@@ -1,13 +1,13 @@
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { ReactNode } from "react";
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { ReactNode } from 'react';
 
 interface AppbarProps {
-	logo?: ReactNode;
-	leftIcon?: ReactNode;
-	rightIcon?: ReactNode;
-	title?: string;
-	className?: string;
+  logo?: ReactNode;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
+  title?: string;
+  className?: string;
 }
 
 /**
@@ -44,41 +44,24 @@ interface AppbarProps {
       <Appbar logo={<Image src="/author_thumb.png" alt="logo" width={24} height={24} />} />
  * ```
  */
-export const Appbar = ({
-	logo,
-	leftIcon,
-	rightIcon,
-	title,
-	className,
-}: AppbarProps) => {
-	const styles = {
-		container: cn(
-			"flex items-center justify-between px-[2rem] h-[5.4rem] relative",
-			className
-		),
-		logoWrapper: "w-[14rem] h-[2.4rem]",
-		iconWrapper: "w-[2.4rem] h-[2.4rem]",
-		title: "text-body1Normal font-bold absolute left-1/2 -translate-x-1/2",
-	};
+export const Appbar = ({ logo, leftIcon, rightIcon, title, className }: AppbarProps) => {
+  const styles = {
+    container: cn('flex items-center justify-between px-[2rem] h-[5.4rem] relative', className),
+    logoWrapper: 'w-[14rem] h-[2.4rem]',
+    iconWrapper: 'w-[2.4rem] h-[2.4rem]',
+    title: 'text-body1Normal font-bold absolute left-1/2 -translate-x-1/2',
+  };
 
-	return (
-		<header className={styles.container}>
-			{logo && (
-				<Link href="/" className="cursor-pointer">
-					<div className={styles.logoWrapper}>{logo}</div>
-				</Link>
-			)}
-			{<div className={styles.iconWrapper}>
-				{leftIcon}
-			</div>}
-			{title && (
-				<h1 className={styles.title}>
-					{title}
-				</h1>
-			)}
-			{rightIcon && <div className={styles.iconWrapper}>
-				{rightIcon}
-			</div>}
-		</header>
-	);
+  return (
+    <header className={styles.container}>
+      {logo && (
+        <Link href="/" className="cursor-pointer">
+          <div className={styles.logoWrapper}>{logo}</div>
+        </Link>
+      )}
+      {<div className={styles.iconWrapper}>{leftIcon}</div>}
+      {title && <h1 className={styles.title}>{title}</h1>}
+      {rightIcon && <div className={styles.iconWrapper}>{rightIcon}</div>}
+    </header>
+  );
 };

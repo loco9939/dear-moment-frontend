@@ -1,14 +1,11 @@
-"use client";
+'use client';
 
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
-import { Dispatch, SetStateAction } from "react";
-import { FilterType, FilterValue } from "../type";
-import FilteringTabs from "./FilteringTabs";
+import { Icon_Cancel } from '@/assets/icons';
+import { Appbar } from '@/components/Appbar';
+import { Sheet, SheetContent, SheetOverlay, SheetTitle } from '@/components/ui/sheet';
+import { Dispatch, SetStateAction } from 'react';
+import { FilterType, FilterValue } from '../type';
+import { FilteringItems } from './FilteringItems';
 
 interface FilteringModalProps {
   open: boolean;
@@ -27,16 +24,25 @@ export default function FilteringModal({
 }: FilteringModalProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetOverlay className="data-[state=open]:animate-fadeIn data-[state=closed]:animate-fadeOut" />
       <SheetContent
+        onOpenAutoFocus={e => e.preventDefault()}
         side="bottom"
-        className="container h-[80vh] rounded-lg border-none bg-gray-500"
+        className="container h-full bg-common-0
+        data-[state=open]:animate-scaleUp
+        data-[state=closed]:animate-scaleDown"
       >
-        <SheetHeader>
-          <SheetTitle>필터</SheetTitle>
-        </SheetHeader>
+        <SheetTitle>
+          <Appbar
+            title="필터"
+            className="text-gray-95"
+            rightIcon={<Icon_Cancel className="cursor-pointer" onClick={() => onOpenChange(false)} />}
+          />
+        </SheetTitle>
+
         {/* 스크롤 가능한 컨테이너 추가 */}
-        <div className="overflow-y-auto h-[calc(80vh-80px)]">
-          <FilteringTabs
+        <div className="overflow-y-auto mt-[3.3rem] px-[2rem] h-[calc(100%-198px)]">
+          <FilteringItems
             filterType={filterType}
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
