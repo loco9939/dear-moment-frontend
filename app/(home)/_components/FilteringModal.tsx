@@ -13,6 +13,7 @@ interface FilteringModalProps {
   filterType: FilterType;
   selectedFilters: Record<FilterType, FilterValue>;
   setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
+  applyFiltersAndSearch?: (filters: Record<FilterType, FilterValue>) => Promise<void>;
 }
 
 export default function FilteringModal({
@@ -21,6 +22,7 @@ export default function FilteringModal({
   filterType,
   selectedFilters,
   setSelectedFilters,
+  applyFiltersAndSearch,
 }: FilteringModalProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
@@ -47,6 +49,7 @@ export default function FilteringModal({
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
             onOpenChange={onOpenChange}
+            applyFiltersAndSearch={applyFiltersAndSearch}
           />
         </div>
       </SheetContent>

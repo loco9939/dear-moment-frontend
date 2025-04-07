@@ -1,13 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { INITIAL_FILTER_STATE } from '../models/FilteringModel';
 import { FilteringService } from '../services/FilteringService';
-import { FilterType, FilterValue, PriceRange } from '../type';
+import { CameraType, FilterType, FilterValue, PackageType, PriceRange, RetouchStyle, ShootingPeriod } from '../type';
 
 interface UseFilteringItemsProps {
   filterType: FilterType;
   selectedFilters: Record<FilterType, FilterValue>;
   setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
   onOpenChange: (open: boolean) => void;
+  applyFiltersAndSearch?: (filters: Record<FilterType, FilterValue>) => Promise<void>;
 }
 
 export function useFilteringItemsController({
@@ -15,13 +16,14 @@ export function useFilteringItemsController({
   selectedFilters,
   setSelectedFilters,
   onOpenChange,
+  applyFiltersAndSearch,
 }: UseFilteringItemsProps) {
   // 임시 필터 상태 관리
   const [tempFilters, setTempFilters] = useState<Record<FilterType, FilterValue>>(selectedFilters);
 
   // 필터 선택 핸들러
   const handleFilterSelect = (type: FilterType, value: string) => {
-    if (type === '가격') {
+    if (type === 'priceRange') {
       // 가격 범위 버튼 클릭 시 처리
       const priceRange = FilteringService.getPriceRangeFromValue(value);
       setTempFilters(prev => {
@@ -39,20 +41,60 @@ export function useFilteringItemsController({
           [type]: priceRange,
         };
       });
-    } else if (type === '보정스타일' || type === '촬영시기' || type === '카메라종류') {
-      // 스타일 다중 선택 로직
+    } else if (type === 'retouchStyle') {
+      // 보정 스타일 다중 선택 로직
       setTempFilters(prev => {
-        const currentStyles = (Array.isArray(prev[type]) ? prev[type] : []) as string[];
-        const updatedStyles = currentStyles.includes(value)
+        const currentStyles = (Array.isArray(prev[type]) ? prev[type] : []) as RetouchStyle[];
+        const updatedStyles = currentStyles.includes(value as RetouchStyle)
           ? currentStyles.filter(style => style !== value)
-          : [...currentStyles, value];
+          : [...currentStyles, value as RetouchStyle];
 
         return {
           ...prev,
           [type]: updatedStyles,
         };
       });
-    } else {
+    } else if (type === 'shootingPeriod') {
+      // 촬영 시기 다중 선택 로직
+      setTempFilters(prev => {
+        const currentPeriods = (Array.isArray(prev[type]) ? prev[type] : []) as ShootingPeriod[];
+        const updatedPeriods = currentPeriods.includes(value as ShootingPeriod)
+          ? currentPeriods.filter(period => period !== value)
+          : [...currentPeriods, value as ShootingPeriod];
+
+        return {
+          ...prev,
+          [type]: updatedPeriods,
+        };
+      });
+    } else if (type === 'cameraType') {
+      // 카메라 종류 다중 선택 로직
+      setTempFilters(prev => {
+        const currentCameras = (Array.isArray(prev[type]) ? prev[type] : []) as CameraType[];
+        const updatedCameras = currentCameras.includes(value as CameraType)
+          ? currentCameras.filter(camera => camera !== value)
+          : [...currentCameras, value as CameraType];
+
+        return {
+          ...prev,
+          [type]: updatedCameras,
+        };
+      });
+    } else if (type === 'packageType') {
+      // 패키지 다중 선택 로직 (새로 추가)
+      setTempFilters(prev => {
+        const currentPackages = (Array.isArray(prev[type]) ? prev[type] : []) as PackageType[];
+        const updatedPackages = currentPackages.includes(value as PackageType)
+          ? currentPackages.filter(pkg => pkg !== value)
+          : [...currentPackages, value as PackageType];
+
+        return {
+          ...prev,
+          [type]: updatedPackages,
+        };
+      });
+    } else if (type === 'sortBy') {
+      // 정렬 옵션 선택 (단일 선택)
       setTempFilters(prev => ({
         ...prev,
         [type]: prev[type] === value ? '' : value,
@@ -66,7 +108,7 @@ export function useFilteringItemsController({
 
     setTempFilters(prev => ({
       ...prev,
-      가격: { min, max } as PriceRange,
+      priceRange: { min, max } as PriceRange,
     }));
   };
 
@@ -76,9 +118,14 @@ export function useFilteringItemsController({
   };
 
   // 적용 핸들러
-  const handleApply = () => {
+  const handleApply = async () => {
     setSelectedFilters(tempFilters);
     onOpenChange(false);
+
+    // 검색 API 호출 (제공된 경우에만)
+    if (applyFiltersAndSearch) {
+      await applyFiltersAndSearch(tempFilters);
+    }
   };
 
   // 탭 변경 핸들러

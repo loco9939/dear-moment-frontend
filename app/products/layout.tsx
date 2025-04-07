@@ -1,20 +1,21 @@
-'use client';
-
 import { Icon_ChevronDown } from '@/assets/icons';
 import { Appbar } from '@/components/Appbar';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
-const ProductsLayout = ({ children }: { children: React.ReactNode }) => {
-  const router = useRouter();
+const ProductLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="container">
       <Appbar
-        leftIcon={<Icon_ChevronDown onClick={() => router.back()} className="rotate-90 cursor-pointer" />}
-        title="상품 설명"
+        leftIcon={
+          <Link href="/">
+            <Icon_ChevronDown className="rotate-90 cursor-pointer" />
+          </Link>
+        }
+        className="absolute z-10"
       />
       {children}
     </div>
   );
 };
 
-export default ProductsLayout;
+export default ProductLayout;

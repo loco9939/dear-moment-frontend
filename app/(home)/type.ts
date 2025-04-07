@@ -1,4 +1,32 @@
-export type FilterType = '정렬' | '촬영시기' | '카메라종류' | '보정스타일' | '패키지' | '가격';
+export type FilterType = 'sortBy' | 'shootingPeriod' | 'cameraType' | 'retouchStyle' | 'packageType' | 'priceRange';
+
+// 정렬 옵션 타입
+export type SortOption = 'RECOMMENDED' | 'POPULAR' | 'PRICE_LOW' | 'PRICE_HIGH';
+
+// 촬영 시기 타입
+export type ShootingPeriod =
+  | 'YEAR_2025_FIRST_HALF'
+  | 'YEAR_2025_SECOND_HALF'
+  | 'YEAR_2026_FIRST_HALF'
+  | 'YEAR_2026_SECOND_HALF';
+
+// 카메라 종류 타입
+export type CameraType = 'DIGITAL' | 'FILM';
+
+// 보정 스타일 타입
+export type RetouchStyle =
+  | 'MODERN'
+  | 'CHIC'
+  | 'CALM'
+  | 'VINTAGE'
+  | 'FAIRYTALE'
+  | 'WARM'
+  | 'DREAMY'
+  | 'BRIGHT'
+  | 'NATURAL';
+
+// 패키지 타입
+export type PackageType = 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC';
 
 // 가격 범위를 위한 인터페이스 정의
 export interface PriceRange {
@@ -6,4 +34,13 @@ export interface PriceRange {
   max?: number;
 }
 
-export type FilterValue = string | PriceRange | string[];
+// 필터 값 타입
+export type FilterValue =
+  | SortOption
+  | ShootingPeriod[]
+  | CameraType[]
+  | RetouchStyle[]
+  | PackageType
+  | PriceRange
+  | string
+  | string[];

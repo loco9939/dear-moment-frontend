@@ -4,14 +4,25 @@ import { Chip } from '@/components/ui/Chip';
 import { Slider } from '@/components/ui/slider';
 import { Dispatch, SetStateAction } from 'react';
 import { useFilteringItemsController } from '../controllers/FilteringItemsController';
+import { FILTER_DISPLAY_MAP } from '../models/FilteringModel';
 import { FilteringService } from '../services/FilteringService';
-import { FilterType, FilterValue, PriceRange } from '../type';
+import {
+  CameraType,
+  FilterType,
+  FilterValue,
+  PackageType,
+  PriceRange,
+  RetouchStyle,
+  ShootingPeriod,
+  SortOption,
+} from '../type';
 
 interface FilteringItemsProps {
   onOpenChange: (open: boolean) => void;
   filterType: FilterType;
   selectedFilters: Record<FilterType, FilterValue>;
   setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
+  applyFiltersAndSearch?: (filters: Record<FilterType, FilterValue>) => Promise<void>;
 }
 
 export const FilteringItems = ({
@@ -19,6 +30,7 @@ export const FilteringItems = ({
   filterType,
   selectedFilters,
   setSelectedFilters,
+  applyFiltersAndSearch,
 }: FilteringItemsProps) => {
   const { tempFilters, handleFilterSelect, handleSliderChange, handleReset, handleApply } = useFilteringItemsController(
     {
@@ -26,6 +38,7 @@ export const FilteringItems = ({
       selectedFilters,
       setSelectedFilters,
       onOpenChange,
+      applyFiltersAndSearch,
     }
   );
 
@@ -38,17 +51,44 @@ export const FilteringItems = ({
     getPriceRangeOptions,
   } = FilteringService;
 
-  const displayCategory: Record<FilterType, readonly string[]> = {
-    정렬: getSortOptions(),
-    촬영시기: getShootingPeriodOptions(),
-    카메라종류: getCameraOptions(),
-    보정스타일: getStyleOptions(),
-    패키지: getPackageOptions(),
-    가격: getPriceRangeOptions(),
+  // 각 필터 옵션의 원본 값 (enum 값)
+  const filterOptions: Record<FilterType, readonly string[]> = {
+    sortBy: getSortOptions() as unknown as readonly string[],
+    shootingPeriod: getShootingPeriodOptions() as unknown as readonly string[],
+    cameraType: getCameraOptions() as unknown as readonly string[],
+    retouchStyle: getStyleOptions() as unknown as readonly string[],
+    packageType: getPackageOptions() as unknown as readonly string[],
+    priceRange: getPriceRangeOptions(),
   };
 
-  const 가격 = tempFilters.가격 as PriceRange;
-  const 가격범위텍스트 = !가격.min && !가격.max ? '-' : `${가격.min}만원 - ${가격.max}만원`;
+  // 각 필터 옵션의 표시 텍스트 매핑
+  const getDisplayText = (type: FilterType, value: string): string => {
+    switch (type) {
+      case 'sortBy':
+        return FilteringService.getSortDisplayMap()[value as SortOption] || value;
+      case 'shootingPeriod':
+        return FilteringService.getShootingPeriodDisplayMap()[value as ShootingPeriod] || value;
+      case 'cameraType':
+        return FilteringService.getCameraDisplayMap()[value as CameraType] || value;
+      case 'retouchStyle':
+        return FilteringService.getStyleDisplayMap()[value as RetouchStyle] || value;
+      case 'packageType':
+        return FilteringService.getPackageDisplayMap()[value as PackageType] || value;
+      default:
+        return value;
+    }
+  };
+
+  const {
+    priceRange: { min, max },
+  } = tempFilters as Record<FilterType, PriceRange>;
+
+  const priceRangeText = (min?: number, max?: number) => {
+    if (!min && !max) return '-';
+    if (min && min === 201) return '200만원 초과';
+    if (max && max > 200) return `${min}만원 - 200만원 초과`;
+    return `${min}만원 - ${max}만원`;
+  };
 
   return (
     <div className="space-y-[2.2rem]">
@@ -57,25 +97,26 @@ export const FilteringItems = ({
           <Category
             key={title}
             title={title as FilterType}
-            items={displayCategory[title as FilterType]}
+            items={filterOptions[title as FilterType]}
             tempFilters={tempFilters}
             handleFilterSelect={handleFilterSelect}
+            getDisplayText={getDisplayText}
           />
         );
       })}
       {/* 가격 슬라이더 */}
       <div className="relative pt-[1.8rem]">
-        <div className="absolute -top-3 left-4 text-label1Normal font-medium text-common-100">0 만원</div>
-        <div className="absolute -top-3 right-4 text-label1Normal font-medium text-common-100">100 만원</div>
+        <div className="absolute -top-3 left-4 text-label1Normal font-medium text-common-100">0원</div>
+        <div className="absolute -top-3 right-4 text-label1Normal font-medium text-common-100">200만원 초과</div>
         <Slider
           defaultValue={[0, 100]}
           min={0}
-          max={100}
+          max={201}
           step={1}
-          value={[가격.min ?? 0, 가격.max ?? 0]}
+          value={[min ?? 0, max ?? 0]}
           onValueChange={handleSliderChange}
         />
-        <div className="mt-4 text-center text-label1Normal font-medium text-gray-70">{가격범위텍스트}</div>
+        <div className="mt-4 text-center text-label1Normal font-medium text-gray-70">{priceRangeText(min, max)}</div>
       </div>
       <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
         <button
@@ -100,20 +141,22 @@ const Category = ({
   items,
   tempFilters,
   handleFilterSelect,
+  getDisplayText,
 }: {
   title: FilterType;
   items: readonly string[];
   tempFilters: Record<FilterType, FilterValue>;
   handleFilterSelect: (section: FilterType, value: string) => void;
+  getDisplayText: (type: FilterType, value: string) => string;
 }) => {
   return (
     <div className="space-y-[1.8rem]">
-      <p className="text-body2Normal font-semibold text-gray-95">{title}</p>
+      <p className="text-body2Normal font-semibold text-gray-95">{FILTER_DISPLAY_MAP[title]}</p>
       <div className="flex flex-wrap gap-[0.6rem]">
         {items.map(item => {
           let isSelected = false;
 
-          if (title === '가격') {
+          if (title === 'priceRange') {
             // 가격 범위 비교 로직
             const currentRange = tempFilters[title] as PriceRange;
             const buttonRange = FilteringService.getPriceRangeFromValue(item);
@@ -140,7 +183,7 @@ const Category = ({
           return (
             <Chip
               key={item}
-              label={item}
+              label={getDisplayText(title, item)}
               background={isSelected ? 'inverse' : 'default'}
               onClick={() => handleFilterSelect(title, item)}
             />
