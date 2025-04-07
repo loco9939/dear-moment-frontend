@@ -17,7 +17,7 @@ export async function addInquiryOption({
   optionId: number;
 }): Promise<AddInquiryOptionResponse> {
   try {
-    const endpoint = API_ENDPOINTS.inquiries.options;
+    const endpoint = API_ENDPOINTS.inquiry.options;
     return await post<AddInquiryOptionResponse>(endpoint, { productId, optionId });
   } catch (error) {
     console.error('상품 옵션 문의 추가 실패:', error);

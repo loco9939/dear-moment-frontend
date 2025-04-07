@@ -1,7 +1,7 @@
 import ProductDetail from './_components/ProductDetail';
 import { getProductDetail } from './actions/products';
 
-export default async function ProductPage({ params }: { params: { id: string }; searchParams: { isLiked?: string } }) {
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   // 서버 컴포넌트에서 데이터 페칭

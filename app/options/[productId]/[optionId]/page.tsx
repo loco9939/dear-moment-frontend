@@ -1,9 +1,14 @@
 import OptionDetail from './_components/OptionDetail';
 import { getProductOptionDetail } from './actions/products';
 
-export default async function ProductOptionsPage({ params }: { params: { productId: string; optionId: string } }) {
-  // params를 await하여 사용
-  const { productId, optionId } = await params;
+type PageProps = {
+  params: Promise<{ slug: string[] }>;
+};
+
+export default async function ProductOptionsPage(props: PageProps) {
+  // params 객체에서 직접 값을 추출
+  const { slug } = await props.params;
+  const [productId, optionId] = slug;
 
   // 서버 컴포넌트에서 데이터 페칭
   const { product, productOption, error } = await getProductOptionDetail(Number(productId), Number(optionId));

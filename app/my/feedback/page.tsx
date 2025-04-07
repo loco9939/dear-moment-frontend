@@ -63,7 +63,7 @@ export default function MyFeedbackPage() {
     try {
       if (!selectedItem) return;
 
-      const res = await postInquiryService({
+      await postInquiryService({
         type: selectedItem.value.toString(),
         content,
         email,
