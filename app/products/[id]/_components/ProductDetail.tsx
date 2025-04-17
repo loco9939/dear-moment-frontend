@@ -4,6 +4,7 @@ import { CAMERA_DISPLAY_MAP, STYLE_DISPLAY_MAP } from '@/(home)/models/Filtering
 import { CameraType, RetouchStyle } from '@/(home)/type';
 import { Product } from '@/api/products/types';
 import { Icon_Calendar, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
+import Icon_Camera from '@/assets/icons/Icon_Camera';
 import Image from 'next/image';
 import { useProductDetailController } from '../controllers/productDetailController';
 import { ImageViewerModal } from './ImageViewerModal';
@@ -87,7 +88,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
             </div>
           </div>
           <div className="flex gap-[0.5rem] mt-[0.6rem] items-center">
-            <Icon_Calendar width={14} height={14} />
+            <Icon_Camera width={14} height={14} />
             <div className="flex gap-[0.6rem] items-center">
               {product?.cameraTypes.map((cameraType, index) => (
                 <span

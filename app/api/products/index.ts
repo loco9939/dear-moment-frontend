@@ -14,7 +14,9 @@ import { MainPageProductsResponse, ProductDetailResponse, ProductSearchFilter } 
 export async function fetchMainPageProducts(page: number = 0, size: number = 10): Promise<MainPageProductsResponse> {
   try {
     const endpoint = `${API_ENDPOINTS.products.main}?page=${page}&size=${size}`;
-    return await get<MainPageProductsResponse>(endpoint);
+    return await get<MainPageProductsResponse>(endpoint, {
+      next: { revalidate: 60 },
+    });
   } catch (error) {
     console.error('메인 페이지 상품 목록 가져오기 실패:', error);
     throw handleApiError(error);
