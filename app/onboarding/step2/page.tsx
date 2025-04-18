@@ -2,6 +2,7 @@
 
 import { Icon_ChevronDown } from '@/assets/icons';
 import { Appbar } from '@/components/Appbar';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { Modal } from '@/components/ui/Modal';
 import { useRouter } from 'next/navigation';
 import { Suspense, useState } from 'react';
@@ -32,9 +33,8 @@ export default function OnboardingStep2Page() {
         leftIcon={<Icon_ChevronDown className="rotate-90" onClick={() => router.back()} />}
       />
       <div className="flex-1 px-[2rem]">
-        <OnboardingStep2Info />
-
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
+          <OnboardingStep2Info />
           <OnboardingStep2Form setModalType={setModalType} setIsModalOpen={setIsModalOpen} />
         </Suspense>
       </div>

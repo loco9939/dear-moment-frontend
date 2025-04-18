@@ -111,7 +111,7 @@ export const FilteringItems = ({
               className="w-[10rem]"
               onChange={e => {
                 const value = e.target.value ? parseInt(e.target.value, 10) : 0;
-                handlePriceRangeChange(Number(e.target.value), 'min');
+                handlePriceRangeChange(value, 'min');
               }}
             />
           </div>
