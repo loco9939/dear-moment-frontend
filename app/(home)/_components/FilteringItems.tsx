@@ -80,10 +80,6 @@ export const FilteringItems = ({
     priceRange: { min, max },
   } = tempFilters as Record<FilterType, PriceRange>;
 
-  const onFocusInput = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  };
-
   return (
     <div className="space-y-[2.2rem]">
       {Object.keys(tempFilters)
@@ -103,7 +99,7 @@ export const FilteringItems = ({
       <div className="space-y-[1.8rem]">
         <p className="text-body2Normal font-semibold text-gray-95">가격</p>
         <div className="flex justify-start items-center gap-[1.2rem]">
-          <div className="flex flex-col gap-[0.4rem]">
+          <div className="h-auto">
             <label htmlFor="min-price" className="text-caption1Normal text-gray-80">
               최소 가격 (만원)
             </label>
@@ -117,11 +113,10 @@ export const FilteringItems = ({
                 const value = e.target.value ? parseInt(e.target.value, 10) : 0;
                 handlePriceRangeChange(value, 'min');
               }}
-              onFocus={onFocusInput}
             />
           </div>
           <span className="text-caption1Normal text-gray-80">~</span>
-          <div className="flex flex-col gap-[0.4rem]">
+          <div className="h-auto">
             <label htmlFor="max-price" className="text-caption1Normal text-gray-80">
               최대 가격 (만원)
             </label>
@@ -135,7 +130,6 @@ export const FilteringItems = ({
                 const value = e.target.value ? parseInt(e.target.value, 10) : 0;
                 handlePriceRangeChange(value, 'max');
               }}
-              onFocus={onFocusInput}
             />
           </div>
         </div>
