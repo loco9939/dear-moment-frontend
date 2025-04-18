@@ -3,7 +3,7 @@
 export default function DesignSystemPage() {
   return (
     // 전체 페이지 컨테이너
-    <div className="container min-h-screen bg-background">
+    <div className="container min-h-[100dvh] bg-background">
       {/* 헤더 영역 */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur">
         <div className="container flex h-14 items-center">

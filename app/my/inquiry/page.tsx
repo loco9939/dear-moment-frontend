@@ -11,7 +11,6 @@ export default function MyInquiryPage() {
   const [inquiryList, setInquiryList] = useState<InquiryItem[]>([]);
 
   useEffect(() => {
-    // TODO: 실제 API 호출은 여기에 추가
     const getInquiryList = async () => {
       try {
         const response = await fetchInquiryList();
@@ -37,7 +36,7 @@ export default function MyInquiryPage() {
   };
 
   return (
-    <div className="container min-h-screen flex flex-col">
+    <div className="container min-h-[100dvh] flex flex-col">
       <Appbar
         leftIcon={
           <Link href="/my">

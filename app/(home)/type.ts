@@ -29,6 +29,11 @@ export type RetouchStyle =
 export type PackageType = 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC';
 
 // 가격 범위를 위한 인터페이스 정의
+/**
+ * 가격 범위를 나타내는 객체 인터페이스
+ * min: 최소 가격
+ * max: 최대 가격
+ */
 export interface PriceRange {
   min?: number;
   max?: number;

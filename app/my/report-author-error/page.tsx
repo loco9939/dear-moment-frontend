@@ -11,7 +11,6 @@ export default function MyReportAuthorErrorPage() {
   const [inquiryStudios, setInquiryStudios] = useState<InquiryStudio[]>([]);
 
   useEffect(() => {
-    // TODO: 실제 API 호출은 여기에 추가
     const getInquiryStudios = async () => {
       try {
         const response = await fetchInquiryStudios();
@@ -38,7 +37,7 @@ export default function MyReportAuthorErrorPage() {
   const isExpanded = (id: number) => expandedIds.includes(id);
 
   return (
-    <div className="container min-h-screen flex flex-col">
+    <div className="container min-h-[100dvh] flex flex-col">
       <Appbar
         leftIcon={
           <Link href="/my">

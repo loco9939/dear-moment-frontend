@@ -77,7 +77,7 @@ export const Dropbox = ({
   };
 
   return (
-    <div className={`relative w-[32rem] h-[5rem] ${className}`} ref={dropdownRef}>
+    <div className={`relative h-[5rem] ${className}`} ref={dropdownRef}>
       <div
         className={`
           w-full h-[5rem]

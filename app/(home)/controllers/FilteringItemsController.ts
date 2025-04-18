@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { INITIAL_FILTER_STATE } from '../models/FilteringModel';
-import { FilteringService } from '../services/FilteringService';
 import { CameraType, FilterType, FilterValue, PackageType, PriceRange, RetouchStyle, ShootingPeriod } from '../type';
 
 interface UseFilteringItemsProps {
@@ -23,25 +22,7 @@ export function useFilteringItemsController({
 
   // 필터 선택 핸들러
   const handleFilterSelect = (type: FilterType, value: string) => {
-    if (type === 'priceRange') {
-      // 가격 범위 버튼 클릭 시 처리
-      const priceRange = FilteringService.getPriceRangeFromValue(value);
-      setTempFilters(prev => {
-        const currentRange = prev[type] as PriceRange;
-        // 이미 선택된 값과 동일한 범위가 선택되면 초기화
-        if (currentRange?.min === priceRange.min && currentRange?.max === priceRange.max) {
-          return {
-            ...prev,
-            [type]: { min: undefined, max: undefined } as PriceRange,
-          };
-        }
-        // 새로운 범위 선택
-        return {
-          ...prev,
-          [type]: priceRange,
-        };
-      });
-    } else if (type === 'retouchStyle') {
+    if (type === 'retouchStyle') {
       // 보정 스타일 다중 선택 로직
       setTempFilters(prev => {
         const currentStyles = (Array.isArray(prev[type]) ? prev[type] : []) as RetouchStyle[];
@@ -102,13 +83,11 @@ export function useFilteringItemsController({
     }
   };
 
-  // 슬라이더 값 변경 핸들러
-  const handleSliderChange = (values: number[]) => {
-    const [min, max] = values;
-
+  // 가격 최소, 최대값 수정
+  const handlePriceRangeChange = (value: number, type: 'min' | 'max') => {
     setTempFilters(prev => ({
       ...prev,
-      priceRange: { min, max } as PriceRange,
+      priceRange: { ...(prev.priceRange as PriceRange), [type]: value },
     }));
   };
 
@@ -156,7 +135,7 @@ export function useFilteringItemsController({
   return {
     tempFilters,
     handleFilterSelect,
-    handleSliderChange,
+    handlePriceRangeChange,
     handleReset,
     handleApply,
     handleTabChange,

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function MyPage() {
   return (
-    <div className="container min-h-screen flex flex-col">
+    <div className="container min-h-[100dvh] flex flex-col">
       <header className="py-[1.6rem] px-[1.8rem] bg-red-20 space-y-[4rem]">
         <p className="text-title2 font-bold text-gray-90">MY PAGE</p>
         <p className="text-title1 font-bold text-common-100 pb-[1.6rem]">홍길동</p>

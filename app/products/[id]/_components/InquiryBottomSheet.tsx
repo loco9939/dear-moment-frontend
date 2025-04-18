@@ -80,7 +80,7 @@ export const InquiryBottomSheet = ({ product, open, onOpenChange, isLiked, onCli
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
           <button
-            className={`w-[24.2rem] h-full text-body1Normal font-semibold text-gray-10 rounded-[0.4rem] ${
+            className={`w-full h-full text-body1Normal font-semibold text-gray-10 rounded-[0.4rem] ${
               selectedItem ? 'bg-red-40' : 'bg-gray-40'
             }`}
             disabled={!selectedItem}

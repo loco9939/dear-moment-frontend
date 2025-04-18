@@ -36,11 +36,18 @@ export default function Filtering({ setMainProducts, setLoading, setError, fetch
   const getPriceRangeText = (priceRange: PriceRange) => {
     // 가격이 선택되지 않았거나 min, max가 없는 경우
     if (!priceRange.min && !priceRange.max) return '가격';
-    if (priceRange.min && priceRange.min === 201) return '200만원 초과';
-    if (priceRange.max && priceRange.max > 200) return `${priceRange.min}만원 - 200만원 초과`;
+
+    // 최소값만 있는 경우
+    if (priceRange.min && !priceRange.max) return `${priceRange.min}만원 이상`;
+
+    // 최대값만 있는 경우
+    if (!priceRange.min && priceRange.max) return `${priceRange.max}만원 이하`;
+
+    // 둘 다 있는 경우
     return `${priceRange.min}만원 - ${priceRange.max}만원`;
   };
 
+  console.log('priceRange', priceRange);
   // 보정 스타일 리스트 및 표시 텍스트 생성
   const retouchStyleList = retouchStyle as RetouchStyle[];
   const retouchStyleText =
@@ -114,9 +121,7 @@ export default function Filtering({ setMainProducts, setLoading, setError, fetch
             label={getPriceRangeText(priceRange as PriceRange)}
             active
             background={
-              Boolean((priceRange as PriceRange).min !== undefined && (priceRange as PriceRange).max !== undefined)
-                ? 'inverse'
-                : 'default'
+              Boolean((priceRange as PriceRange)?.min || (priceRange as PriceRange)?.max) ? 'inverse' : 'default'
             }
             onClick={() => handleFilterClick('priceRange')}
           />

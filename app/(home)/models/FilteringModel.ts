@@ -3,10 +3,9 @@ import {
   FilterType,
   FilterValue,
   PackageType,
-  PriceRange,
   RetouchStyle,
   ShootingPeriod,
-  SortOption,
+  SortOption
 } from '../type';
 
 // 필터링 관련 상수와 타입 정의
@@ -19,18 +18,6 @@ export const FILTER_DISPLAY_MAP: Record<FilterType, string> = {
   packageType: '패키지',
   priceRange: '가격',
 };
-
-// 가격 범위 매핑 상수
-export const PRICE_RANGE_MAP: Record<string, PriceRange> = {
-  '40만원 이하': { min: 0, max: 40 },
-  '40-60만원 이하': { min: 41, max: 60 },
-  '60-80만원 이하': { min: 61, max: 80 },
-  '80-100만원 이하': { min: 81, max: 100 },
-  '100-120만원 이하': { min: 101, max: 120 },
-  '120-150만원 이하': { min: 121, max: 150 },
-  '150-200만원 이하': { min: 151, max: 200 },
-  '200만원 초과': { min: 201, max: 1000 },
-} as const;
 
 // 정렬 옵션
 export const SORT_OPTIONS: SortOption[] = ['RECOMMENDED', 'POPULAR', 'PRICE_LOW', 'PRICE_HIGH'];
@@ -116,12 +103,14 @@ export const PACKAGE_DISPLAY_MAP: Record<PackageType, string> = {
   ETC: '기타',
 };
 
+// 가
+
 // 필터 초기 상태
 export const INITIAL_FILTER_STATE: Record<FilterType, FilterValue> = {
   sortBy: '',
   shootingPeriod: [],
   cameraType: [],
   retouchStyle: [],
-  packageType: '',
+  packageType: [],
   priceRange: { min: undefined, max: undefined },
 };

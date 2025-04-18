@@ -1,5 +1,5 @@
-import { useState, useMemo, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
+import { forwardRef, useMemo, useState } from 'react';
 
 interface TextareaProps extends React.ComponentProps<'textarea'> {
   onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -31,7 +31,7 @@ const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
     };
 
     return (
-      <div className="w-[32rem] text-[1.2rem] text-base font-normal">
+      <div className="w-full text-[1.2rem] text-base font-normal">
         <textarea
           className={cn(
             'flex w-full rounded-lg border gap-[1.9rem] transition-all',

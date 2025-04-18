@@ -12,8 +12,8 @@ const config: Config = {
     container: {
       center: true,
       screens: {
-        sm: '360px', // 모바일
-        // md: "768px", // 태블릿
+        // sm: '360px', // 모바일
+        md: "700px", // 모바일 최대 사이즈(반응형)
         // lg: "1024px", // 작은 데스크탑
         // xl: "1280px", // 큰 데스크탑
         // "2xl": "1536px", // 초대형 스크린

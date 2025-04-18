@@ -95,19 +95,19 @@ export async function post<T>(endpoint: string, data: unknown, options?: Request
 }
 
 /**
- * HTTP PUT 요청 함수
+ * HTTP PATCH 요청 함수
  * @param endpoint API 엔드포인트
- * @param data 요청 데이터
+ * @param data 요청 데이터 (request body)
  * @param options 요청 옵션
  * @returns 응답 데이터
  */
-export async function put<T>(endpoint: string, data: unknown, options?: RequestInit): Promise<T> {
+export async function patch<T>(endpoint: string, data: unknown, options?: RequestInit): Promise<T> {
   const url = createApiUrl(endpoint);
   const { controller, timeoutId } = createAbortController();
 
   try {
     const response = await fetch(url, {
-      method: 'PUT',
+      method: 'PATCH',
       ...defaultRequestOptions,
       ...options,
       body: JSON.stringify(data),

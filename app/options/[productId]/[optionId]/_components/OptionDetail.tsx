@@ -92,7 +92,7 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
           <button
-            className="w-[24.2rem] h-[5.6rem] text-body1Normal font-semibold text-gray-10 bg-red-40 rounded-[0.4rem]"
+            className="w-full h-[5.6rem] text-body1Normal font-semibold text-gray-10 bg-red-40 rounded-[0.4rem]"
             onClick={onClickInquiry}
           >
             바로 문의하기

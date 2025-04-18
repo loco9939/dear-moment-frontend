@@ -54,11 +54,11 @@ export const NavigationBar = () => {
   ];
 
   // 공통 스타일
-  const linkBaseStyle = 'flex-1 flex-col justify-items-center';
+  const linkBaseStyle = 'flex-1 flex flex-col items-center';
   const labelBaseStyle = 'block text-label2 font-medium pt-[0.4rem]';
 
   return (
-    <div className="flex relative">
+    <div className="relative flex items-center">
       {navItems.map(item => {
         const isActive = pathname === item.href;
 
