@@ -80,6 +80,10 @@ export const FilteringItems = ({
     priceRange: { min, max },
   } = tempFilters as Record<FilterType, PriceRange>;
 
+  const onFocusInput = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
   return (
     <div className="space-y-[2.2rem]">
       {Object.keys(tempFilters)
@@ -113,6 +117,7 @@ export const FilteringItems = ({
                 const value = e.target.value ? parseInt(e.target.value, 10) : 0;
                 handlePriceRangeChange(value, 'min');
               }}
+              onFocus={onFocusInput}
             />
           </div>
           <span className="text-caption1Normal text-gray-80">~</span>
@@ -130,6 +135,7 @@ export const FilteringItems = ({
                 const value = e.target.value ? parseInt(e.target.value, 10) : 0;
                 handlePriceRangeChange(value, 'max');
               }}
+              onFocus={onFocusInput}
             />
           </div>
         </div>

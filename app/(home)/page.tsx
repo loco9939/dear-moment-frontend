@@ -6,7 +6,7 @@ export default async function HomePage() {
   const { products, error } = await getMainProducts();
 
   return (
-    <main className="space-y-4">
+    <main className="flex-1 space-y-4">
       <Home initialProducts={products} initialError={error} />
     </main>
   );

@@ -11,7 +11,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
         </Link>
       </header>
 
-      <div className="flex-1">{children}</div>
+      {children}
 
       <NavigationBar />
     </div>
