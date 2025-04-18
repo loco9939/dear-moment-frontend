@@ -43,7 +43,7 @@ export default function FilteringModal({
         </SheetTitle>
 
         {/* 스크롤 가능한 컨테이너 추가 */}
-        <div className="overflow-y-auto mt-[3.3rem] px-[2rem] h-[calc(100%-198px)]">
+        <div className="overflow-y-auto px-[2rem] h-[calc(100%-198px)]">
           <FilteringItems
             filterType={filterType}
             selectedFilters={selectedFilters}

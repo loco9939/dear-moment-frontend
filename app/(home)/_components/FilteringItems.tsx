@@ -82,20 +82,6 @@ export const FilteringItems = ({
 
   return (
     <div className="space-y-[2.2rem]">
-      {Object.keys(tempFilters)
-        .filter(title => title !== 'priceRange')
-        .map(title => {
-          return (
-            <Category
-              key={title}
-              title={title as FilterType}
-              items={filterOptions[title as FilterType]}
-              tempFilters={tempFilters}
-              handleFilterSelect={handleFilterSelect}
-              getDisplayText={getDisplayText}
-            />
-          );
-        })}
       <div className="space-y-[1.8rem]">
         <p className="text-body2Normal font-semibold text-gray-95">가격</p>
         <div className="flex justify-start items-center gap-[1.2rem]">
@@ -134,6 +120,21 @@ export const FilteringItems = ({
           </div>
         </div>
       </div>
+      {Object.keys(tempFilters)
+        .filter(title => title !== 'priceRange')
+        .map(title => {
+          return (
+            <Category
+              key={title}
+              title={title as FilterType}
+              items={filterOptions[title as FilterType]}
+              tempFilters={tempFilters}
+              handleFilterSelect={handleFilterSelect}
+              getDisplayText={getDisplayText}
+            />
+          );
+        })}
+
       <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
         <button
           className="w-[8.9rem] bg-red-0 text-body1Normal font-semibold rounded-[0.4rem] border border-red-40 text-red-40 h-[56px]"

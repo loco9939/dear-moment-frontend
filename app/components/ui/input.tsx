@@ -47,6 +47,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             'bg-gray-10', // 배경색
             'px-[1.2rem] py-[1.6rem]', // padding 좌우 1.2rem, 위아래 1.6rem
             'text-label1Reading',
+            'mb-[0.6rem]',
             (maxLengthOver && isFocused) || errorMessage
               ? 'border-red-50 ring-1 ring-red-50 focus:outline-none' // 에러 상태 → 빨간 테두리
               : isFocused
@@ -63,31 +64,30 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
 
-        {/* 여백 */}
-        <div className="h-[0.6rem]"></div>
-
         {/* 경고문구 및 글자수 표시 */}
-        <div className="flex justify-between h-[1.7rem] text-gray-50">
-          <span className={(maxLengthOver && isFocused) || errorMessage ? 'text-red-50' : ''}>
-            {errorMessage || (maxLengthOver && isFocused ? warningMessage : '')}
-          </span>
-          {showLength && typeof value !== 'number' && (
-            <span>
-              <span
-                className={
-                  (maxLengthOver && isFocused) || errorMessage
-                    ? 'text-red-50'
-                    : value.length > 0
-                    ? 'text-gray-90'
-                    : 'text-gray-50'
-                }
-              >
-                {value.length}
-              </span>
-              <span className={maxLengthOver || errorMessage ? 'text-gray-90' : 'text-gray-50'}> / {maxLength}</span>
+        {errorMessage && (
+          <div className="flex justify-between h-[1.7rem] text-gray-50">
+            <span className={(maxLengthOver && isFocused) || errorMessage ? 'text-red-50' : ''}>
+              {errorMessage || (maxLengthOver && isFocused ? warningMessage : '')}
             </span>
-          )}
-        </div>
+            {showLength && typeof value !== 'number' && (
+              <span>
+                <span
+                  className={
+                    (maxLengthOver && isFocused) || errorMessage
+                      ? 'text-red-50'
+                      : value.length > 0
+                      ? 'text-gray-90'
+                      : 'text-gray-50'
+                  }
+                >
+                  {value.length}
+                </span>
+                <span className={maxLengthOver || errorMessage ? 'text-gray-90' : 'text-gray-50'}> / {maxLength}</span>
+              </span>
+            )}
+          </div>
+        )}
       </div>
     );
   }
