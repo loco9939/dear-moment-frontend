@@ -39,41 +39,41 @@ export function ImageViewerModal({ isOpen, onClose, images, initialImageIndex }:
 
   return (
     // 모달 오버레이
-    <div className="fixed inset-0 bg-gray-95 z-50 flex items-center justify-center">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-95">
       {/* 이미지 컨테이너 */}
       <div
-        className="relative container h-full flex items-center"
+        className="container relative flex h-full items-center justify-center"
         onClick={e => e.stopPropagation()}
         {...handlers} // 터치 이벤트 핸들러 추가
       >
         {/* 이전 버튼 */}
         <button
           onClick={handlePrevious}
-          className="absolute left-[-6rem] top-1/2 transform -translate-y-1/2 text-white text-[3rem] p-4"
+          className="absolute left-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100"
         >
-          &#8249;
+          <Icon_ChevronDown className="-translate-x-[0.1rem] rotate-90 fill-white" />
         </button>
         <div className="relative">
           <img
             src={images[currentIndex]}
             alt="포트폴리오 이미지"
-            className="w-[36rem] h-[52rem] object-contain"
+            className="h-[52rem] object-contain"
             draggable={false} // 이미지 드래그 방지
           />
           {/* 이미지 카운터 */}
-          <div className="absolute bottom-[-3rem] left-1/2 transform -translate-x-1/2 text-white">
+          <div className="absolute bottom-[-3rem] left-1/2 -translate-x-1/2 transform text-white">
             {currentIndex + 1} / {images.length}
           </div>
         </div>
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          className="absolute right-[-6rem] top-1/2 transform -translate-y-1/2 text-white text-[3rem] p-4"
+          className="absolute right-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100"
         >
-          &#8250;
+          <Icon_ChevronDown className="translate-x-[0.1rem] -rotate-90 fill-white" />
         </button>
         {/* 닫기 버튼 */}
-        <button onClick={onClose} className="absolute top-[2rem] left-[2rem] text-white text-[2.4rem]">
+        <button onClick={onClose} className="absolute left-[2rem] top-[2rem] text-[2.4rem] text-white">
           <Icon_ChevronDown className="rotate-90 fill-gray-10" />
         </button>
       </div>

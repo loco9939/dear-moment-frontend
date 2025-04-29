@@ -1,7 +1,10 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { searchMainPageProducts } from '../../api/products';
+import { searchLikeMainPageProducts, searchLikeMainPageStudios } from '../../api/likes';
 import { MainPageProduct } from '../../api/products/types';
+import { MainLikeProduct, MainLikeStudio } from '../../api/likes/types';
 import { FilteringService } from '../services/FilteringService';
+import { PagedResponse } from '../../api/common/types';
 import {
   CameraType,
   FilterType,
@@ -15,10 +18,11 @@ import {
 
 // 메인 페이지 상태값 전달(로딩, 에러, 상품)
 interface UseFilteringControllerProps {
-  setMainProducts: Dispatch<SetStateAction<MainPageProduct[]>>;
+  setMainProducts: (products: MainPageProduct[] | MainLikeProduct[] | MainLikeStudio[]) => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<string | null>>;
   fetchMainProducts?: () => Promise<void>; // 메인 페이지 상품 목록을 가져오는 함수
+  type: 'main' | 'likeProduct' | 'likeStudio';
 }
 
 export function useFilteringController({
@@ -26,12 +30,27 @@ export function useFilteringController({
   setLoading,
   setError,
   fetchMainProducts,
+  type,
 }: UseFilteringControllerProps) {
   const [open, setOpen] = useState(false);
   const [filterType, setFilterType] = useState<FilterType>('sortBy');
-  const [selectedFilters, setSelectedFilters] = useState<Record<FilterType, FilterValue>>(
+
+  // 각 타입별로 필터 상태를 분리하여 관리
+  const [mainFilters, setMainFilters] = useState<Record<FilterType, FilterValue>>(
     FilteringService.getInitialFilterState()
   );
+  const [productFilters, setProductFilters] = useState<Record<FilterType, FilterValue>>(
+    FilteringService.getInitialFilterState()
+  );
+  const [studioFilters, setStudioFilters] = useState<Record<FilterType, FilterValue>>(
+    FilteringService.getInitialFilterState()
+  );
+
+  // 현재 타입에 맞는 필터 상태를 선택
+  const selectedFilters = type === 'main' ? mainFilters : type === 'likeProduct' ? productFilters : studioFilters;
+
+  const setSelectedFilters =
+    type === 'main' ? setMainFilters : type === 'likeProduct' ? setProductFilters : setStudioFilters;
 
   const handleFilterClick = (type: FilterType) => {
     setFilterType(type);
@@ -64,11 +83,24 @@ export function useFilteringController({
         maxPrice: ((filters.priceRange as PriceRange).max || 100) * 10000,
       };
 
+      let response;
       // 검색 API 호출
-      const response = await searchMainPageProducts(0, 10, searchFilters);
+      if (type === 'main') {
+        response = await searchMainPageProducts(0, 10, searchFilters);
+      } else if (type === 'likeProduct') {
+        response = await searchLikeMainPageProducts(searchFilters);
+      } else if (type === 'likeStudio') {
+        response = await searchLikeMainPageStudios(searchFilters);
+      }
 
-      if (response.success && response.data) {
-        setMainProducts(response.data.content);
+      if (response && response.success && response.data) {
+        setMainProducts(
+          type === 'main'
+            ? (response.data as PagedResponse<MainPageProduct>).content
+            : type === 'likeProduct'
+            ? (response.data as unknown as MainLikeProduct[])
+            : (response.data as unknown as MainLikeStudio[])
+        );
       } else {
         setError('상품 검색에 실패했습니다.');
         // NOTE: 오류 발생 시 상품 목록을 초기화하지 않음

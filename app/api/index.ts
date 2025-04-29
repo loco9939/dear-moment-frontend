@@ -7,7 +7,9 @@ export * from './products';
 // 공통 타입 내보내기
 export * from './common/types';
 
+// MY 찜 관련 API 함수 내보내기
+export * from './likes';
+
 // 추후 다른 도메인 API가 추가되면 여기에 내보내기를 추가합니다.
 // 예: export * from './users';
 // 예: export * from './auth';
-

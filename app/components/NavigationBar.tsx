@@ -40,7 +40,7 @@ export const NavigationBar = () => {
       label: 'LIKE',
       icon: {
         default: <Icon_Heart />,
-        active: <Icon_Heart_Filled />,
+        active: <Icon_Heart_Filled className="fill-gray-95" />,
       },
     },
     {

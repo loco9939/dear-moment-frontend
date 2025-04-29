@@ -2,6 +2,7 @@
 
 import { Chip } from '@/components/ui/Chip';
 import { Dispatch, SetStateAction } from 'react';
+import { MainLikeProduct, MainLikeStudio } from '../../api/likes/types';
 import { MainPageProduct } from '../../api/products/types';
 import { useFilteringController } from '../controllers/FilteringController';
 import {
@@ -15,19 +16,21 @@ import { CameraType, PackageType, PriceRange, RetouchStyle, ShootingPeriod, Sort
 import FilteringModal from './FilteringModal';
 
 interface FilteringProps {
-  setMainProducts: Dispatch<SetStateAction<MainPageProduct[]>>;
+  setMainProducts: (products: MainPageProduct[] | MainLikeProduct[] | MainLikeStudio[]) => void;
   setLoading: Dispatch<SetStateAction<boolean>>;
   setError: Dispatch<SetStateAction<string | null>>;
   fetchMainProducts?: () => Promise<void>;
+  type: 'main' | 'likeProduct' | 'likeStudio';
 }
 
-export default function Filtering({ setMainProducts, setLoading, setError, fetchMainProducts }: FilteringProps) {
+export default function Filtering({ setMainProducts, setLoading, setError, fetchMainProducts, type }: FilteringProps) {
   const { open, filterType, selectedFilters, handleFilterClick, setOpen, setSelectedFilters, applyFiltersAndSearch } =
     useFilteringController({
       setMainProducts,
       setLoading,
       setError,
       fetchMainProducts,
+      type,
     });
 
   const { sortBy, shootingPeriod, cameraType, retouchStyle, packageType, priceRange } = selectedFilters;
@@ -47,7 +50,6 @@ export default function Filtering({ setMainProducts, setLoading, setError, fetch
     return `${priceRange.min}만원 - ${priceRange.max}만원`;
   };
 
-  console.log('priceRange', priceRange);
   // 보정 스타일 리스트 및 표시 텍스트 생성
   const retouchStyleList = retouchStyle as RetouchStyle[];
   const retouchStyleText =

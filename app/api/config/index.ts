@@ -17,7 +17,7 @@ export const API_CONFIG = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: `Bearer ${process.env.NEXT_PUBLIC_BEARER_TOKEN}`,
+    Authorization: typeof window !== 'undefined' ? `Bearer ${localStorage.getItem('accessToken')}` : '',
   },
 
   // 재시도 설정
@@ -44,6 +44,8 @@ export const API_ENDPOINTS = {
   likes: {
     products: '/likes/products',
     options: '/likes/product-options',
+    filterProducts: '/likes/product-options/filter',
+    filterStudios: '/likes/products/filter',
   },
   users: '/users',
   // 추후 다른 도메인 엔드포인트 추가

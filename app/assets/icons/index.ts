@@ -17,4 +17,3 @@ export { default as Icon_Refresh } from './Icon_Refresh';
 export { default as Icon_User } from './Icon_User';
 export { default as Icon_User_Filled } from './Icon_User_Filled';
 export { default as Icon_Write } from './Icon_Write';
-

@@ -19,7 +19,8 @@ export default function ClientFilteringWrapper({ initialProducts, initialError }
   return (
     <>
       <Filtering
-        setMainProducts={setMainProducts}
+        type={'main'}
+        setMainProducts={products => setMainProducts(products as MainPageProduct[])}
         setLoading={setLoading}
         setError={setError}
         fetchMainProducts={fetchMainProducts}
