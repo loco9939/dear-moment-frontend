@@ -22,11 +22,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (!adminToken && isProtectedAdminPage) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/admin';
-    return NextResponse.redirect(url);
-  }
+  // if (!adminToken && isProtectedAdminPage) {
+  //   const url = request.nextUrl.clone();
+  //   url.pathname = '/admin';
+  //   return NextResponse.redirect(url);
+  // }
 
   // 로그인 했을 시, 접근 불가 처리
   if (token && isNotProtectedPage) {
