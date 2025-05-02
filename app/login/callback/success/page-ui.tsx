@@ -15,6 +15,13 @@ export default function LoginSuccessPageUI() {
     if (accessToken) {
       // accessToken을 localStorage에 저장
       localStorage.setItem('accessToken', accessToken);
+
+      // accessToken을 쿠키에 저장
+      // path=/: 쿠키가 전체 사이트에서 접근 가능하도록 설정
+      // max-age=86400: 쿠키의 유효 기간을 24시간(86400초)으로 설정
+      // secure: HTTPS 연결에서만 쿠키가 전송되도록 설정
+      // samesite=strict: 같은 도메인에서만 쿠키가 전송되도록 설정
+      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; secure; samesite=strict`;
     }
 
     // 2초 후 메인 페이지로 리다이렉트
