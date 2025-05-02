@@ -15,7 +15,8 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(likeStudios.likeId !== 0);
 
-  const handleLikeClick = async () => {
+  const handleLikeClick = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
     try {
       if (isLiked) {
         // 좋아요 취소
@@ -37,14 +38,14 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
   };
 
   return (
-    <div className="h-[24.7rem] my-[1.4rem] mx-[2rem] flex flex-col space-y-[1.3rem]" onClick={handlePageProductClick}>
+    <div className="mx-[2rem] my-[1.4rem] flex h-[24.7rem] flex-col space-y-[1.3rem]" onClick={handlePageProductClick}>
       {/* 작가정보 헤더 */}
       <div className="flex flex-col space-y-[0.8rem]">
         <div>
           <div className="flex items-center gap-[1rem]">
-            <div className="w-[2.6rem] h-[2.6rem] rounded-full bg-gray-40" />
+            <div className="h-[2.6rem] w-[2.6rem] rounded-full bg-gray-40" />
             <div className="space-y-[0.8rem] py-[0.7rem]">
-              <span className="text-gray-90 text-subtitle2 font-bold">{likeStudios.name}</span>
+              <span className="text-subtitle2 font-bold text-gray-90">{likeStudios.name}</span>
             </div>
             <button className="ml-auto" onClick={handleLikeClick}>
               {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
@@ -52,23 +53,23 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
           </div>
           <div className="flex gap-[0.5rem]">
             {(likeStudios.retouchStyles as RetouchStyle[]).map((style, index) => (
-              <div key={index} className="text-gray-80 text-label2 font-semibold bg-red-20 px-[0.8rem] py-[0.45rem]">
+              <div key={index} className="bg-red-20 px-[0.8rem] py-[0.45rem] text-label2 font-semibold text-gray-80">
                 {STYLE_DISPLAY_MAP[style]}
               </div>
             ))}
           </div>
         </div>
         {/* 가격 */}
-        <div className="h-[1.4rem] mb-2 text-body2Normal">
-          {<span className="font-bold text-red-40 mr-[0.4rem]">{likeStudios.discountRate}%</span>}
-          <span className="text-common-100 font-semibold">
+        <div className="mb-2 h-[1.4rem] text-body2Normal">
+          {<span className="mr-[0.4rem] font-bold text-red-40">{likeStudios.discountRate}%</span>}
+          <span className="font-semibold text-common-100">
             {likeStudios.minPrice.toLocaleString()}원 ~ {likeStudios.maxPrice.toLocaleString()}원
           </span>
         </div>
         {/* 날짜 옵션 */}
-        <div className="flex gap-[0.5rem] items-center">
+        <div className="flex items-center gap-[0.5rem]">
           <Icon_Calendar width={14} height={14} />
-          <div className="flex gap-[0.6rem] items-center">
+          <div className="flex items-center gap-[0.6rem]">
             {likeStudios.availableSeasons?.map((season, index) => (
               <span
                 key={index}
@@ -83,7 +84,7 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
       {/* 썸네일 영역 (3장 가로로) */}
       <div className="flex gap-[0.8rem]">
         {likeStudios.thumbnailUrls.map((url, index) => (
-          <div key={index} className="min-w-[10.1rem] w-full h-[13.2rem] relative overflow-hidden">
+          <div key={index} className="relative h-[13.2rem] w-full min-w-[10.1rem] overflow-hidden">
             <Image src={url} alt={`${likeStudios.name} thumbnail ${index + 1}`} fill className="object-cover" />
           </div>
         ))}

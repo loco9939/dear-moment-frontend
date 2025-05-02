@@ -30,8 +30,8 @@ const InfoItem = ({ label, value, unit = '', booleanText }: LikeItemProps) => {
       : `${value}${unit}`;
 
   return (
-    <div className="w-[13.5rem] h-[1.8rem] flex justify-between py-3 flex-1">
-      <span className="font-semibold text-body3Normal">{label}</span>
+    <div className="flex h-[1.8rem] w-[13.5rem] flex-1 justify-between py-3">
+      <span className="text-body3Normal font-semibold">{label}</span>
       <span className="font-regular text-body3Normal">{displayValue}</span>
     </div>
   );
@@ -41,7 +41,8 @@ export default function ProductCard({ likeProduct, onLikeChange }: ProductCardPr
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(!!likeProduct);
 
-  const handleLikeClick = async () => {
+  const handleLikeClick = async (e: React.MouseEvent) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
     try {
       if (isLiked) {
         // 좋아요 취소
@@ -68,17 +69,17 @@ export default function ProductCard({ likeProduct, onLikeChange }: ProductCardPr
   };
 
   return (
-    <div className="h-[25.6rem] m-[2rem]">
+    <div className="m-[2rem] h-[25.6rem]">
       {/* 사진 */}
-      <div className="h-[18.4rem] flex justify-between" onClick={handlePageProductOptionClick}>
-        <div className="w-full bg-gray-10 relative">
+      <div className="flex h-[18.4rem] justify-between" onClick={handlePageProductOptionClick}>
+        <div className="relative w-full bg-gray-10">
           <Image src={likeProduct.thumbnailUrl} alt="메인 웨딩 사진" fill className="object-cover" />
-          <button className="absolute top-[15.25rem] right-[0.6rem]" onClick={handleLikeClick}>
+          <button className="absolute right-[0.6rem] top-[15.25rem]" onClick={handleLikeClick}>
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
           </button>
         </div>
         <div className="w-[1rem]"></div>
-        <div className="w-[15.5rem] bg-gray-10 py-[1.4rem] px-[1rem] flex flex-col justify-between">
+        <div className="flex w-[15.5rem] flex-col justify-between bg-gray-10 px-[1rem] py-[1.4rem]">
           <InfoItem
             label="원본"
             value={likeProduct.originalProvided}
@@ -91,22 +92,22 @@ export default function ProductCard({ likeProduct, onLikeChange }: ProductCardPr
         </div>
       </div>
       <div className="h-[1.1rem]"></div>
-      <div className="h-[6.1rem] flex flex-col gap-[0.9rem]" onClick={handlePageProductClick}>
-        <div className="h-auto flex justify-between font-bold text-body2Normal">
-          <div className="text-gray-90 flex items-center">
+      <div className="flex h-[6.1rem] flex-col gap-[0.9rem]" onClick={handlePageProductClick}>
+        <div className="flex h-auto justify-between text-body2Normal font-bold">
+          <div className="flex items-center text-gray-90">
             <span>{likeProduct.studioName}</span>
             <Icon_ChevronDown width={16} height={16} className="rotate-[270deg]" />
           </div>
-          <div className="w-[11.2rem] flex justify-end gap-[0.8rem] items-center">
+          <div className="flex w-[11.2rem] items-center justify-end gap-[0.8rem]">
             <div className="text-red-40">{likeProduct.discountRate}%</div>
             <div className="text-common-100">{likeProduct.price.toLocaleString()}원</div>
           </div>
         </div>
-        <div className="text-gray-80 text-body3Normal font-medium tracking-[-0.04em]">{likeProduct.optionName}</div>
+        <div className="text-body3Normal font-medium tracking-[-0.04em] text-gray-80">{likeProduct.optionName}</div>
         {/* 날짜 옵션 */}
-        <div className=" flex gap-[0.5rem] items-center">
+        <div className="flex items-center gap-[0.5rem]">
           <Icon_Calendar width={14} height={14} />
-          <div className="flex gap-[0.6rem] items-center">
+          <div className="flex items-center gap-[0.6rem]">
             {(likeProduct.shootingSeason as ShootingPeriod[]).map((season, index) => (
               <span
                 key={index}
