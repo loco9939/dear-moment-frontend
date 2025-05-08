@@ -121,7 +121,10 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         title: 'test',
         description: 'test 설명',
         detailedInfo: 'test 상세 설명',
-        options: data.options,
+        options: data.options.map(option => ({
+          ...option,
+          partnerShops: option.optionType === 'SINGLE' ? [] : option.partnerShops,
+        })),
       };
 
       formData.append('request', new Blob([JSON.stringify(productInfo)], { type: 'application/json' }));
@@ -192,7 +195,10 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         additionalImagesFinal,
       };
 
-      const optionsInfo = data.options;
+      const optionsInfo = data.options.map(option => ({
+        ...option,
+        partnerShops: option.optionType === 'SINGLE' ? [] : option.partnerShops,
+      }));
 
       formData.append('request', new Blob([JSON.stringify(productInfo)], { type: 'application/json' }));
       formData.append('options', new Blob([JSON.stringify(optionsInfo)], { type: 'application/json' }));
@@ -202,10 +208,6 @@ export const useProduct = (studioId: string | null, productId: string | undefine
       }
       data.subImageFiles?.forEach(file => formData.append('subImageFiles', file));
       data.additionalImageFiles?.forEach(file => formData.append('additionalImageFiles', file));
-
-      console.log(data.subImageFiles);
-      console.log(productInfo);
-      console.log(optionsInfo);
 
       try {
         const { data: updatedProduct } = await patchProduct({
