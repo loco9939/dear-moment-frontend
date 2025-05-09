@@ -80,70 +80,86 @@ export const FilteringItems = ({
     priceRange: { min, max },
   } = tempFilters as Record<FilterType, PriceRange>;
 
+  // 필터 항목을 원하는 순서대로 정렬하기 위한 배열 정의
+  const filterOrder: FilterType[] = [
+    'sortBy',
+    'priceRange',
+    'shootingPeriod',
+    'cameraType',
+    'retouchStyle',
+    'packageType',
+  ];
+
   return (
     <div className="space-y-[2.2rem]">
-      <div className="space-y-[1.8rem]">
-        <p className="text-body2Normal font-semibold text-gray-95">가격</p>
-        <div className="flex justify-start items-center gap-[1.2rem]">
-          <div className="h-auto">
-            <label htmlFor="min-price" className="text-caption1Normal text-gray-80">
-              최소 가격 (만원)
-            </label>
-            <Input
-              id="min-price"
-              type="number"
-              value={min || ''}
-              placeholder="0"
-              className="w-[10rem]"
-              onChange={e => {
-                const value = e.target.value ? parseInt(e.target.value, 10) : 0;
-                handlePriceRangeChange(value, 'min');
-              }}
-            />
-          </div>
-          <span className="text-caption1Normal text-gray-80">~</span>
-          <div className="h-auto">
-            <label htmlFor="max-price" className="text-caption1Normal text-gray-80">
-              최대 가격 (만원)
-            </label>
-            <Input
-              id="max-price"
-              type="number"
-              value={max || ''}
-              placeholder="최대금액 입력"
-              className="w-[10rem]"
-              onChange={e => {
-                const value = e.target.value ? parseInt(e.target.value, 10) : 0;
-                handlePriceRangeChange(value, 'max');
-              }}
-            />
-          </div>
-        </div>
-      </div>
-      {Object.keys(tempFilters)
-        .filter(title => title !== 'priceRange')
-        .map(title => {
+      {/* 필터 순서를 지정하여 렌더링 */}
+      {filterOrder.map(filterKey => {
+        // 가격 범위 필터 렌더링
+        if (filterKey === 'priceRange') {
           return (
-            <Category
-              key={title}
-              title={title as FilterType}
-              items={filterOptions[title as FilterType]}
-              tempFilters={tempFilters}
-              handleFilterSelect={handleFilterSelect}
-              getDisplayText={getDisplayText}
-            />
+            <div key={filterKey} className="space-y-[1.8rem]">
+              <p className="text-body2Normal font-semibold text-gray-95">가격</p>
+              <div className="flex items-center justify-start gap-[1.2rem]">
+                <div className="h-auto">
+                  <label htmlFor="min-price" className="text-caption1Normal text-gray-80">
+                    최소 가격 (만원)
+                  </label>
+                  <Input
+                    id="min-price"
+                    type="number"
+                    value={min || ''}
+                    placeholder="0"
+                    className="w-[10rem]"
+                    onChange={e => {
+                      const value = e.target.value ? parseInt(e.target.value, 10) : 0;
+                      handlePriceRangeChange(value, 'min');
+                    }}
+                  />
+                </div>
+                <span className="text-caption1Normal text-gray-80">~</span>
+                <div className="h-auto">
+                  <label htmlFor="max-price" className="text-caption1Normal text-gray-80">
+                    최대 가격 (만원)
+                  </label>
+                  <Input
+                    id="max-price"
+                    type="number"
+                    value={max || ''}
+                    placeholder="최대금액 입력"
+                    className="w-[12rem]"
+                    onChange={e => {
+                      const value = e.target.value ? parseInt(e.target.value, 10) : 0;
+                      handlePriceRangeChange(value, 'max');
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
           );
-        })}
+        }
 
-      <div className="flex justify-between items-end bg-white gap-[1rem] absolute bottom-0 right-0 w-full pb-[1.2rem] px-[2rem] h-[10rem]">
+        // 다른 필터 항목 렌더링
+        return (
+          <Category
+            key={filterKey}
+            title={filterKey}
+            items={filterOptions[filterKey]}
+            tempFilters={tempFilters}
+            handleFilterSelect={handleFilterSelect}
+            getDisplayText={getDisplayText}
+          />
+        );
+      })}
+
+      <div className="absolute bottom-0 right-0 flex h-[10rem] w-full items-end justify-between gap-[1rem] bg-white px-[2rem] pb-[1.2rem]">
         <button
-          className="w-[8.9rem] bg-red-0 text-body1Normal font-semibold rounded-[0.4rem] border border-red-40 text-red-40 h-[56px]"
+          className="bg-red-0 h-[56px] w-[8.9rem] rounded-[0.4rem] border border-red-40 text-body1Normal font-semibold text-red-40"
           onClick={handleReset}
         >
           초기화
         </button>
         <button
-          className="w-full bg-red-40 text-body1Normal font-semibold rounded-[0.4rem] text-gray-10 h-[56px]"
+          className="h-[56px] w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10"
           onClick={handleApply}
         >
           적용

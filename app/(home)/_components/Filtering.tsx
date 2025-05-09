@@ -2,9 +2,6 @@
 
 import { Chip } from '@/components/ui/Chip';
 import { Dispatch, SetStateAction } from 'react';
-import { MainLikeProduct, MainLikeStudio } from '../../api/likes/types';
-import { MainPageProduct } from '../../api/products/types';
-import { useFilteringController } from '../controllers/FilteringController';
 import {
   CAMERA_DISPLAY_MAP,
   PACKAGE_DISPLAY_MAP,
@@ -12,27 +9,38 @@ import {
   SORT_DISPLAY_MAP,
   STYLE_DISPLAY_MAP,
 } from '../models/FilteringModel';
-import { CameraType, PackageType, PriceRange, RetouchStyle, ShootingPeriod, SortOption } from '../type';
+import {
+  CameraType,
+  FilterType,
+  FilterValue,
+  PackageType,
+  PriceRange,
+  RetouchStyle,
+  ShootingPeriod,
+  SortOption,
+} from '../type';
 import FilteringModal from './FilteringModal';
 
 interface FilteringProps {
-  setMainProducts: (products: MainPageProduct[] | MainLikeProduct[] | MainLikeStudio[]) => void;
-  setLoading: Dispatch<SetStateAction<boolean>>;
-  setError: Dispatch<SetStateAction<string | null>>;
-  fetchMainProducts?: () => Promise<void>;
-  type: 'main' | 'likeProduct' | 'likeStudio';
+  // FilteringController에서 가져온 값들
+  open: boolean;
+  filterType: FilterType;
+  selectedFilters: Record<FilterType, FilterValue>;
+  handleFilterClick: (type: FilterType) => void;
+  setOpen: (open: boolean) => void;
+  setSelectedFilters: Dispatch<SetStateAction<Record<FilterType, FilterValue>>>;
+  applyFiltersAndSearch: (filters: Record<FilterType, FilterValue>) => Promise<void>;
 }
 
-export default function Filtering({ setMainProducts, setLoading, setError, fetchMainProducts, type }: FilteringProps) {
-  const { open, filterType, selectedFilters, handleFilterClick, setOpen, setSelectedFilters, applyFiltersAndSearch } =
-    useFilteringController({
-      setMainProducts,
-      setLoading,
-      setError,
-      fetchMainProducts,
-      type,
-    });
-
+export default function Filtering({
+  open,
+  filterType,
+  selectedFilters,
+  handleFilterClick,
+  setOpen,
+  setSelectedFilters,
+  applyFiltersAndSearch,
+}: FilteringProps) {
   const { sortBy, shootingPeriod, cameraType, retouchStyle, packageType, priceRange } = selectedFilters;
 
   // 가격 범위 표시 텍스트 생성
@@ -87,7 +95,7 @@ export default function Filtering({ setMainProducts, setLoading, setError, fetch
       : '';
   return (
     <section>
-      <menu className="overflow-x-auto scroll scrollbar-hide mx-[2rem]">
+      <menu className="scroll mx-[2rem] overflow-x-auto scrollbar-hide">
         <div className="flex gap-2">
           <Chip
             label={Boolean(sortBy) ? SORT_DISPLAY_MAP[sortBy as SortOption] || (sortBy as SortOption) : '정렬'}

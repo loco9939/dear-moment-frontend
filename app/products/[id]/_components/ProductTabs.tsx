@@ -46,21 +46,21 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
 
   return (
     <section className="mt-[4.5rem]">
-      <div className="w-full h-[3.7rem] sticky top-[-1px] z-10 flex border-b border-gray-20 bg-common-0 p-0">
-        <div className={`flex-1 h-full text-center`}>
+      <div className="sticky top-[-1px] z-10 flex h-[3.7rem] w-full border-b border-gray-20 bg-common-0 p-0">
+        <div className={`h-full flex-1 text-center`}>
           <button
             className={`h-full w-[11rem] text-body2Normal font-semibold ${
-              activeTab === 'products' ? 'text-gray-90 border-b-2 border-gray-90' : 'text-gray-50'
+              activeTab === 'products' ? 'border-b-2 border-gray-90 text-gray-90' : 'text-gray-50'
             }`}
             onClick={() => handleTabClick('products')}
           >
             상품정보
           </button>
         </div>
-        <div className={`flex-1 h-full text-center`}>
+        <div className={`h-full flex-1 text-center`}>
           <button
-            className={`h-full w-[11rem]  text-body2Normal font-semibold ${
-              activeTab === 'guidelines' ? 'text-gray-90 border-b-2 border-gray-90' : 'text-gray-50'
+            className={`h-full w-[11rem] text-body2Normal font-semibold ${
+              activeTab === 'guidelines' ? 'border-b-2 border-gray-90 text-gray-90' : 'text-gray-50'
             }`}
             onClick={() => handleTabClick('guidelines')}
           >
@@ -70,7 +70,7 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
       </div>
 
       <div ref={productsRef} className="my-[5.2rem] px-[2rem]">
-        <p className="text-subtitle1 font-bold keep-all text-gray-95 mb-[3.7rem]">
+        <p className="keep-all mb-[3.7rem] text-subtitle1 font-bold text-gray-95">
           {studio?.name}만의 특별한 <br />
           스냅 상품 정보
         </p>
@@ -83,29 +83,32 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
 
       <div ref={guidelinesRef} className="my-6 px-[2rem]">
         <p className="text-subtitle1 font-bold text-gray-95">스냅 안내사항</p>
-        <div className="text-label1Reading font-semibold text-gray-70 my-[4rem]">
+        <div className="my-[4rem] text-label1Reading font-semibold text-gray-70">
           <p>모든 안내사항은 필독 부탁드립니다.</p>
           <p>안내사항을 읽지 않아 생기는 불이익에 관해서는 책임지지 않습니다.</p>
         </div>
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">제휴샵 안내</p>
-          <ul className="list-disc list-inside my-[3rem]">
+          <ul className="my-[3rem] list-inside">
             {studio?.partnerShops?.map((partnerShop, index) => (
-              <li key={index}>
-                {PACKAGE_DISPLAY_MAP[partnerShop.category as PackageType]}: {partnerShop.name}
+              <li key={index} className="flex items-center justify-start gap-[1rem]">
+                <div className="w-[4.8rem] rounded-[2rem] bg-red-20 px-[0.8rem] py-[0.45rem] text-center text-label2 font-semibold text-gray-80">
+                  {PACKAGE_DISPLAY_MAP[partnerShop.category as PackageType]}
+                </div>
+                <span className="text-label1Reading font-semibold text-gray-70">{partnerShop.name}</span>
               </li>
             ))}
           </ul>
         </div>
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">필독 안내사항</p>
-          <ul className="list-disc list-inside my-[3rem]">
+          <ul className="my-[3rem] list-inside list-disc">
             <li>{studio?.reservationNotice}</li>
           </ul>
         </div>
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">취소 및 환불 규정</p>
-          <ul className="list-disc list-inside my-[3rem]">
+          <ul className="my-[3rem] list-inside list-disc">
             <li>{studio?.cancellationPolicy}</li>
           </ul>
         </div>

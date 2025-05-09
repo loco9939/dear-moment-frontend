@@ -39,6 +39,7 @@ export const metadata: Metadata = {
     { rel: 'shortcut icon', url: '/favicon.ico' },
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/apple-touch-icon.png' },
   ],
+  manifest: '/manifest.json',
 };
 
 export const viewport: Viewport = {
@@ -47,6 +48,7 @@ export const viewport: Viewport = {
   minimumScale: 1,
   maximumScale: 1,
   userScalable: false,
+  themeColor: '#ffffff',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

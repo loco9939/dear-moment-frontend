@@ -22,7 +22,7 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
   };
 
   const discountRate = productOption.discountPrice
-    ? ((productOption.originalPrice - productOption.discountPrice) / productOption.originalPrice) * 100
+    ? Math.floor(((productOption.originalPrice - productOption.discountPrice) / productOption.originalPrice) * 100)
     : 0;
 
   const handleDetailClick = () => {
@@ -30,20 +30,20 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
   };
 
   return (
-    <li className="px-[2rem] py-[1.5rem] bg-gray-10">
+    <li className="bg-gray-10 px-[2rem] py-[1.5rem]">
       {/* 카드 헤더 */}
-      <div className="flex justify-between items-start mb-[1.6rem]">
-        <div className="flex gap-[1rem] items-center">
+      <div className="mb-[1.6rem] flex items-start justify-between">
+        <div className="flex items-center gap-[1rem]">
           <div className="flex flex-col gap-[0.3rem]">
             <span className="text-subtitle2 font-bold text-gray-90">{productOption.name}</span>
             {productOption.discountPrice ? (
               <div>
-                <p className="text-body2Normal font-bold text-gray-60 line-through my-[0.6rem]">
+                <p className="my-[0.6rem] text-body2Normal font-bold text-gray-60 line-through">
                   {productOption.originalPrice.toLocaleString()}원
                 </p>
                 <div className="text-subtitle2 font-bold">
                   <span className="text-red-40">{discountRate}%</span>
-                  <span className="text-gray-80 ml-[0.3rem]">{productOption.discountPrice?.toLocaleString()}원</span>
+                  <span className="ml-[0.3rem] text-gray-80">{productOption.discountPrice?.toLocaleString()}원</span>
                 </div>
               </div>
             ) : (
@@ -59,7 +59,7 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
       </div>
 
       {/* 카드 컨텐츠 */}
-      <div className="border-t border-b border-gray-20 py-[2.6rem] space-y-[1.6rem]">
+      <div className="space-y-[1.6rem] border-b border-t border-gray-20 py-[2.6rem]">
         {Object.entries(productDetailsEntry).map(([key, value]) => {
           return (
             <div key={key} className="flex justify-between">
@@ -71,7 +71,7 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
       </div>
 
       {/* 자세히 보기 */}
-      <button className="w-full flex justify-center items-center gap-[0.6rem] mt-[1.6rem]" onClick={handleDetailClick}>
+      <button className="mt-[1.6rem] flex w-full items-center justify-center gap-[0.6rem]" onClick={handleDetailClick}>
         <span className="text-body2Normal font-semibold text-gray-60">자세히 보기</span>
         <Icon_ChevronDown className="-rotate-90 fill-gray-60" width={18} height={18} />
       </button>

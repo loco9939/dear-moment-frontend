@@ -1,12 +1,4 @@
-import {
-  CameraType,
-  FilterType,
-  FilterValue,
-  PackageType,
-  RetouchStyle,
-  ShootingPeriod,
-  SortOption
-} from '../type';
+import { CameraType, FilterType, FilterValue, PackageType, RetouchStyle, ShootingPeriod, SortOption } from '../type';
 
 // 필터링 관련 상수와 타입 정의
 
@@ -94,6 +86,7 @@ export const PACKAGE_OPTIONS: PackageType[] = [
 
 // 패키지 표시 매핑
 export const PACKAGE_DISPLAY_MAP: Record<PackageType, string> = {
+  WEDDING_SHOP: '웨딩샵',
   HAIR_MAKEUP: '헤어/메이크업',
   DRESS: '드레스',
   MENS_SUIT: '남성용 수트',

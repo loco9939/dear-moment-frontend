@@ -71,8 +71,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
             </button>
           </div>
           <div className="mt-[1.4rem]">
-            <p className="text-body2Reading font-bold">{product?.description}</p>
-            <p className="text-body2Reading font-bold">{product?.detailedInfo}</p>
+            <p className="text-body2Reading font-bold">{studio?.studioIntro}</p>
           </div>
           <div className="mt-[1.4rem] flex items-center gap-[0.5rem]">
             <Icon_Calendar width={14} height={14} />

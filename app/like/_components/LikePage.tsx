@@ -1,6 +1,7 @@
 'use client';
 
 import Filtering from '@/(home)/_components/Filtering';
+import { useFilteringController } from '@/(home)/controllers/FilteringController';
 import { MainLikeProduct, MainLikeStudio } from '@/api/likes/types';
 import { useState } from 'react';
 import { useLikeController } from '../controllers/LikeController';
@@ -44,28 +45,57 @@ export default function ClientFilteringWrapper({
     setIsSelected(selected);
   };
 
+  const { open, filterType, selectedFilters, handleFilterClick, setOpen, setSelectedFilters, applyFiltersAndSearch } =
+    useFilteringController({
+      setMainProducts: products => setLikeProducts(products as MainLikeProduct[]),
+      setLoading,
+      setError,
+      fetchMainProducts: fetchLikeProductList,
+      type: 'likeProduct',
+    });
+
+  const {
+    open: studioOpen,
+    filterType: studioFilterType,
+    selectedFilters: studioSelectedFilters,
+    handleFilterClick: studioHandleFilterClick,
+    setOpen: studioSetOpen,
+    setSelectedFilters: studioSetSelectedFilters,
+    applyFiltersAndSearch: studioApplyFiltersAndSearch,
+  } = useFilteringController({
+    setMainProducts: products => setLikeStudios(products as MainLikeStudio[]),
+    setLoading,
+    setError,
+    fetchMainProducts: fetchLikeStudioList,
+    type: 'likeStudio',
+  });
+
   return (
     <>
       <Tab isSelected={isSelected} onSelect={handleTabSelected} />
       {isSelected === 'product' ? (
         <>
           <Filtering
-            type={'likeProduct'}
-            setMainProducts={products => setLikeProducts(products as MainLikeProduct[])}
-            setLoading={setLoading}
-            setError={setError}
-            fetchMainProducts={fetchLikeProductList}
+            open={open}
+            filterType={filterType}
+            selectedFilters={selectedFilters}
+            handleFilterClick={handleFilterClick}
+            setOpen={setOpen}
+            setSelectedFilters={setSelectedFilters}
+            applyFiltersAndSearch={applyFiltersAndSearch}
           />
           <ProductList likeProducts={likeProducts} loading={loading} error={error} />
         </>
       ) : (
         <>
           <Filtering
-            type={'likeStudio'}
-            setMainProducts={products => setLikeStudios(products as MainLikeStudio[])}
-            setLoading={setLoading}
-            setError={setError}
-            fetchMainProducts={fetchLikeStudioList}
+            open={studioOpen}
+            filterType={studioFilterType}
+            selectedFilters={studioSelectedFilters}
+            handleFilterClick={studioHandleFilterClick}
+            setOpen={studioSetOpen}
+            setSelectedFilters={studioSetSelectedFilters}
+            applyFiltersAndSearch={studioApplyFiltersAndSearch}
           />
           <StudioList likeStudios={likeStudios} loading={loading} error={error} />
         </>

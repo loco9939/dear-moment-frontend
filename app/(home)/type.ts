@@ -26,7 +26,15 @@ export type RetouchStyle =
   | 'NATURAL';
 
 // 패키지 타입
-export type PackageType = 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC';
+export type PackageType =
+  | 'WEDDING_SHOP'
+  | 'HAIR_MAKEUP'
+  | 'DRESS'
+  | 'MENS_SUIT'
+  | 'BOUQUET'
+  | 'VIDEO'
+  | 'STUDIO'
+  | 'ETC';
 
 // 가격 범위를 위한 인터페이스 정의
 /**
