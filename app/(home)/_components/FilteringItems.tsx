@@ -83,8 +83,8 @@ export const FilteringItems = ({
   // 필터 항목을 원하는 순서대로 정렬하기 위한 배열 정의
   const filterOrder: FilterType[] = [
     'sortBy',
-    'priceRange',
     'shootingPeriod',
+    'priceRange',
     'cameraType',
     'retouchStyle',
     'packageType',
