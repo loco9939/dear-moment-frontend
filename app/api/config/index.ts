@@ -17,7 +17,7 @@ export const API_CONFIG = {
   headers: {
     'Content-Type': 'application/json',
     Accept: 'application/json',
-    Authorization: typeof window !== 'undefined' ? `Bearer ${localStorage.getItem('accessToken')}` : '',
+    Authorization: `Bearer ${localStorage.getItem('accessToken') ?? ''}`,
   },
 
   // 재시도 설정
