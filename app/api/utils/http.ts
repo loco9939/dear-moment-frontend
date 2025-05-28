@@ -2,13 +2,18 @@
 
 import { API_CONFIG, createApiUrl } from '../config';
 import { handleHttpError } from '../error';
+import { getToken } from './getToken';
 
 /**
  * 기본 HTTP 요청 옵션
  */
-export const defaultRequestOptions: RequestInit = {
-  headers: API_CONFIG.headers,
-  // 타임아웃 설정은 AbortController로 구현 가능
+export const getDefaultRequestOptions = async (): Promise<RequestInit> => {
+  const token = await getToken();
+  const headers = {
+    ...API_CONFIG.headers,
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
+  return { headers };
 };
 
 /**
@@ -37,9 +42,10 @@ export async function get<T>(endpoint: string, options?: RequestInit): Promise<T
   const { controller, timeoutId } = createAbortController();
 
   try {
+    const requestOptions = await getDefaultRequestOptions();
     const response = await fetch(url, {
       method: 'GET',
-      ...defaultRequestOptions,
+      ...requestOptions,
       ...options,
       signal: controller.signal,
     });
@@ -71,9 +77,10 @@ export async function post<T>(endpoint: string, data: unknown, options?: Request
   const { controller, timeoutId } = createAbortController();
 
   try {
+    const requestOptions = await getDefaultRequestOptions();
     const response = await fetch(url, {
       method: 'POST',
-      ...defaultRequestOptions,
+      ...requestOptions,
       ...options,
       body: JSON.stringify(data),
       signal: controller.signal,
@@ -106,9 +113,10 @@ export async function patch<T>(endpoint: string, data: unknown, options?: Reques
   const { controller, timeoutId } = createAbortController();
 
   try {
+    const requestOptions = await getDefaultRequestOptions();
     const response = await fetch(url, {
       method: 'PATCH',
-      ...defaultRequestOptions,
+      ...requestOptions,
       ...options,
       body: JSON.stringify(data),
       signal: controller.signal,
@@ -141,9 +149,10 @@ export async function del(endpoint: string, data: unknown, options?: RequestInit
   const { controller, timeoutId } = createAbortController();
 
   try {
+    const requestOptions = await getDefaultRequestOptions();
     const response = await fetch(url, {
       method: 'DELETE',
-      ...defaultRequestOptions,
+      ...requestOptions,
       ...options,
       body: JSON.stringify(data),
       signal: controller.signal,

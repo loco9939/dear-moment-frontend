@@ -34,7 +34,6 @@ export const metadata: Metadata = {
   description: '웨딩 스냅 작가 플랫폼',
   appleWebApp: { title: 'Dear moment' },
   icons: [
-    { rel: 'icon', url: '/favicon-96x96.png', sizes: '96x96' },
     { rel: 'icon', url: '/favicon.svg' },
     { rel: 'shortcut icon', url: '/favicon.ico' },
     { rel: 'apple-touch-icon', sizes: '180x180', url: '/apple-touch-icon.png' },

@@ -2,7 +2,7 @@
 
 import Plus from '../../assets/icons/svg/plus_circle.svg';
 import Minus from '../../assets/icons/svg/minus_circle.svg';
-import { FormProvider } from 'react-hook-form';
+import { Controller, FormProvider } from 'react-hook-form';
 import { useStudio } from '../_hooks/studio/useStudio';
 import { PARTNERSHOPS_CATEGORY } from '../_constants/studio';
 
@@ -21,7 +21,15 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
     fields,
     append,
     remove,
+    control,
   } = studioMethods;
+
+  const formatPhone = (value: string) => {
+    const number = value.replace(/\D/g, '').slice(0, 11);
+    if (number.length < 4) return number;
+    if (number.length < 8) return `${number.slice(0, 3)}-${number.slice(3)}`;
+    return `${number.slice(0, 3)}-${number.slice(3, 7)}-${number.slice(7)}`;
+  };
 
   return (
     <FormProvider {...studioMethods}>
@@ -83,18 +91,28 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
             />
             {errors.name && <p className="text-red-500">필수 작성</p>}
           </div>
-          <div>
-            <label className="mb-1 block font-medium">
-              연락처 <span className="text-[#FF0000]">*</span>
-            </label>
-            <input
-              type="text"
-              placeholder="'010-0000-0000' 형태로 작성 해주세요."
-              {...register('contact', { required: true })}
-              className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
-            />
-            {errors.contact && <p className="text-red-500">필수 작성</p>}
-          </div>
+          <Controller
+            name="contact"
+            control={control}
+            rules={{ required: '필수 입력' }}
+            render={({ field }) => (
+              <div>
+                <label className="mb-1 block font-medium">
+                  연락처 (휴대전화) <span className="text-[#FF0000]">*</span>
+                </label>
+                <input
+                  {...field}
+                  type="tel"
+                  inputMode="numeric"
+                  maxLength={13}
+                  placeholder="010-0000-0000 형태로 작성해주세요."
+                  onChange={e => field.onChange(formatPhone(e.target.value))}
+                  className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
+                />
+                {errors.contact && <p className="text-red-500">010-0000-0000 형태로 작성해주세요.</p>}
+              </div>
+            )}
+          />
         </div>
 
         {/* 소개글 */}

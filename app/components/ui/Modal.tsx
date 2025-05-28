@@ -46,26 +46,23 @@ interface ModalProps {
 export const Modal = ({ isOpen, title, description, primaryButton, secondaryButton }: ModalProps) => {
   return (
     <Dialog open={isOpen}>
-      <DialogContent className="w-[30rem] min-h-[20rem] px-[2rem] pt-[2.6rem] pb-[2.2rem] space-y-[1.4rem] bg-common-0 rounded-[0.2rem]">
+      <DialogContent className="min-h-[20rem] w-[30rem] space-y-[1.4rem] rounded-[0.2rem] bg-common-0 px-[2rem] pb-[2.2rem] pt-[2.6rem]">
         <DialogHeader className="space-y-[1.4rem]">
           <DialogTitle className="text-subtitle1 font-bold text-gray-95">{title}</DialogTitle>
           <DialogDescription className="min-h-[5rem] text-body2Reading font-medium text-gray-60">
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="flex gap-[1.2rem]">
+        <div className="flex gap-[1.2rem] text-body2Reading font-semibold text-gray-10">
           {secondaryButton && (
-            <button
-              onClick={secondaryButton.onClick}
-              className="w-1/2 h-[4.4rem] bg-gray-30 text-gray-95 rounded-[0.2rem]"
-            >
+            <button onClick={secondaryButton.onClick} className="h-[4.4rem] w-1/2 rounded-[0.2rem] bg-gray-80">
               {secondaryButton.text}
             </button>
           )}
           {primaryButton && (
             <button
               onClick={primaryButton.onClick}
-              className={`${secondaryButton ? 'w-1/2' : 'w-full'} h-[4.4rem] bg-gray-95 text-common-0 rounded-[0.2rem]`}
+              className={`${secondaryButton ? 'w-1/2' : 'w-full'} h-[4.4rem] rounded-[0.2rem] bg-gray-95 text-common-0`}
             >
               {primaryButton.text}
             </button>

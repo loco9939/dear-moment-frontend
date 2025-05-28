@@ -1,12 +1,33 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import { getMyInfo } from '@/my/_services/my';
+import { setStorage } from '@/utils/localStorage';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function LoginSuccessPageUI() {
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const checkUserAdditionalInfo = async () => {
+    try {
+      const response = await getMyInfo();
+
+      const timer = setTimeout(() => {
+        // skip 했거나 이미 회원정보 입력했으면 메인 페이지로 이동
+        if (response.data.addInfoIsSkip) {
+          router.push('/');
+        } else {
+          router.push('/onboarding');
+        }
+      }, 2000);
+
+      return () => clearTimeout(timer);
+    } catch (error) {
+      console.error('내 정보 조회 실패:', error);
+    }
+  };
 
   useEffect(() => {
     // URL에서 accessToken 추출
@@ -14,7 +35,7 @@ export default function LoginSuccessPageUI() {
 
     if (accessToken) {
       // accessToken을 localStorage에 저장
-      localStorage.setItem('accessToken', accessToken);
+      setStorage('accessToken', accessToken);
 
       // accessToken을 쿠키에 저장
       // path=/: 쿠키가 전체 사이트에서 접근 가능하도록 설정
@@ -24,12 +45,8 @@ export default function LoginSuccessPageUI() {
       document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; secure; samesite=strict`;
     }
 
-    // 2초 후 메인 페이지로 리다이렉트
-    const timer = setTimeout(() => {
-      router.push('/');
-    }, 2000);
-
-    return () => clearTimeout(timer);
+    // NOTE: 내 정보 조회하여 addInfoIsSkip 값을 기반으로 회원정보 입력 페이지 이동 결정
+    checkUserAdditionalInfo();
   }, [router, searchParams]);
 
   return (

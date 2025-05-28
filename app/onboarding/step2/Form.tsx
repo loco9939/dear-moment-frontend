@@ -41,6 +41,7 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
         isStudio: false,
         birthDate: `${selectedItem.value.toString()}-01-01`,
         sex: (gender === '남' ? 'MALE' : 'FEMALE') as Sex,
+        addInfoIsSkip: false, // TODO: skip 버튼 추가되면 반영
       };
       const response = await patchUser(data);
       if (response.success) {
@@ -53,12 +54,12 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
   };
   return (
     <div className="mt-[1.5rem]">
-      <p className="text-label1Reading font-medium text-gray-40 mb-[0.8rem]">
+      <p className="mb-[0.8rem] text-label1Reading font-medium text-gray-40">
         (선택) 이용자 특성별 맞춤서 분석을 통해 <br /> 더 나은 서비스 경험을 제공하기 위한 정보로, 이후로 공개되지
         않아요.
       </p>
 
-      <div className="flex items-center gap-[1.2rem] mt-[3rem]">
+      <div className="mt-[3rem] flex items-center gap-[1.2rem]">
         <Dropbox
           className="flex-1 border-gray-30"
           placeholder="태어난 연도"
@@ -68,7 +69,7 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
         />
         <div className="flex gap-[1.2rem] text-body2Normal font-semibold">
           <button
-            className={`w-[5rem] h-[5rem] rounded-[0.2rem] flex items-center justify-center ${
+            className={`flex h-[5rem] w-[5rem] items-center justify-center rounded-[0.2rem] ${
               gender === '남' ? 'bg-gray-20 text-common-100' : 'bg-gray-10 text-gray-50'
             }`}
             onClick={() => handleGenderSelect('남')}
@@ -76,7 +77,7 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
             남
           </button>
           <button
-            className={`w-[5rem] h-[5rem] rounded-[0.2rem] flex items-center justify-center ${
+            className={`flex h-[5rem] w-[5rem] items-center justify-center rounded-[0.2rem] ${
               gender === '여' ? 'bg-gray-20 text-common-100' : 'bg-gray-10 text-gray-50'
             }`}
             onClick={() => handleGenderSelect('여')}
@@ -85,10 +86,10 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
           </button>
         </div>
       </div>
-      <div className="container fixed bottom-0 left-0 right-0 px-[2rem] py-[1rem] bg-white">
+      <div className="container fixed bottom-0 left-0 right-0 bg-white px-[2rem] py-[1rem]">
         <button
           disabled={!gender || !selectedItem}
-          className="w-full h-[5.6rem] text-body1Normal font-semibold text-gray-10 bg-red-40 rounded-[0.4rem] disabled:bg-gray-80 disabled:text-gray-50"
+          className="h-[5.6rem] w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10 disabled:bg-gray-80 disabled:text-gray-50"
           onClick={handleNextClick}
         >
           완료

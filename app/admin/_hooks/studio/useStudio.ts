@@ -101,5 +101,6 @@ export const useStudio = (studioId: string | null) => {
     fields,
     append,
     remove,
+    control,
   };
 };

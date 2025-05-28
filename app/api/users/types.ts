@@ -5,6 +5,7 @@ export interface patchUserReq {
   isStudio: boolean;
   birthDate: string;
   sex: Sex;
+  addInfoIsSkip: boolean;
 }
 
 export interface UserRes {

@@ -6,10 +6,13 @@ import { Product } from '@/api/products/types';
 import { Icon_Calendar, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import Icon_Camera from '@/assets/icons/Icon_Camera';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useProductDetailController } from '../controllers/productDetailController';
 import { ImageViewerModal } from './ImageViewerModal';
 import { InquiryBottomSheet } from './InquiryBottomSheet';
 import ProductTabs from './ProductTabs';
+import LoginConfirmModal from '@/auth/LoginConfirmModal';
+import { useState } from 'react';
 
 interface ProductDetailProps {
   initProduct: Product | null;
@@ -17,6 +20,7 @@ interface ProductDetailProps {
 }
 
 export default function ProductDetail({ initProduct, initialError }: ProductDetailProps) {
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const {
     product,
     isLiked,
@@ -31,6 +35,22 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
   const portfolioImages = product?.subImages.map(img => img.url) ?? [];
 
   const studio = product?.studio;
+
+  // 로그인 여부 확인 후 좋아요 또는 문의하기 진행
+  const handleLoginComfirm = (type: 'like' | 'inquiry') => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+      setShowLoginModal(true);
+      return;
+    }
+    if (type === 'like') {
+      // 좋아요
+      onClickHeart();
+    } else {
+      // 문의하기
+      setIsOpenInquiry(true);
+    }
+  };
 
   if (initialError) {
     return (
@@ -66,7 +86,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
                 ))}
               </div>
             </div>
-            <button className="ml-auto" onClick={onClickHeart}>
+            <button className="ml-auto" onClick={() => handleLoginComfirm('like')}>
               {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
             </button>
           </div>
@@ -135,18 +155,21 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
         <div className="mb-[1.2rem] flex h-[5.6rem] items-center justify-between gap-[1rem] px-[2rem]">
           <button
             className="bg-red-0 flex h-full w-[6.8rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40"
-            onClick={onClickHeart}
+            onClick={() => handleLoginComfirm('like')}
           >
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
           <button
             className="h-full w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10"
-            onClick={() => setIsOpenInquiry(true)}
+            onClick={() => handleLoginComfirm('inquiry')}
           >
             문의하기
           </button>
         </div>
       </div>
+
+      {/* 로그인 요청 모달 */}
+      {showLoginModal && <LoginConfirmModal onClose={() => setShowLoginModal(false)} />}
 
       {/* 문의하기 Popup */}
       <InquiryBottomSheet

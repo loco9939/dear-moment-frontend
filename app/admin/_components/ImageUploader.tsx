@@ -5,7 +5,8 @@ import { useFormContext } from 'react-hook-form';
 import { ImageType } from '../_types/product';
 import Image from 'next/image';
 
-const MAX_IMAGE_COUNT = 4;
+const MAX_SUB_IMAGE_COUNT = 4;
+const MAX_ADD_IMAGE_COUNT = 5;
 
 const ImageUploader = () => {
   const { watch, setValue } = useFormContext();
@@ -20,8 +21,12 @@ const ImageUploader = () => {
   const subInputRef = useRef<HTMLInputElement>(null);
   const addInputRef = useRef<HTMLInputElement>(null);
 
-  const showLimitAlert = () => {
-    alert(`최대 ${MAX_IMAGE_COUNT}장까지 업로드할 수 있습니다.`);
+  const showSubImageLimitAlert = () => {
+    alert(`서브 이미지는 최대 ${MAX_SUB_IMAGE_COUNT}장까지 업로드할 수 있습니다.`);
+  };
+
+  const showAddImageLimitAlert = () => {
+    alert(`추가 이미지는 최대 ${MAX_ADD_IMAGE_COUNT}장까지 업로드할 수 있습니다.`);
   };
 
   const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +42,13 @@ const ImageUploader = () => {
   const handleSubImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
+
+    const remaining = MAX_SUB_IMAGE_COUNT - subImageFiles.length;
+    if (remaining <= 0) {
+      showSubImageLimitAlert();
+      e.target.value = '';
+      return;
+    }
 
     const updatedSubImages = [...subImages];
     const updatedSubImageFiles = [...subImageFiles];
@@ -60,7 +72,7 @@ const ImageUploader = () => {
       }
     }
 
-    for (let i = 0; i < MAX_IMAGE_COUNT; i++) {
+    for (let i = 0; i < MAX_SUB_IMAGE_COUNT; i++) {
       if (updatedSubImages[i] === undefined && files.length > 0) {
         const file = files.shift();
         if (!file) break;
@@ -83,9 +95,9 @@ const ImageUploader = () => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    const remaining = MAX_IMAGE_COUNT - additionalImageFiles.length;
+    const remaining = MAX_ADD_IMAGE_COUNT - additionalImageFiles.length;
     if (remaining <= 0) {
-      showLimitAlert();
+      showAddImageLimitAlert();
       e.target.value = '';
       return;
     }
