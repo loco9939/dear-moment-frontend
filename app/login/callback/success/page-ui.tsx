@@ -47,6 +47,7 @@ export default function LoginSuccessPageUI() {
 
     // NOTE: 내 정보 조회하여 addInfoIsSkip 값을 기반으로 회원정보 입력 페이지 이동 결정
     checkUserAdditionalInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router, searchParams]);
 
   return (

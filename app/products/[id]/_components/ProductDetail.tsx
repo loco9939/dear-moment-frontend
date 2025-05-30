@@ -5,14 +5,13 @@ import { CameraType, RetouchStyle } from '@/(home)/type';
 import { Product } from '@/api/products/types';
 import { Icon_Calendar, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import Icon_Camera from '@/assets/icons/Icon_Camera';
+import LoginConfirmModal from '@/auth/LoginConfirmModal';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useProductDetailController } from '../controllers/productDetailController';
 import { ImageViewerModal } from './ImageViewerModal';
 import { InquiryBottomSheet } from './InquiryBottomSheet';
 import ProductTabs from './ProductTabs';
-import LoginConfirmModal from '@/auth/LoginConfirmModal';
-import { useState } from 'react';
 
 interface ProductDetailProps {
   initProduct: Product | null;

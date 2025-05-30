@@ -117,6 +117,7 @@ export default function ProductList({ mainProducts = [], loading, error, filterO
         observer.unobserve(observerTarget.current);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading, loadingMore, hasMore]);
 
   return (
