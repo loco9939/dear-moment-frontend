@@ -22,7 +22,7 @@ export const useStudio = (studioId: string | null) => {
   const methods = useForm<StudioFormDataType>({
     defaultValues: {
       status: 'ACTIVE',
-      isCasted: 'true',
+      isCasted: true,
       name: '',
       contact: '',
       studioIntro: '',
@@ -77,6 +77,7 @@ export const useStudio = (studioId: string | null) => {
         router.push(`/admin/studio?studioId=${studioData.data.id}`);
       } catch (error) {
         console.error(error);
+        alert('스튜디오 등록에 실패했습니다. 필수값 입력 여부를 확인해주세요.');
       }
     } else {
       try {
@@ -90,6 +91,7 @@ export const useStudio = (studioId: string | null) => {
         router.push(`/admin/studio?studioId=${studioIdData.data.id}`);
       } catch (error) {
         console.error(error);
+        alert('스튜디오 수정에 실패했습니다. 필수값 입력 여부를 확인해주세요.');
       }
     }
   };

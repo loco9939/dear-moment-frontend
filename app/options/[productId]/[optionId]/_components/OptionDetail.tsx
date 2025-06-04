@@ -2,9 +2,10 @@
 
 import { Product, ProductOption } from '@/api/products/types';
 import { Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
-import { useProductOptionController } from '../controllers/productOptionController';
 import LoginConfirmModal from '@/auth/LoginConfirmModal';
 import { useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import { useProductOptionController } from '../controllers/productOptionController';
 interface OptionDetailProps {
   initialProduct: Product | null;
   initialProductOption: ProductOption | null;
@@ -92,10 +93,8 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
         <div className="my-[4.3rem] h-[0.8rem] bg-gray-10" />
 
         {/* 상품 설명 */}
-        <div>
-          <p className="text-body3Normal text-gray-80">
-            {initialProductOption.description || initialProduct.description}
-          </p>
+        <div className="whitespace-pre-line">
+          <ReactMarkdown>{initialProductOption.description || initialProduct.description}</ReactMarkdown>
         </div>
       </div>
 

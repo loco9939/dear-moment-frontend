@@ -5,6 +5,7 @@ import { ProductFormDataType } from '../_types/product';
 import { PARTNERSHOPS_CATEGORY } from '../_constants/studio';
 import { discountPercent } from '../_utils/discountPercent';
 import { useEffect, useState } from 'react';
+import RequirdField from './RequirdField';
 
 interface ProductSingleOptionProps {
   index: number;
@@ -99,9 +100,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       {/* 옵션 종류 + 옵션명 */}
       <div className="grid grid-cols-3 items-center gap-4">
         <div className="flex items-center gap-4">
-          <label className="font-medium">
-            옵션 종류 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>옵션 종류</RequirdField>
           <label className="inline-flex items-center gap-1">
             <input value="SINGLE" {...register(`options.${index}.optionType`, { required: true })} type="radio" />
             단품
@@ -112,9 +111,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
           </label>
         </div>
         <div className="flex items-center gap-4">
-          <label className="w-24 shrink-0 font-medium">
-            옵션명 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField className={'shrink-0'}>옵션명</RequirdField>
           <input
             {...register(`options.${index}.name`, { required: true })}
             type="text"
@@ -125,10 +122,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
 
       {/* 패키지 제휴 업체 */}
       <div>
-        <label className="mb-2 block font-medium">
-          패키지 제휴 업체 <span className="text-[#FF0000]">*</span>
-        </label>
-
+        <RequirdField>패키지 제휴 업체</RequirdField>
         {partnerShopFields.map((field, partnerShopIndex) => (
           <div key={index} className="mb-2 grid grid-cols-4 items-center gap-2">
             <select
@@ -182,9 +176,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
 
       {/* 할인 여부 */}
       <div className="flex items-center gap-4">
-        <label className="font-medium">
-          할인 여부 <span className="text-[#FF0000]">*</span>
-        </label>
+        <RequirdField>할인 여부</RequirdField>
         <label className="inline-flex items-center gap-1">
           <input value="true" type="radio" {...register(`options.${index}.discountAvailable`, { required: true })} />
           할인 있음
@@ -198,9 +190,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       {/* 가격 정보 */}
       <div className="grid grid-cols-3 items-center gap-4">
         <div>
-          <label className="font-medium">
-            원 판매가 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>원 판매가</RequirdField>
           <div className="flex items-center gap-1">
             <input
               {...register(`options.${index}.originalPrice`, { required: true, valueAsNumber: true })}
@@ -227,9 +217,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       {/* 촬영 장소 / 시간 */}
       <div className="grid grid-cols-3 items-center gap-4">
         <div>
-          <label className="font-medium">
-            촬영 장소 수 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>촬영 장소 수</RequirdField>
           <input
             {...register(`options.${index}.shootingLocationCount`, { required: true, valueAsNumber: true })}
             type="number"
@@ -237,22 +225,22 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
           />
         </div>
         <div>
-          <label className="font-medium">
-            촬영 시간 <span className="text-[#FF0000]">*</span>
-          </label>
-          <div className="flex gap-2">
+          <RequirdField>촬영 시간</RequirdField>
+          <div className="flex items-center gap-2">
             <input
               {...register(`options.${index}.shootingHours`, { required: true, valueAsNumber: true })}
               type="number"
               className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
               placeholder="시간"
             />
+            <span>시간</span>
             <input
               {...register(`options.${index}.shootingMinutes`, { required: true, valueAsNumber: true })}
               type="number"
               className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
               placeholder="분"
             />
+            <span>분</span>
           </div>
         </div>
       </div>
@@ -260,9 +248,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       {/* 원본 / 보정본 */}
       <div className="grid grid-cols-3 items-center gap-4">
         <div className="flex gap-4">
-          <label className="font-medium">
-            원본 제공 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>원본 제공</RequirdField>
           <div className="flex gap-4">
             <input
               {...register(`options.${index}.originalProvided`, { required: true })}
@@ -281,9 +267,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
           </div>
         </div>
         <div>
-          <label className="font-medium">
-            보정본 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>보정본</RequirdField>
           <div className="flex items-center gap-1">
             <input
               {...register(`options.${index}.retouchedCount`, { required: true, valueAsNumber: true })}
@@ -298,9 +282,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       {/* 의상 수 */}
       <div className="grid grid-cols-3 items-center gap-4">
         <div>
-          <label className="font-medium">
-            의상 수 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>의상 수</RequirdField>
           <div className="flex items-center gap-1">
             <input
               {...register(`options.${index}.costumeCount`, { required: true, valueAsNumber: true })}

@@ -6,6 +6,7 @@ import { useProduct } from '../_hooks/product/useProduct';
 import ProductPackageOption from '@/admin/_components/ProductPackageOption';
 import ProductSingleOption from '@/admin/_components/ProductSingleOption';
 import ImageUploader from './ImageUploader';
+import RequirdField from './RequirdField';
 
 interface ProductFormProps {
   studioId: string | null;
@@ -36,9 +37,7 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
           {/* 상품 유형 + 촬영 장소 */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>
-              <label className="mb-1 block">
-                상품 유형 <span className="text-[#FF0000]">*</span>
-              </label>
+              <RequirdField>상품 유형</RequirdField>
               <select
                 {...register('productType', { required: true })}
                 className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
@@ -47,9 +46,7 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
               </select>
             </div>
             <div>
-              <label className="mb-1 block">
-                촬영 장소 <span className="text-[#FF0000]">*</span>
-              </label>
+              <RequirdField>촬영 장소</RequirdField>
               <select
                 {...register('shootingPlace', { required: true })}
                 className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
@@ -61,9 +58,7 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
 
           {/* 촬영 가능 시기 */}
           <div>
-            <label className="mb-1 block">
-              촬영 가능 시기 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>촬영 가능 시기</RequirdField>
             <div className="flex flex-wrap gap-4">
               {Object.entries(AVAILBLE_PREIODS).map(([label, value], index) => {
                 return (
@@ -84,9 +79,7 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
 
           {/* 카메라 종류 */}
           <div>
-            <label className="mb-1 block">
-              카메라 종류 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>카메라 종류</RequirdField>
             <div className="flex gap-4">
               {Object.entries(CAMERATYPE).map(([label, value], index) => {
                 return (
@@ -107,9 +100,7 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
 
           {/* 보정 스타일 */}
           <div>
-            <label className="mb-1 block">
-              보정 스타일 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>보정 스타일</RequirdField>
             <div className="grid grid-cols-4 gap-2 md:grid-cols-5">
               {Object.entries(CORRECTION_STYLES).map(([label, value], index) => {
                 return (

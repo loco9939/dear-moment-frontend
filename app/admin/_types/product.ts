@@ -12,12 +12,12 @@ interface PartnerShopType {
   link: string;
 }
 
-interface ProductOptionType {
+export interface ProductOptionType {
   optionId: number | null;
   productId?: number;
   name: string;
   optionType: 'SINGLE' | 'PACKAGE';
-  discountAvailable: boolean;
+  discountAvailable: boolean | string;
   originalPrice: number;
   discountPrice?: number;
   description?: string;
@@ -27,7 +27,7 @@ interface ProductOptionType {
   shootingMinutes: number;
   retouchedCount: number;
   partnerShops?: PartnerShopType[];
-  originalProvided?: boolean;
+  originalProvided?: boolean | string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -35,8 +35,8 @@ interface ProductOptionType {
 export interface ProductFormDataType {
   productType: 'WEDDING_SNAP';
   shootingPlace: 'JEJU';
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   availableSeasons: (
     | 'YEAR_2025_FIRST_HALF'
     | 'YEAR_2025_SECOND_HALF'
@@ -45,8 +45,8 @@ export interface ProductFormDataType {
   )[];
   cameraTypes: ('DIGITAL' | 'FILM')[];
   retouchStyles: ('MODERN' | 'CHIC' | 'CALM' | 'VINTAGE' | 'FAIRYTALE' | 'WARM' | 'DREAMY' | 'BRIGHT' | 'NATURAL')[];
-  detailedInfo: string;
-  contactInfo: string;
+  detailedInfo?: string;
+  contactInfo?: string;
   options: ProductOptionType[];
 
   productId?: number;

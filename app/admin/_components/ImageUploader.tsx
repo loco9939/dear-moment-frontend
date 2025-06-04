@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ImageType } from '../_types/product';
 import Image from 'next/image';
+import RequirdField from './RequirdField';
 
 const MAX_SUB_IMAGE_COUNT = 4;
 const MAX_ADD_IMAGE_COUNT = 5;
@@ -154,9 +155,7 @@ const ImageUploader = () => {
     <>
       {/* 대표 이미지 */}
       <div className="mb-6">
-        <label className="mb-1 block">
-          대표 이미지 <span className="text-[#FF0000]">*</span>
-        </label>
+        <RequirdField>대표 이미지 (1장)</RequirdField>
         <input type="file" onChange={handleMainImageChange} ref={mainInputRef} className="hidden" accept="image/*" />
         <label
           onClick={() => mainInputRef.current?.click()}
@@ -180,9 +179,7 @@ const ImageUploader = () => {
 
       {/* 서브 이미지 */}
       <div className="mb-6">
-        <label className="mb-1 block">
-          서브 이미지 <span className="text-[#FF0000]">*</span>
-        </label>
+        <RequirdField>서브 이미지 (4장)</RequirdField>
         <input
           type="file"
           multiple
@@ -224,7 +221,7 @@ const ImageUploader = () => {
 
       {/* 추가 이미지 */}
       <div className="mb-6">
-        <label className="mb-1 block">추가 이미지</label>
+        <label className="mb-1 block">추가 이미지 (5장)</label>
         <input
           type="file"
           multiple

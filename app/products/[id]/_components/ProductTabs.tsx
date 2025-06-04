@@ -4,6 +4,7 @@ import { PACKAGE_DISPLAY_MAP } from '@/(home)/models/FilteringModel';
 import { PackageType } from '@/(home)/type';
 import { Product, ProductOption } from '@/api/products/types';
 import { useRef, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { ProductOptionCard } from './ProductOptionCard';
 
 interface ProductTabsProps {
@@ -43,6 +44,8 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
       });
     }
   };
+
+  console.log('===studio: ', studio);
 
   return (
     <section className="mt-[4.5rem]">
@@ -91,8 +94,8 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
           <p className="text-body2Normal font-semibold text-gray-95">제휴샵 안내</p>
           <ul className="my-[3rem] list-inside">
             {studio?.partnerShops?.map((partnerShop, index) => (
-              <li key={index} className="flex items-center justify-start gap-[1rem]">
-                <div className="w-[4.8rem] rounded-[2rem] bg-red-20 px-[0.8rem] py-[0.45rem] text-center text-label2 font-semibold text-gray-80">
+              <li key={index} className="mb-[1rem] flex items-center justify-start gap-[1rem]">
+                <div className="whitespace-nowrap rounded-[2rem] bg-red-20 px-[0.8rem] py-[0.45rem] text-center text-label2 font-semibold text-gray-80">
                   {PACKAGE_DISPLAY_MAP[partnerShop.category as PackageType]}
                 </div>
                 <span className="text-label1Reading font-semibold text-gray-70">{partnerShop.name}</span>
@@ -102,15 +105,15 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
         </div>
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">필독 안내사항</p>
-          <ul className="my-[3rem] list-inside list-disc">
-            <li>{studio?.reservationNotice}</li>
-          </ul>
+          <div className="my-[3rem] whitespace-pre-line">
+            <ReactMarkdown>{studio?.reservationNotice || ''}</ReactMarkdown>
+          </div>
         </div>
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">취소 및 환불 규정</p>
-          <ul className="my-[3rem] list-inside list-disc">
-            <li>{studio?.cancellationPolicy}</li>
-          </ul>
+          <div className="my-[3rem] whitespace-pre-line">
+            <ReactMarkdown>{studio?.cancellationPolicy || ''}</ReactMarkdown>
+          </div>
         </div>
       </div>
     </section>

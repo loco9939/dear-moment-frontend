@@ -5,6 +5,7 @@ import Minus from '../../assets/icons/svg/minus_circle.svg';
 import { Controller, FormProvider } from 'react-hook-form';
 import { useStudio } from '../_hooks/studio/useStudio';
 import { PARTNERSHOPS_CATEGORY } from '../_constants/studio';
+import RequirdField from './RequirdField';
 
 interface StudioFormProps {
   studioId: string | null;
@@ -36,9 +37,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
       <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6 p-6 text-[1.2rem]">
         {/* 상태 */}
         <div>
-          <label className="mb-1 block font-medium">
-            상태 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>상태</RequirdField>
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-1">
               <input type="radio" value="ACTIVE" {...register('status', { required: true })} />
@@ -54,24 +53,14 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
 
         {/* 영업 스튜디오 */}
         <div>
-          <label className="mb-1 block font-medium">
-            영업 스튜디오 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>영업 스튜디오</RequirdField>
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                value="true"
-                {...register('isCasted', { required: true, setValueAs: v => (v === 'true' ? true : false) })}
-              />
+              <input type="radio" value="true" {...register('isCasted', { required: true })} />
               <span>해당</span>
             </label>
             <label className="flex items-center gap-1">
-              <input
-                type="radio"
-                value="false"
-                {...register('isCasted', { required: true, setValueAs: v => (v === 'true' ? true : false) })}
-              />
+              <input type="radio" value="false" {...register('isCasted', { required: true })} />
               <span>비해당</span>
             </label>
           </div>
@@ -81,9 +70,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
         {/* 스튜디오명 & 연락처 */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block font-medium">
-              스튜디오명 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>스튜디오명</RequirdField>
             <input
               type="text"
               {...register('name', { required: true })}
@@ -97,9 +84,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
             rules={{ required: '필수 입력' }}
             render={({ field }) => (
               <div>
-                <label className="mb-1 block font-medium">
-                  연락처 (휴대전화) <span className="text-[#FF0000]">*</span>
-                </label>
+                <RequirdField>연락처 (휴대전화)</RequirdField>
                 <input
                   {...field}
                   type="tel"
@@ -117,9 +102,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
 
         {/* 소개글 */}
         <div>
-          <label className="mb-1 block font-medium">
-            스튜디오 소개글 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>스튜디오 소개글</RequirdField>
           <textarea
             {...register('studioIntro', { required: true, maxLength: 100 })}
             className="h-28 w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
@@ -127,9 +110,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
           {errors.studioIntro && <p className="text-red-500">필수 작성</p>}
         </div>
         <div>
-          <label className="mb-1 block font-medium">
-            소속 작가 소개글 <span className="text-[#FF0000]">*</span>
-          </label>
+          <RequirdField>소속 작가 소개글</RequirdField>
           <textarea
             {...register('artistsIntro', { required: true })}
             className="h-28 w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
@@ -140,9 +121,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
         {/* 링크 */}
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
-            <label className="mb-1 block font-medium">
-              인스타그램 링크 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>인스타그램 링크</RequirdField>
             <input
               type="text"
               {...register('instagramUrl', { required: true })}
@@ -151,9 +130,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
             {errors.instagramUrl && <p className="text-red-500">필수 작성</p>}
           </div>
           <div>
-            <label className="mb-1 block font-medium">
-              카카오톡 채널 링크 <span className="text-[#FF0000]">*</span>
-            </label>
+            <RequirdField>카카오톡 채널 링크</RequirdField>
             <input
               type="text"
               {...register('kakaoChannelUrl', { required: true })}

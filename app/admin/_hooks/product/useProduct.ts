@@ -1,9 +1,8 @@
 'use client';
 
-import { ImageType } from './../../_types/product';
+import { ImageType, ProductOptionType, ProductFormDataType } from '@/admin/_types/product';
 import { getMineProduct, getProduct, patchProduct, postProduct } from '@/admin/_services/product';
 import { productIdStore } from '@/admin/_stores/productIdStore';
-import { ProductFormDataType } from '@/admin/_types/product';
 import { getStorage } from '@/utils/localStorage';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -77,6 +76,11 @@ export const useProduct = (studioId: string | null, productId: string | undefine
           ...mine,
           subImages: mine.subImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
           additionalImages: mine.additionalImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+          options: mine.data.options.map((option: ProductOptionType) => ({
+            ...option,
+            discountAvailable: option.discountAvailable ? 'true' : 'false',
+            originalProvided: option.originalProvided ? 'true' : 'false',
+          })),
         });
       }
     } else {
@@ -87,9 +91,15 @@ export const useProduct = (studioId: string | null, productId: string | undefine
           subImages: responseData.data.subImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
           additionalImages:
             responseData.data.additionalImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+          options: responseData.data.options.map((option: ProductOptionType) => ({
+            ...option,
+            discountAvailable: option.discountAvailable ? 'true' : 'false',
+            originalProvided: option.originalProvided ? 'true' : 'false',
+          })),
         });
       } catch (error) {
         console.error('상품 불러오기 실패:', error);
+        alert('상품 정보를 불러오는 데 실패했습니다.');
       }
     }
   }, [productId, reset, token, setProductId, router, studioId]);
@@ -115,14 +125,20 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         availableSeasons: data.availableSeasons,
         productType: data.productType,
         retouchStyles: data.retouchStyles,
-        contactInfo: 'test contactInfo',
+        // contactInfo: 'test contactInfo',
         studioId: Number(studioId),
         cameraTypes: data.cameraTypes,
-        title: 'test',
-        description: 'test 설명',
-        detailedInfo: 'test 상세 설명',
+        // title: 'test',
+        // description: 'test 설명',
+        // detailedInfo: 'test 상세 설명',
         options: data.options.map(option => ({
           ...option,
+          discountAvailable: option.discountAvailable === 'true' ? true : false,
+          originalProvided: option.originalProvided === 'true' ? true : false,
+          discountPrice:
+            option.discountPrice === 0 || option.discountAvailable === 'false'
+              ? option.originalPrice
+              : option.discountPrice,
           partnerShops: option.optionType === 'SINGLE' ? [] : option.partnerShops,
         })),
       };
@@ -139,6 +155,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         router.push(`/admin/product?studioId=${studioId}&productId=${productData.data.productId}`);
       } catch (error) {
         console.error(error, '상품 등록 실패');
+        alert('상품 등록에 실패했습니다. 필수 항목을 모두 입력했는지 확인해주세요.');
       }
     } else {
       const subImagesFinal = data.subImages!.flatMap((img, index) => {
@@ -184,19 +201,25 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         studioId: Number(studioId),
         productType: data.productType,
         shootingPlace: data.shootingPlace,
-        title: 'test',
-        description: 'test 설명',
-        detailedInfo: 'test 상세 설명',
+        // title: 'test',
+        // description: 'test 설명',
+        // detailedInfo: 'test 상세 설명',
         availableSeasons: data.availableSeasons,
         cameraTypes: data.cameraTypes,
         retouchStyles: data.retouchStyles,
-        contactInfo: '010-1234-5678',
+        // contactInfo: '010-1234-5678',
         subImagesFinal,
         additionalImagesFinal,
       };
 
       const optionsInfo = data.options.map(option => ({
         ...option,
+        discountAvailable: option.discountAvailable === 'true' ? true : false,
+        originalProvided: option.originalProvided === 'true' ? true : false,
+        discountPrice:
+          option.discountPrice === 0 || option.discountAvailable === 'false'
+            ? option.originalPrice
+            : option.discountPrice,
         partnerShops: option.optionType === 'SINGLE' ? [] : option.partnerShops,
       }));
 
@@ -217,9 +240,20 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         });
 
         alert('상품 수정에 성공했습니다.');
-        reset(updatedProduct.data);
+        reset({
+          ...updatedProduct.data,
+          subImages: updatedProduct.data.subImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+          additionalImages:
+            updatedProduct.data.additionalImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+          options: updatedProduct.data.options?.map((option: ProductOptionType) => ({
+            ...option,
+            discountAvailable: option.discountAvailable ? 'true' : 'false',
+            originalProvided: option.originalProvided ? 'true' : 'false',
+          })),
+        });
       } catch (error) {
         console.error('상품 수정 실패:', error);
+        alert('상품 수정에 실패했습니다. 필수 항목을 모두 입력했는지 확인해주세요.');
       }
     }
   };
