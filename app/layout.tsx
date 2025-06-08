@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Analytics from './components/Analytics';
+import { Suspense } from 'react';
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -55,7 +56,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className="font-sans">
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        {process.env.NODE_ENV === 'production' && (
+          <Suspense fallback={<></>}>
+            <Analytics />
+          </Suspense>
+        )}
         {children}
         <div id="modal"></div>
       </body>
