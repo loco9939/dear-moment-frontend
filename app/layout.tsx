@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next';
+import Analytics from './components/Analytics';
 import localFont from 'next/font/local';
 import './globals.css';
 
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
       <body className="font-sans">
+        {process.env.NODE_ENV === 'production' && <Analytics />}
         {children}
         <div id="modal"></div>
       </body>

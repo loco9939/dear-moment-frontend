@@ -14,6 +14,7 @@ interface ClientFilteringWrapperProps {
   initialLikeStudios: MainLikeStudio[];
   initialError: string | null;
   initialLoading: boolean;
+  initialTab?: string;
 }
 
 export default function ClientFilteringWrapper({
@@ -21,8 +22,9 @@ export default function ClientFilteringWrapper({
   initialLikeStudios,
   initialError,
   initialLoading,
+  initialTab = 'product',
 }: ClientFilteringWrapperProps) {
-  const [isSelected, setIsSelected] = useState('product');
+  const [isSelected, setIsSelected] = useState(initialTab);
   const {
     likeProducts,
     likeStudios,

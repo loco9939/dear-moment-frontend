@@ -4,10 +4,17 @@ import { useRef } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ImageType } from '../_types/product';
 import Image from 'next/image';
+import imageCompression from 'browser-image-compression';
 import RequirdField from './RequirdField';
 
 const MAX_SUB_IMAGE_COUNT = 4;
 const MAX_ADD_IMAGE_COUNT = 5;
+
+const compressionOptions = {
+  maxSizeMB: 0.4,
+  maxWidthOrHeight: 960,
+  useWebWorker: true,
+};
 
 const ImageUploader = () => {
   const { watch, setValue } = useFormContext();
@@ -30,17 +37,19 @@ const ImageUploader = () => {
     alert(`추가 이미지는 최대 ${MAX_ADD_IMAGE_COUNT}장까지 업로드할 수 있습니다.`);
   };
 
-  const handleMainImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMainImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const previewUrl = URL.createObjectURL(file);
-    setValue('mainImageFile', file);
+    const compressedFile = await imageCompression(file, compressionOptions);
+    const previewUrl = URL.createObjectURL(compressedFile);
+
+    setValue('mainImageFile', compressedFile);
     setValue('mainImage', { imageId: null, url: previewUrl, action: 'UPLOAD' });
     e.target.value = '';
   };
 
-  const handleSubImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
@@ -51,16 +60,17 @@ const ImageUploader = () => {
       return;
     }
 
+    const filesToProcess = files.slice(0, remaining);
+    const compressedFiles = await Promise.all(filesToProcess.map(file => imageCompression(file, compressionOptions)));
+
     const updatedSubImages = [...subImages];
     const updatedSubImageFiles = [...subImageFiles];
 
     for (let i = 0; i < updatedSubImages.length; i++) {
       const current = updatedSubImages[i];
-
       if (current?.action === 'DELETE') {
-        const file = files.shift();
+        const file = compressedFiles.shift();
         if (!file) break;
-
         updatedSubImages[i] = {
           imageId: null,
           url: URL.createObjectURL(file),
@@ -68,16 +78,14 @@ const ImageUploader = () => {
           deletedImageId: current.imageId,
           deletedIndex: i,
         };
-
         updatedSubImageFiles.push(file);
       }
     }
 
     for (let i = 0; i < MAX_SUB_IMAGE_COUNT; i++) {
-      if (updatedSubImages[i] === undefined && files.length > 0) {
-        const file = files.shift();
+      if (updatedSubImages[i] === undefined && compressedFiles.length > 0) {
+        const file = compressedFiles.shift();
         if (!file) break;
-
         updatedSubImages[i] = {
           imageId: null,
           url: URL.createObjectURL(file),
@@ -92,7 +100,7 @@ const ImageUploader = () => {
     e.target.value = '';
   };
 
-  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAdditionalImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
@@ -104,13 +112,15 @@ const ImageUploader = () => {
     }
 
     const filesToAdd = files.slice(0, remaining);
-    const previews = filesToAdd.map(file => ({
+    const compressedFiles = await Promise.all(filesToAdd.map(file => imageCompression(file, compressionOptions)));
+
+    const previews = compressedFiles.map(file => ({
       imageId: undefined,
       url: URL.createObjectURL(file),
       action: 'UPLOAD',
     }));
 
-    setValue('additionalImageFiles', [...additionalImageFiles, ...filesToAdd]);
+    setValue('additionalImageFiles', [...additionalImageFiles, ...compressedFiles]);
     setValue('additionalImages', [...additionalImages, ...previews]);
     e.target.value = '';
   };
