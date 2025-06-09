@@ -13,6 +13,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteUserInfo, getMyInfo, userInfo } from '@/my/_services/my';
 import Image from 'next/image';
+import { setStorage } from '@/utils/localStorage';
 
 export default function QuitPage() {
   const router = useRouter();
@@ -76,7 +77,19 @@ export default function QuitPage() {
           reasonCode: getReasonCode(quitReason),
           customReason: quitReason === 'custom' ? otherReason : '',
         });
-        setStep('complete');
+
+        // 로컬 스토리지 정리
+        setStorage('accessToken', '');
+        setStorage('isLoggedIn', 'false');
+        sessionStorage.clear(); // 세션 스토리지 정리
+
+        // 쿠키 삭제
+        document.cookie = 'accessToken=; path=/; max-age=0; secure; samesite=strict';
+
+        // 약간의 지연 후 상태 업데이트
+        setTimeout(() => {
+          setStep('complete');
+        }, 100);
       } catch (error) {
         console.error('탈퇴하기 실패', error);
       }
@@ -84,7 +97,9 @@ export default function QuitPage() {
   };
 
   const handleCancel = () => {
-    if (step === 'confirm') {
+    if (step === 'reason') {
+      router.push('/my');
+    } else if (step === 'confirm') {
       setStep('reason');
     }
   };
@@ -251,12 +266,15 @@ export default function QuitPage() {
         return (
           <div className="mb-[1.2rem] mt-[3.2rem] flex h-[5.6rem] items-center justify-between gap-[1rem] px-[2rem]">
             <button
-              className="bg-red-0 flex h-full w-[8.9rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40"
+              className="bg-red-0 flex h-full w-[8.9rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40 text-body1Normal font-semibold text-red-40"
               onClick={handleNext}
             >
               다음
             </button>
-            <button className="h-full w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10">
+            <button
+              className="h-full w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10"
+              onClick={handleCancel}
+            >
               취소
             </button>
           </div>
@@ -265,7 +283,7 @@ export default function QuitPage() {
         return (
           <div className="mb-[1.2rem] flex h-[5.6rem] items-center justify-between gap-[1rem] px-[2rem]">
             <button
-              className="bg-red-0 flex h-full w-[8.9rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40"
+              className="bg-red-0 flex h-full w-[8.9rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40 text-body1Normal font-semibold text-red-40"
               onClick={handleNext}
             >
               탈퇴하기

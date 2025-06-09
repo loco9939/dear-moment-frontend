@@ -36,6 +36,7 @@ export default function LoginSuccessPageUI() {
     if (accessToken) {
       // accessToken을 localStorage에 저장
       setStorage('accessToken', accessToken);
+      setStorage('isLoggedIn', 'true');
 
       // accessToken을 쿠키에 저장
       // path=/: 쿠키가 전체 사이트에서 접근 가능하도록 설정

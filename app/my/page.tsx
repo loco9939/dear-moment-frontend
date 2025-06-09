@@ -34,7 +34,12 @@ export default function MyPage() {
             나의 문의정보
           </p>
           <Link href="/my/inquiry">
-            <p className="mt-[1.2rem] py-[1.5rem] text-body2Normal font-medium text-gray-90">나의 문의내역</p>
+            <p className="mt-[1.2rem] border-b border-gray-20 py-[1.5rem] text-body2Normal font-medium text-gray-90">
+              나의 문의내역
+            </p>
+          </Link>
+          <Link href="/my/quit">
+            <p className="py-[1.5rem] text-body2Normal font-medium text-gray-90">탈퇴하기</p>
           </Link>
         </div>
         <div>
@@ -52,7 +57,7 @@ export default function MyPage() {
         </div>
         <div>
           <p className="border-b-[0.2rem] border-gray-95 pb-[1rem] text-body1Normal font-semibold text-gray-95">
-            From. Dear Moement
+            From. Dear Moment
           </p>
           <Link href="#">
             <p className="mt-[1.2rem] border-b border-gray-20 py-[1.5rem] text-body2Normal font-medium text-gray-90">
