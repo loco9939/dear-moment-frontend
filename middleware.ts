@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const protectedPages = ['/my', '/like'];
+const protectedPages = ['/my', '/like', '/onboarding'];
 const adminProtectedPages = ['/admin/studio', '/admin/product'];
 
 const notProtectedPage = '/login';

@@ -52,6 +52,25 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
     }
     setIsModalOpen(true);
   };
+
+  const handleSkipClick = async () => {
+    try {
+      const data = {
+        name: nickname!,
+        isStudio: false,
+        birthDate: `1940-01-01`,
+        sex: (gender === '남' ? 'MALE' : 'FEMALE') as Sex,
+        addInfoIsSkip: true,
+      };
+      const response = await patchUser(data);
+      if (response.success) {
+        setModalType('success');
+      }
+    } catch {
+      setModalType('error');
+    }
+    setIsModalOpen(true);
+  };
   return (
     <div className="mt-[1.5rem]">
       <p className="mb-[0.8rem] text-label1Reading font-medium text-gray-40">
@@ -86,13 +105,20 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
           </button>
         </div>
       </div>
-      <div className="container fixed bottom-0 left-0 right-0 bg-white px-[2rem] py-[1rem]">
+      <div className="container fixed bottom-0 left-0 right-0 flex gap-[1rem] bg-white px-[2rem] py-[1rem]">
         <button
           disabled={!gender || !selectedItem}
           className="h-[5.6rem] w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10 disabled:bg-gray-80 disabled:text-gray-50"
           onClick={handleNextClick}
         >
           완료
+        </button>
+        <button
+          // disabled={!gender || !selectedItem}
+          className="h-[5.6rem] w-[20rem] rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10 disabled:bg-gray-80 disabled:text-gray-50"
+          onClick={handleSkipClick}
+        >
+          Skip
         </button>
       </div>
     </div>
