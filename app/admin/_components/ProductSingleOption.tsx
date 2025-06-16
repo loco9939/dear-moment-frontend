@@ -67,7 +67,7 @@ const ProductSingleOption = ({ index, optionAppend, optionRemove }: ProductSingl
               retouchedCount: 0,
               partnerShops: [
                 {
-                  category: 'WEDDING_SHOP',
+                  category: undefined,
                   name: '',
                   link: '',
                 },

@@ -4,7 +4,11 @@ import { getLikeProductsAndStudios } from './actions/like';
 export default async function LikeMainPage({ searchParams }: { searchParams: Promise<{ isSelected?: string }> }) {
   const { products, studios, error } = await getLikeProductsAndStudios();
   const params = await searchParams;
-  const initialTab = params.isSelected === 'product' ? 'product' : 'studio';
+
+  let initialTab = 'product';
+  if (params.isSelected === 'studio') {
+    initialTab = 'studio';
+  }
 
   return (
     <div className="space-y-4">

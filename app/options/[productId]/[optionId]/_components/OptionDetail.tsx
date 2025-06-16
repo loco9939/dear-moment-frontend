@@ -1,7 +1,7 @@
 'use client';
 
 import { Product, ProductOption } from '@/api/products/types';
-import { Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
+import { Icon_Heart, Icon_Heart_Filled, Icon_Studio } from '@/assets/icons';
 import LoginConfirmModal from '@/auth/LoginConfirmModal';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
@@ -60,7 +60,8 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
       <div className="absolute -top-[8.2rem] left-0 -z-10 h-[24.6rem] w-full bg-red-10" />
       {/* 상품 헤더 */}
       <div className="mt-[2.8rem] flex flex-col items-center">
-        <div className="h-[5.7rem] w-[5.7rem] rounded-full bg-gray-40" />
+        {/* <div className="h-[5.7rem] w-[5.7rem] rounded-full bg-gray-40" /> */}
+        <Icon_Studio size={57} />
         <span className="mb-[2.2rem] mt-[1rem] text-body1Normal font-semibold">{studio?.name}</span>
         <span className="text-subtitle1 font-bold text-gray-95">{initialProductOption.name}</span>
       </div>

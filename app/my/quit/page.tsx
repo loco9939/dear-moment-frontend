@@ -12,8 +12,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteUserInfo, getMyInfo, userInfo } from '@/my/_services/my';
-import Image from 'next/image';
 import { setStorage } from '@/utils/localStorage';
+import { Icon_Quit } from '@/assets/icons';
 
 export default function QuitPage() {
   const router = useRouter();
@@ -79,8 +79,7 @@ export default function QuitPage() {
         });
 
         // 로컬 스토리지 정리
-        setStorage('accessToken', '');
-        setStorage('isLoggedIn', 'false');
+        localStorage.clear(); // 로컬 스토리지 정리
         sessionStorage.clear(); // 세션 스토리지 정리
 
         // 쿠키 삭제
@@ -251,8 +250,7 @@ export default function QuitPage() {
       case 'complete':
         return (
           <div className="mx-[2rem] flex min-h-[calc(100vh-12.4rem)] flex-col items-center justify-center space-y-[1.2rem]">
-            {/* <Image src="/images/quit/quit_complete.png" alt="탈퇴 완료" width={100} height={100} /> */}
-            <Image src="/not_found.webp" alt="Not found" width={159} height={103} className="mx-auto" />
+            <Icon_Quit width={74} height={74} />
             <h2 className="text-title2 font-semibold text-common-100">탈퇴가 완료되었습니다</h2>
             <p className="text-body1Normal font-medium text-gray-80">디어모먼트를 이용해주셔서 감사합니다.</p>
           </div>

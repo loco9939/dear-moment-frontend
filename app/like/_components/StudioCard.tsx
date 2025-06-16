@@ -73,7 +73,7 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
             {likeStudios.availableSeasons?.map((season, index) => (
               <span
                 key={index}
-                className="text-label2 font-medium text-gray-80 last:border-l last:border-gray-50 last:pl-[0.6rem]"
+                className="border-r border-gray-50 pr-[0.6rem] text-label2 font-medium text-gray-80 last:border-r-0 last:pr-0"
               >
                 {SHOOTING_PERIOD_DISPLAY_MAP[season as ShootingPeriod]}
               </span>

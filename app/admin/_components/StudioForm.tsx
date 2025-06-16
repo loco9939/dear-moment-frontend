@@ -140,13 +140,12 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
           </div>
         </div>
 
-        {/* 제휴 업체 플러스 버튼 클릭 시 배열 추가 시켜야함. */}
+        {/* 제휴 업체 */}
         <div>
           <label className="mb-2 block font-medium">일반 제휴 업체</label>
 
           {fields.map((field, index) => (
             <div key={field.id} className="mb-2 grid grid-cols-4 items-center gap-2">
-              {/* 카테고리 select */}
               <select
                 {...register(`partnerShops.${index}.category`, { required: true })}
                 className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
@@ -185,7 +184,7 @@ const StudioForm = ({ studioId }: StudioFormProps) => {
                 {/* 추가 */}
                 <button
                   type="button"
-                  onClick={() => append({ category: 'WEDDING_SHOP', name: '', urlLink: '' })}
+                  onClick={() => append({ category: undefined, name: '', urlLink: '' })}
                   className="flex items-center justify-center"
                 >
                   <Plus width={16.5} height={16.5} />

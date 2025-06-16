@@ -7,7 +7,7 @@ export interface ImageType {
 }
 
 interface PartnerShopType {
-  category: 'WEDDING_SHOP' | 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC';
+  category: 'WEDDING_SHOP' | 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC' | undefined;
   name: string;
   link: string;
 }

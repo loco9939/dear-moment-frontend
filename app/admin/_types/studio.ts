@@ -1,5 +1,5 @@
 interface PartnerShopsType {
-  category: 'WEDDING_SHOP' | 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC';
+  category: 'WEDDING_SHOP' | 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC' | undefined;
   name: string;
   urlLink: string;
 }
@@ -19,17 +19,3 @@ export interface StudioFormDataType {
   partnerShops?: PartnerShopsType[];
   isCasted: boolean | 'true' | 'false';
 }
-
-export const DEFAULT_STUDIO_DATA: StudioFormDataType = {
-  status: 'ACTIVE',
-  name: '',
-  contact: '',
-  studioIntro: '',
-  artistsIntro: '',
-  instagramUrl: '',
-  kakaoChannelUrl: '',
-  reservationNotice: '',
-  cancellationPolicy: '',
-  partnerShops: [],
-  isCasted: true,
-};

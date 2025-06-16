@@ -14,6 +14,8 @@ export { default as Icon_Home_Filled } from './Icon_Home_Filled';
 export { default as Icon_Kakao } from './Icon_Kakao';
 export { default as Icon_Logo } from './Icon_Logo';
 export { default as Icon_Refresh } from './Icon_Refresh';
+export { default as Icon_Quit } from './Icon_Quit';
+export { default as Icon_Studio } from './Icon_Studio';
 export { default as Icon_User } from './Icon_User';
 export { default as Icon_User_Filled } from './Icon_User_Filled';
 export { default as Icon_Write } from './Icon_Write';
