@@ -34,6 +34,15 @@ const ProductForm = ({ studioId, productId }: ProductFormProps) => {
         }}
       >
         <section className="mx-auto w-full space-y-10 rounded-md border p-6 text-[1.2rem] font-semibold text-[#000000]">
+          <div>
+            <RequirdField>상품명</RequirdField>
+            <input
+              {...register('title', { required: true })}
+              className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
+            />
+            {errors.title && <p className="text-red-500">필수 작성</p>}
+          </div>
+
           {/* 상품 유형 + 촬영 장소 */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div>

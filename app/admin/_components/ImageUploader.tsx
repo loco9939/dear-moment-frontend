@@ -37,6 +37,7 @@ const ImageUploader = () => {
     alert(`추가 이미지는 최대 ${MAX_ADD_IMAGE_COUNT}장까지 업로드할 수 있습니다.`);
   };
 
+  /** 대표 이미지 변경 */
   const handleMainImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -49,28 +50,34 @@ const ImageUploader = () => {
     e.target.value = '';
   };
 
+  /** 서브 이미지 변경 */
   const handleSubImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    const remaining = MAX_SUB_IMAGE_COUNT - subImageFiles.length;
-    if (remaining <= 0) {
+    // 1) “현재 남아있는(= action !== 'DELETE') 서브 이미지 개수” 계산
+    const activeCount = subImages.filter(img => img.action !== 'DELETE').length;
+    const remainingSlots = MAX_SUB_IMAGE_COUNT - activeCount;
+
+    if (remainingSlots <= 0) {
       showSubImageLimitAlert();
       e.target.value = '';
       return;
     }
 
-    const filesToProcess = files.slice(0, remaining);
+    // 2) 실제 처리할 파일 수(남은 슬롯 수만큼)
+    const filesToProcess = files.slice(0, remainingSlots);
     const compressedFiles = await Promise.all(filesToProcess.map(file => imageCompression(file, compressionOptions)));
 
-    const updatedSubImages = [...subImages];
-    const updatedSubImageFiles = [...subImageFiles];
+    // 3) 기존 subImages 배열 복사 (삭제 상태 or KEEP 상태 그대로 가져오기)
+    const updatedSubImages: (ImageType | undefined)[] = [...subImages];
 
-    for (let i = 0; i < updatedSubImages.length; i++) {
+    // 4) “DELETE” 상태인 슬롯을 우선 채우기
+    const updatedSubImageFiles: File[] = [...subImageFiles];
+    for (let i = 0; i < updatedSubImages.length && compressedFiles.length > 0; i++) {
       const current = updatedSubImages[i];
       if (current?.action === 'DELETE') {
-        const file = compressedFiles.shift();
-        if (!file) break;
+        const file = compressedFiles.shift()!;
         updatedSubImages[i] = {
           imageId: null,
           url: URL.createObjectURL(file),
@@ -82,10 +89,10 @@ const ImageUploader = () => {
       }
     }
 
-    for (let i = 0; i < MAX_SUB_IMAGE_COUNT; i++) {
-      if (updatedSubImages[i] === undefined && compressedFiles.length > 0) {
-        const file = compressedFiles.shift();
-        if (!file) break;
+    // 5) 새롭게 빈 슬롯(undefined)을 채우기 (초기 등록 시 length < MAX)
+    for (let i = 0; i < MAX_SUB_IMAGE_COUNT && compressedFiles.length > 0; i++) {
+      if (updatedSubImages[i] === undefined) {
+        const file = compressedFiles.shift()!;
         updatedSubImages[i] = {
           imageId: null,
           url: URL.createObjectURL(file),
@@ -95,36 +102,49 @@ const ImageUploader = () => {
       }
     }
 
-    setValue('subImages', updatedSubImages);
+    // 6) setValue로 form state 갱신
+    setValue(
+      'subImages',
+      // 타입 안정성을 위해 undefined는 제거하고 ImageType[]으로 강제 변환
+      updatedSubImages.filter((img): img is ImageType => img !== undefined)
+    );
     setValue('subImageFiles', updatedSubImageFiles);
     e.target.value = '';
   };
 
+  /** 추가 이미지 변경 */
   const handleAdditionalImagesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
 
-    const remaining = MAX_ADD_IMAGE_COUNT - additionalImageFiles.length;
-    if (remaining <= 0) {
+    // 1) “현재 남아있는(= action !== 'DELETE') 추가 이미지 개수” 계산
+    const activeCount = additionalImages.filter(img => img.action !== 'DELETE').length;
+    const remainingSlots = MAX_ADD_IMAGE_COUNT - activeCount;
+
+    if (remainingSlots <= 0) {
       showAddImageLimitAlert();
       e.target.value = '';
       return;
     }
 
-    const filesToAdd = files.slice(0, remaining);
+    // 2) 실제 처리할 파일만 남기기
+    const filesToAdd = files.slice(0, remainingSlots);
     const compressedFiles = await Promise.all(filesToAdd.map(file => imageCompression(file, compressionOptions)));
 
-    const previews = compressedFiles.map(file => ({
+    // 3) preview 정보 생성
+    const previews: ImageType[] = compressedFiles.map(file => ({
       imageId: undefined,
       url: URL.createObjectURL(file),
       action: 'UPLOAD',
     }));
 
+    // 4) form state에 추가
     setValue('additionalImageFiles', [...additionalImageFiles, ...compressedFiles]);
     setValue('additionalImages', [...additionalImages, ...previews]);
     e.target.value = '';
   };
 
+  /** 이미지 삭제 */
   const handleRemoveImage = (type: 'main' | 'sub' | 'add', index?: number) => {
     if (type === 'main') {
       if (mainImage?.url?.startsWith('blob:')) {
@@ -136,11 +156,13 @@ const ImageUploader = () => {
       const removed = subImages[index];
       if (removed?.url?.startsWith('blob:')) {
         URL.revokeObjectURL(removed.url);
+        // client에 업로드된 File 객체만 제거
         setValue(
           'subImageFiles',
           subImageFiles.filter((_, i) => i !== index)
         );
       }
+      // 해당 슬롯(action을 DELETE로 변경)
       setValue(
         'subImages',
         subImages.map((img, i) => (i === index ? { ...img, action: 'DELETE', imageId: img.imageId, url: '' } : img))

@@ -253,7 +253,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       <div className="grid grid-cols-3 items-center gap-4">
         <div className="flex gap-4">
           <RequirdField>원본 제공</RequirdField>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
             <input
               {...register(`options.${index}.originalProvided`, { required: true })}
               value="true"
@@ -311,7 +311,7 @@ const ProductPackageOption = ({ index, optionAppend, optionRemove }: ProductSing
       <div>
         <label className="mb-1 block font-medium">선택 추가사항</label>
         <textarea
-          {...register(`options.${index}.optionalAdditionalDetails`)}
+          {...register(`options.${index}.additionalInfo`)}
           className="w-full rounded-md border border-solid border-[#D8DDE3] p-2 focus:outline-none focus:ring-2 focus:ring-[#D8DDE3]"
         />
       </div>

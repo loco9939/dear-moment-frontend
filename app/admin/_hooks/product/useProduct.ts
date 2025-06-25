@@ -8,10 +8,28 @@ import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 
+const MAX_SUB_IMAGE_COUNT = 4;
+const MAX_ADD_IMAGE_COUNT = 5;
+
+/**
+ * 서버로 전송할 subImagesFinal 액션 타입 정의
+ */
+type SubImageFinalAction =
+  | { action: 'KEEP'; index: number; imageId: number | null }
+  | { action: 'DELETE'; index: number; imageId: number }
+  | { action: 'UPLOAD'; index: number; imageId: null };
+
+/**
+ * 서버로 전송할 additionalImagesFinal 액션 타입 정의
+ */
+type AdditionalImageFinalAction =
+  | { action: 'KEEP'; imageId: number | null }
+  | { action: 'DELETE'; imageId: number }
+  | { action: 'UPLOAD'; imageId: null };
+
 export const useProduct = (studioId: string | null, productId: string | undefined) => {
   const { setProductId } = productIdStore();
   const router = useRouter();
-
   const [token, setToken] = useState<string>('');
 
   useEffect(() => {
@@ -29,6 +47,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
       retouchStyles: [],
       mainImage: {},
       subImages: [],
+      title: '',
       additionalImages: [],
       createdAt: '',
       updatedAt: '',
@@ -48,6 +67,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
           shootingMinutes: 0,
           retouchedCount: 0,
           originalProvided: false,
+          additionalInfo: '',
           partnerShops: [
             {
               category: undefined,
@@ -63,7 +83,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
   const { reset, control, trigger, handleSubmit, watch } = methods;
 
   const fetchProduct = useCallback(async () => {
-    if (!token) return; // token이 없으면 중단
+    if (!token) return;
 
     if (!productId) {
       const { data: responseMineData } = await getMineProduct(token);
@@ -107,6 +127,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
   useEffect(() => {
     fetchProduct();
   }, [fetchProduct]);
+
   const {
     fields: optionFields,
     append: optionAppend,
@@ -120,17 +141,15 @@ export const useProduct = (studioId: string | null, productId: string | undefine
     const formData = new FormData();
 
     if (!productId) {
+      // 신규 등록 로직
       const productInfo = {
         shootingPlace: data.shootingPlace,
         availableSeasons: data.availableSeasons,
         productType: data.productType,
         retouchStyles: data.retouchStyles,
-        // contactInfo: 'test contactInfo',
         studioId: Number(studioId),
         cameraTypes: data.cameraTypes,
-        // title: 'test',
-        // description: 'test 설명',
-        // detailedInfo: 'test 상세 설명',
+        title: data.title,
         options: data.options.map(option => ({
           ...option,
           discountAvailable: option.discountAvailable === 'true' ? true : false,
@@ -148,6 +167,8 @@ export const useProduct = (studioId: string | null, productId: string | undefine
       data.subImageFiles?.forEach(file => formData.append('subImageFiles', file));
       data.additionalImageFiles?.forEach(file => formData.append('additionalImageFiles', file));
 
+      console.log(data);
+
       try {
         const { data: productData } = await postProduct({ token, body: formData });
         alert('상품 등록에 성공했습니다.');
@@ -158,35 +179,45 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         alert('상품 등록에 실패했습니다. 필수 항목을 모두 입력했는지 확인해주세요.');
       }
     } else {
-      const subImagesFinal = data.subImages!.flatMap((img, index) => {
-        const actions = [];
-
-        if (img.action === 'UPLOAD' && 'deletedImageId' in img && img.deletedImageId) {
-          actions.push({ action: 'DELETE', index, imageId: img.deletedImageId });
-          actions.push({ action: 'UPLOAD', index, imageId: null });
-          return actions;
-        }
+      // 수정 로직
+      const subImagesFinal: SubImageFinalAction[] = data.subImages!.flatMap((img, index) => {
+        const actions: SubImageFinalAction[] = [];
 
         if (img.action === 'KEEP') {
-          actions.push({ action: 'KEEP', index, imageId: img.imageId });
+          actions.push({ action: 'KEEP', index, imageId: img.imageId ?? null });
         }
 
-        if (img.action === 'UPLOAD' && !('deletedImageId' in img)) {
-          console.warn('UPLOAD만 존재하는 잘못된 상태입니다. 서버가 거부할 수 있습니다.');
+        if (img.action === 'DELETE') {
+          if (typeof img.imageId === 'number') {
+            actions.push({ action: 'DELETE', index, imageId: img.imageId });
+          }
+        }
+
+        if (img.action === 'UPLOAD') {
+          // 기존 이미지를 교체하는 경우
+          if ('deletedImageId' in img && typeof img.deletedImageId === 'number') {
+            actions.push({ action: 'DELETE', index, imageId: img.deletedImageId });
+            actions.push({ action: 'UPLOAD', index, imageId: null });
+          } else {
+            // 빈 슬롯에 새로 업로드한 경우
+            actions.push({ action: 'UPLOAD', index, imageId: null });
+          }
         }
 
         return actions;
       });
 
-      const additionalImagesFinal = data.additionalImages!.flatMap(img => {
-        const actions = [];
+      const additionalImagesFinal: AdditionalImageFinalAction[] = data.additionalImages!.flatMap(img => {
+        const actions: AdditionalImageFinalAction[] = [];
 
         if (img.action === 'KEEP') {
-          actions.push({ action: 'KEEP', imageId: img.imageId });
+          actions.push({ action: 'KEEP', imageId: img.imageId ?? null });
         }
 
         if (img.action === 'DELETE') {
-          actions.push({ action: 'DELETE', imageId: img.imageId });
+          if (typeof img.imageId === 'number') {
+            actions.push({ action: 'DELETE', imageId: img.imageId });
+          }
         }
 
         if (img.action === 'UPLOAD') {
@@ -201,13 +232,10 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         studioId: Number(studioId),
         productType: data.productType,
         shootingPlace: data.shootingPlace,
-        // title: 'test',
-        // description: 'test 설명',
-        // detailedInfo: 'test 상세 설명',
+        title: data.title,
         availableSeasons: data.availableSeasons,
         cameraTypes: data.cameraTypes,
         retouchStyles: data.retouchStyles,
-        // contactInfo: '010-1234-5678',
         subImagesFinal,
         additionalImagesFinal,
       };
@@ -242,9 +270,16 @@ export const useProduct = (studioId: string | null, productId: string | undefine
         alert('상품 수정에 성공했습니다.');
         reset({
           ...updatedProduct.data,
-          subImages: updatedProduct.data.subImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+          subImages:
+            updatedProduct.data.subImages?.map((img: ImageType) => ({
+              ...img,
+              action: 'KEEP',
+            })) || [],
           additionalImages:
-            updatedProduct.data.additionalImages?.map((img: ImageType) => ({ ...img, action: 'KEEP' })) || [],
+            updatedProduct.data.additionalImages?.map((img: ImageType) => ({
+              ...img,
+              action: 'KEEP',
+            })) || [],
           options: updatedProduct.data.options?.map((option: ProductOptionType) => ({
             ...option,
             discountAvailable: option.discountAvailable ? 'true' : 'false',
@@ -260,10 +295,20 @@ export const useProduct = (studioId: string | null, productId: string | undefine
 
   const handleSubmitWrapper = async () => {
     const isValid = await trigger();
-    const subImageArray = watch('subImages') || [];
 
-    if (subImageArray.length !== 4) {
-      alert('서브 이미지 등록은 4장이 필수입니다.');
+    // 서브 이미지(4장) 검사
+    const subImageArray: ImageType[] = watch('subImages') || [];
+    const activeSubCount = subImageArray.filter(img => img.action !== 'DELETE').length;
+    if (activeSubCount !== MAX_SUB_IMAGE_COUNT) {
+      alert(`서브 이미지 등록은 ${MAX_SUB_IMAGE_COUNT}장이 필수입니다.`);
+      return;
+    }
+
+    // 추가 이미지(5장) 검사
+    const addImageArray: ImageType[] = watch('additionalImages') || [];
+    const activeAddCount = addImageArray.filter(img => img.action !== 'DELETE').length;
+    if (activeAddCount !== MAX_ADD_IMAGE_COUNT) {
+      alert(`추가 이미지 등록은 ${MAX_ADD_IMAGE_COUNT}장이 필수입니다.`);
       return;
     }
 
