@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
-import Analytics from './components/Analytics';
-import { Suspense } from 'react';
 import localFont from 'next/font/local';
+import { Suspense } from 'react';
+import Analytics from './components/Analytics';
 import './globals.css';
 
 const pretendard = localFont({
@@ -55,7 +55,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" className={`${pretendard.variable}`}>
-      <body className="font-sans">
+      <body cz-shortcut-listen="true">
         {process.env.NODE_ENV === 'production' && (
           <Suspense fallback={<></>}>
             <Analytics />

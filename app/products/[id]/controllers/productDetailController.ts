@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 export function useProductDetailController({ initProduct }: { initProduct: Product | null }) {
   const [currentProduct, setCurrentProduct] = useState(initProduct);
   const [isLiked, setIsLiked] = useState(initProduct?.likeId !== 0);
+  const [currentLikeId, setCurrentLikeId] = useState(initProduct?.likeId);
   const [isOpenInquiry, setIsOpenInquiry] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
@@ -19,6 +20,7 @@ export function useProductDetailController({ initProduct }: { initProduct: Produ
       if (refreshedProduct) {
         setCurrentProduct(refreshedProduct);
         setIsLiked(refreshedProduct.likeId !== 0);
+        setCurrentLikeId(refreshedProduct.likeId);
       }
     } catch (error) {
       console.error('상품 데이터 가져오기 실패:', error);
@@ -43,15 +45,31 @@ export function useProductDetailController({ initProduct }: { initProduct: Produ
     }
   }, []);
 
+  useEffect(() => {
+    const newIsLiked = initProduct?.likeId !== 0;
+    setIsLiked(newIsLiked);
+    if (newIsLiked) {
+      setCurrentLikeId(initProduct?.likeId);
+    } else {
+      setCurrentLikeId(0);
+    }
+  }, [initProduct?.likeId]);
+
   const onClickHeart = async () => {
     if (!currentProduct) return;
 
     if (isLiked) {
-      await removeProductLike({ likeId: currentProduct.likeId, productId: currentProduct.productId });
+      await removeProductLike({ likeId: currentLikeId!, productId: currentProduct.productId });
       setIsLiked(false);
+      setCurrentLikeId(0);
     } else {
-      await addProductLike(currentProduct.productId);
+      // 좋아요 추가
+      const response = await addProductLike(currentProduct.productId);
       setIsLiked(true);
+      // 응답에서 likeId를 추출하여 업데이트
+      if (response?.data?.likeId) {
+        setCurrentLikeId(response.data.likeId);
+      }
     }
   };
 

@@ -4,6 +4,8 @@ import { API_CONFIG, createApiUrl } from '../config';
 import { handleHttpError } from '../error';
 import { getToken } from './getToken';
 
+const accessToken =
+  'eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI1OGVlNzA0OS04YTJlLTQ4NWEtYTZkNS0wNmVkMzdiYzMxNTkiLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiaWF0IjoxNzUwODMyMzc4LCJleHAiOjE3NTA4MzU5Nzh9.rr2ySBQH8dXmZYo5Y5jH3m9rRmMBgPgoBpLdkc7-6Sft3qdIDH42cS1FsB-nIHPCAqgsrfeZ8NJAXa7LiE_sZQ';
 /**
  * 기본 HTTP 요청 옵션
  */
@@ -11,7 +13,8 @@ export const getDefaultRequestOptions = async (): Promise<RequestInit> => {
   const token = await getToken();
   const headers = {
     ...API_CONFIG.headers,
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    // ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    Authorization: `Bearer ${accessToken}`,
   };
   return { headers };
 };

@@ -5,7 +5,7 @@ import { MainLikeStudio } from '@/api/likes/types';
 import { Icon_Calendar, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 interface StudioCardProps {
   likeStudios: MainLikeStudio;
   onLikeChange?: () => void;
@@ -14,16 +14,33 @@ interface StudioCardProps {
 export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProps) {
   const router = useRouter();
   const [isLiked, setIsLiked] = useState(likeStudios.likeId !== 0);
+  const [currentLikeId, setCurrentLikeId] = useState(likeStudios.likeId);
+
+  useEffect(() => {
+    const newIsLiked = likeStudios.likeId !== 0;
+    setIsLiked(newIsLiked);
+    if (newIsLiked) {
+      setCurrentLikeId(likeStudios.likeId);
+    } else {
+      setCurrentLikeId(0);
+    }
+  }, [likeStudios.likeId]);
 
   const handleLikeClick = async (e: React.MouseEvent) => {
     e.stopPropagation(); // 이벤트 버블링 방지
     try {
       if (isLiked) {
         // 좋아요 취소
-        await removeProductLike({ likeId: likeStudios.likeId, productId: likeStudios.productId });
+        await removeProductLike({ likeId: currentLikeId, productId: likeStudios.productId });
+        setIsLiked(false);
+        setCurrentLikeId(0);
       } else {
-        // 좋아요 추가
-        await addProductLike(likeStudios.productId);
+        const response = await addProductLike(likeStudios.productId);
+        setIsLiked(true);
+        // 응답에서 likeId를 추출하여 업데이트
+        if (response?.data?.likeId) {
+          setCurrentLikeId(response.data.likeId);
+        }
       }
       setIsLiked(!isLiked);
       onLikeChange?.();
