@@ -21,9 +21,10 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
     보정본: `${productOption.retouchedCount}장`,
   };
 
-  const discountRate = productOption.discountPrice
-    ? Math.floor(((productOption.originalPrice - productOption.discountPrice) / productOption.originalPrice) * 100)
-    : 0;
+  const hasDiscount = productOption.originalPrice - productOption.discountPrice > 0;
+  const discountRate = Math.floor(
+    ((productOption.originalPrice - productOption.discountPrice) / productOption.originalPrice) * 100
+  );
 
   const handleDetailClick = () => {
     router.push(`/options/${productId}/${productOption.optionId}`);
@@ -36,7 +37,7 @@ export const ProductOptionCard = ({ productOption, productId }: ProductOptionCar
         <div className="flex items-center gap-[1rem]">
           <div className="flex flex-col gap-[0.3rem]">
             <span className="text-subtitle2 font-bold text-gray-90">{productOption.name}</span>
-            {productOption.discountPrice ? (
+            {hasDiscount ? (
               <div>
                 <p className="my-[0.6rem] text-body2Normal font-bold text-gray-60 line-through">
                   {productOption.originalPrice.toLocaleString()}원

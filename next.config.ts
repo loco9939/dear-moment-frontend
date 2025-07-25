@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
         search: '',
       },
     ],
+    unoptimized: true,
   },
   // API 요청에 대한 프록시 설정 추가
   async rewrites() {

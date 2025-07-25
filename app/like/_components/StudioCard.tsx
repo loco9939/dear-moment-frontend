@@ -102,7 +102,13 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
       <div className="flex gap-[0.8rem]">
         {likeStudios.thumbnailUrls.map((url, index) => (
           <div key={index} className="relative h-[13.2rem] w-full min-w-[10.1rem] overflow-hidden">
-            <Image src={url} alt={`${likeStudios.name} thumbnail ${index + 1}`} fill className="object-cover" />
+            <Image
+              src={url}
+              alt={`${likeStudios.name} thumbnail ${index + 1}`}
+              fill
+              className="object-cover"
+              loading="lazy"
+            />
           </div>
         ))}
       </div>

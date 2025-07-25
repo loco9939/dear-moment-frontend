@@ -36,6 +36,16 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
 
   const studio = initialProduct?.studio;
 
+  console.log('====initialProductOption: ', initialProductOption);
+
+  const hasDiscount = (initialProductOption?.originalPrice ?? 0) - (initialProductOption?.discountPrice ?? 0) > 0;
+
+  const discountRate = Math.floor(
+    (((initialProductOption?.originalPrice ?? 0) - (initialProductOption?.discountPrice ?? 0)) /
+      (initialProductOption?.originalPrice ?? 0)) *
+      100
+  );
+
   if (initialError) {
     return (
       <div className="container absolute left-1/2 top-1/2 mx-[2rem] -translate-x-1/2 -translate-y-1/2 transform p-[2rem]">
@@ -78,13 +88,16 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
               장소: `${initialProductOption.shootingLocationCount}곳`,
               의상: `최대 ${initialProductOption.costumeCount}벌`,
               보정본: `${initialProductOption.retouchedCount}장`,
-              가격: initialProductOption.discountPrice
+              가격: hasDiscount
                 ? `${initialProductOption.discountPrice.toLocaleString()}원`
                 : `${initialProductOption.originalPrice.toLocaleString()}원`,
             }).map(([key, value]) => (
               <div key={key} className="flex justify-between">
                 <span className="text-body3Normal font-semibold text-gray-60">{key}</span>
-                <span className="text-body3Normal font-semibold text-gray-80">{value}</span>
+                <div className="flex items-center gap-2">
+                  {hasDiscount && key === '가격' && <span className="text-red-40">{discountRate}%</span>}
+                  <span className="text-body3Normal font-semibold text-gray-80">{value}</span>
+                </div>
               </div>
             ))}
           </div>

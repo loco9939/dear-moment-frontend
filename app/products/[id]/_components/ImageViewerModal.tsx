@@ -49,31 +49,34 @@ export function ImageViewerModal({ isOpen, onClose, images, initialImageIndex }:
         {/* 이전 버튼 */}
         <button
           onClick={handlePrevious}
-          className="absolute left-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100"
+          className="absolute left-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100 p-2"
         >
           <Icon_ChevronDown className="-translate-x-[0.1rem] rotate-90 fill-white" />
         </button>
-        <div className="relative">
+        <div className="relative h-full w-full">
           <img
             src={images[currentIndex]}
             alt="포트폴리오 이미지"
-            className="h-[52rem] object-contain"
+            className="h-full w-full object-cover"
             draggable={false} // 이미지 드래그 방지
           />
           {/* 이미지 카운터 */}
-          <div className="absolute bottom-[-3rem] left-1/2 -translate-x-1/2 transform text-white">
+          <div className="absolute bottom-[3rem] left-1/2 -translate-x-1/2 transform text-white">
             {currentIndex + 1} / {images.length}
           </div>
         </div>
         {/* 다음 버튼 */}
         <button
           onClick={handleNext}
-          className="absolute right-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100"
+          className="absolute right-[2rem] top-1/2 z-10 -translate-y-1/2 transform rounded-full bg-common-100 p-2"
         >
           <Icon_ChevronDown className="translate-x-[0.1rem] -rotate-90 fill-white" />
         </button>
         {/* 닫기 버튼 */}
-        <button onClick={onClose} className="absolute left-[2rem] top-[2rem] text-[2.4rem] text-white">
+        <button
+          onClick={onClose}
+          className="absolute left-[2rem] top-[2rem] rounded-full bg-common-100 p-2 text-[2.4rem] text-white"
+        >
           <Icon_ChevronDown className="rotate-90 fill-gray-10" />
         </button>
       </div>

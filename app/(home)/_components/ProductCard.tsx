@@ -2,13 +2,13 @@
 
 import { MainPageProduct } from '@/api/products/types';
 import { Icon_Calendar, Icon_Cancel_Circle_Filled, Icon_Heart, Icon_Heart_Filled } from '@/assets/icons';
+import LoginConfirmModal from '@/auth/LoginConfirmModal';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useProductCardController } from '../controllers/ProductCardController';
 import { STYLE_DISPLAY_MAP } from '../models/FilteringModel';
 import { RetouchStyle } from '../type';
-import LoginConfirmModal from '@/auth/LoginConfirmModal';
 
 export default function ProductCard({
   mainProduct,
@@ -84,6 +84,7 @@ export default function ProductCard({
                   alt={`상품 이미지 ${index + 1}`}
                   fill
                   className="object-cover"
+                  loading="lazy"
                 />
               </div>
             ))

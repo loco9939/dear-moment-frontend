@@ -73,7 +73,7 @@ export default function ProductCard({ likeProduct, onLikeChange }: ProductCardPr
       {/* 사진 */}
       <div className="flex h-[18.4rem] justify-between" onClick={handlePageProductOptionClick}>
         <div className="relative w-full bg-gray-10">
-          <Image src={likeProduct.thumbnailUrl} alt="메인 웨딩 사진" fill className="object-cover" />
+          <Image src={likeProduct.thumbnailUrl} alt="메인 웨딩 사진" fill className="object-cover" loading="lazy" />
           <button className="absolute right-[0.6rem] top-[15.25rem]" onClick={handleLikeClick}>
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart />}
           </button>

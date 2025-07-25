@@ -13,7 +13,7 @@ export interface Image {
 export interface PartnerShop {
   category: string; // 파트너 샵 카테고리 'HAIR_MAKEUP' | 'DRESS' | 'MENS_SUIT' | 'BOUQUET' | 'VIDEO' | 'STUDIO' | 'ETC'
   name: string; // 파트너 샵 이름
-  link: string; // 파트너 샵 링크
+  urlLink: string; // 파트너 샵 링크
 }
 
 // 상품 옵션 타입 정의

@@ -98,7 +98,13 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
                 <div className="whitespace-nowrap rounded-[2rem] bg-red-20 px-[0.8rem] py-[0.45rem] text-center text-label2 font-semibold text-gray-80">
                   {PACKAGE_DISPLAY_MAP[partnerShop.category as PackageType]}
                 </div>
-                <span className="text-label1Reading font-semibold text-gray-70">{partnerShop.name}</span>
+                <a
+                  href={partnerShop.urlLink}
+                  target="_blank"
+                  className="text-label1Reading font-semibold text-gray-70 underline hover:text-gray-60 active:text-gray-80"
+                >
+                  {partnerShop.name}
+                </a>
               </li>
             ))}
           </ul>
