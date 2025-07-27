@@ -31,7 +31,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
     onResetImage,
   } = useProductDetailController({ initProduct });
 
-  const portfolioImages = product?.subImages.map(img => img.url) ?? [];
+  const portfolioImages = product?.subImages.map(img => img.url).concat(product.additionalImages.map(img => img.url)) ?? [];
 
   const studio = product?.studio;
 
