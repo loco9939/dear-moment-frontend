@@ -41,7 +41,7 @@ export default function OnboardingStep2Form({ setModalType, setIsModalOpen }: Pr
         isStudio: false,
         birthDate: `${selectedItem.value.toString()}-01-01`,
         sex: (gender === '남' ? 'MALE' : 'FEMALE') as Sex,
-        addInfoIsSkip: false, // TODO: skip 버튼 추가되면 반영
+        addInfoIsSkip: false,
       };
       const response = await patchUser(data);
       if (response.success) {

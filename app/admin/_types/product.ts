@@ -26,7 +26,7 @@ export interface ProductOptionType {
   shootingHours: number;
   shootingMinutes: number;
   retouchedCount: number;
-  additionalInfo?: string;
+  // additionalInfo?: string;
   partnerShops?: PartnerShopType[];
   originalProvided?: boolean | string;
   createdAt?: string;

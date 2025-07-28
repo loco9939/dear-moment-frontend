@@ -36,8 +36,6 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
 
   const studio = initialProduct?.studio;
 
-  console.log('====initialProductOption: ', initialProductOption);
-
   const hasDiscount = (initialProductOption?.originalPrice ?? 0) - (initialProductOption?.discountPrice ?? 0) > 0;
 
   const discountRate = Math.floor(

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
 import Analytics from './components/Analytics';
+import { Toaster } from './components/ui/sonner';
 import './globals.css';
 
 const pretendard = localFont({
@@ -63,6 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         )}
         {children}
         <div id="modal"></div>
+        <Toaster position="bottom-center" />
       </body>
     </html>
   );

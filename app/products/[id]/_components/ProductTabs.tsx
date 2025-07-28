@@ -2,7 +2,7 @@
 
 import { PACKAGE_DISPLAY_MAP } from '@/(home)/models/FilteringModel';
 import { PackageType } from '@/(home)/type';
-import { Product, ProductOption } from '@/api/products/types';
+import { PartnerShop, Product, ProductOption } from '@/api/products/types';
 import { useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { ProductOptionCard } from './ProductOptionCard';
@@ -45,7 +45,12 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
     }
   };
 
-  console.log('===studio: ', studio);
+  // 드레스, 웨딩샵, 헤어메이크업 우선순위
+  const sortFn = (a: PartnerShop, b: PartnerShop) => {
+    if (a.category === 'DRESS' || a.category === 'WEDDING_SHOP' || a.category === 'HAIR_MAKEUP') return -1;
+    if (b.category === 'DRESS' || b.category === 'WEDDING_SHOP' || b.category === 'HAIR_MAKEUP') return 1;
+    return a.category.localeCompare(b.category);
+  };
 
   return (
     <section className="mt-[4.5rem]">
@@ -93,7 +98,7 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
         <div className="">
           <p className="text-body2Normal font-semibold text-gray-95">제휴샵 안내</p>
           <ul className="my-[3rem] list-inside">
-            {studio?.partnerShops?.map((partnerShop, index) => (
+            {studio?.partnerShops?.sort(sortFn).map((partnerShop, index) => (
               <li key={index} className="mb-[1rem] flex items-center justify-start gap-[1rem]">
                 <div className="whitespace-nowrap rounded-[2rem] bg-red-20 px-[0.8rem] py-[0.45rem] text-center text-label2 font-semibold text-gray-80">
                   {PACKAGE_DISPLAY_MAP[partnerShop.category as PackageType]}

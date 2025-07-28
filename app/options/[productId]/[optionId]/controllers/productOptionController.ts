@@ -2,6 +2,7 @@ import { addInquiryOption } from '@/api/inquiries';
 import { addOptionLike, removeOptionLike } from '@/api/likes';
 import { Product, ProductOption } from '@/api/products/types';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 export function useProductOptionController({
   initProductOption,
@@ -23,6 +24,7 @@ export function useProductOptionController({
       } else {
         await addOptionLike(initProductOption.optionId);
         setIsLiked(true);
+        toast('찜 설정이 완료되었습니다.');
       }
 
       // 세션 스토리지에 좋아요 상태 변경 저장

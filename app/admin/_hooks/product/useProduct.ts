@@ -67,7 +67,7 @@ export const useProduct = (studioId: string | null, productId: string | undefine
           shootingMinutes: 0,
           retouchedCount: 0,
           originalProvided: false,
-          additionalInfo: '',
+          // additionalInfo: '',
           partnerShops: [
             {
               category: undefined,
@@ -166,8 +166,6 @@ export const useProduct = (studioId: string | null, productId: string | undefine
       formData.append('mainImageFile', data.mainImageFile!);
       data.subImageFiles?.forEach(file => formData.append('subImageFiles', file));
       data.additionalImageFiles?.forEach(file => formData.append('additionalImageFiles', file));
-
-      console.log(data);
 
       try {
         const { data: productData } = await postProduct({ token, body: formData });

@@ -1,6 +1,7 @@
 import { addProductLike, removeProductLike } from '@/api/likes';
 import { MainPageProduct } from '@/api/products/types';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface UseProductCardControllerProps {
   mainProduct: MainPageProduct;
@@ -35,6 +36,7 @@ export function useProductCardController({ mainProduct }: UseProductCardControll
         // 응답에서 likeId를 추출하여 업데이트
         if (response?.data?.likeId) {
           setCurrentLikeId(response.data.likeId);
+          toast('찜 설정이 완료되었습니다.');
         }
       }
     } catch (error) {

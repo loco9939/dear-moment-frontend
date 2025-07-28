@@ -2,6 +2,7 @@ import { addProductLike, removeProductLike } from '@/api/likes';
 import { fetchProductDetail } from '@/api/products';
 import { Product } from '@/api/products/types';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 export function useProductDetailController({ initProduct }: { initProduct: Product | null }) {
   const [currentProduct, setCurrentProduct] = useState(initProduct);
@@ -69,7 +70,9 @@ export function useProductDetailController({ initProduct }: { initProduct: Produ
       // 응답에서 likeId를 추출하여 업데이트
       if (response?.data?.likeId) {
         setCurrentLikeId(response.data.likeId);
+        toast('찜 설정이 완료되었습니다.');
       }
+      console.log('likeId:', response.data.likeId);
     }
   };
 

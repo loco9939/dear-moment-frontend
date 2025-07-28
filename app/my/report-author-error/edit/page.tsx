@@ -83,7 +83,6 @@ export default function MyReportAuthorErrorEditPage() {
 
     try {
       const res = await postInquiryStudio({ title, email, content });
-      console.log('====res: ', res);
     } catch (e) {
       console.error(e);
     }
@@ -100,7 +99,7 @@ export default function MyReportAuthorErrorEditPage() {
   };
 
   return (
-    <div className="container min-h-[100dvh] flex flex-col">
+    <div className="container flex min-h-[100dvh] flex-col">
       <Appbar
         leftIcon={
           <Link href="/my/report-author-error">
@@ -109,7 +108,7 @@ export default function MyReportAuthorErrorEditPage() {
         }
         title="작가 정보 오류 제보"
       />
-      <main className="flex-1 px-[2rem] mt-[4rem]">
+      <main className="mt-[4rem] flex-1 px-[2rem]">
         <Input placeholder="제목을 입력해주세요" onChange={onChangeTitle} value={title} />
         <Textarea
           placeholder="문의 내용을 입력해주세요"
@@ -119,7 +118,7 @@ export default function MyReportAuthorErrorEditPage() {
           className="mt-[1.2rem] h-[20rem]"
         />
         <div className="mt-[1.2rem]">
-          <p className="text-body2Normal font-bold text-gray-90 mb-[1.2rem]">답변 받을 이메일을 입력해주세요</p>
+          <p className="mb-[1.2rem] text-body2Normal font-bold text-gray-90">답변 받을 이메일을 입력해주세요</p>
           <Input
             type="email"
             placeholder="이메일을 입력해주세요"
@@ -133,16 +132,16 @@ export default function MyReportAuthorErrorEditPage() {
         </div>
         <div className="mt-[4.6rem]">
           <p className="text-body2Normal font-bold text-gray-90">안내사항</p>
-          <ul className="list-disc pl-[1.5rem] mt-[1.5rem] space-y-[0.6rem] text-label1Reading font-regular text-gray-60">
+          <ul className="font-regular mt-[1.5rem] list-disc space-y-[0.6rem] pl-[1.5rem] text-label1Reading text-gray-60">
             <li>제보해주신 작가 정보는 검토 후 정확한 오류로 확인될 경우 수정 및 답변을 드립니다.</li>
             <li>제보 내용이 사실과 다를 경우 별도의 답변은 제공되지 않는 점 양해 부탁드립니다.</li>
             <li>답변 시간은 평일 오전 9시 ~ 오후 6시 까지입니다.</li>
           </ul>
         </div>
       </main>
-      <div className='mx-[2rem]'>
+      <div className="mx-[2rem]">
         <button
-          className="w-full h-[5.6rem] bg-red-40 text-body1Normal font-semibold text-gray-10 mx-auto mb-[1.2rem] rounded-[0.4rem] disabled:bg-gray-80 disabled:text-gray-50"
+          className="mx-auto mb-[1.2rem] h-[5.6rem] w-full rounded-[0.4rem] bg-red-40 text-body1Normal font-semibold text-gray-10 disabled:bg-gray-80 disabled:text-gray-50"
           disabled={!isEmailValid || !email.trim() || !title.trim() || !content.trim()}
           onClick={handleSubmit}
         >

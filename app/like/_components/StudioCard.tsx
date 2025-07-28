@@ -60,7 +60,7 @@ export default function StudioCard({ likeStudios, onLikeChange }: StudioCardProp
       <div className="flex flex-col space-y-[0.8rem]">
         <div>
           <div className="flex items-center gap-[1rem]">
-            <div className="h-[2.6rem] w-[2.6rem] rounded-full bg-gray-40" />
+            {/* <div className="h-[2.6rem] w-[2.6rem] rounded-full bg-gray-40" /> */}
             <div className="space-y-[0.8rem] py-[0.7rem]">
               <span className="text-subtitle2 font-bold text-gray-90">{likeStudios.name}</span>
             </div>
