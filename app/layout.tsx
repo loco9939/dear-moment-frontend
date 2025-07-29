@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
+import QueryProvider from './providers/QueryProvider';
 import Analytics from './components/Analytics';
 import { Toaster } from './components/ui/sonner';
 import './globals.css';
@@ -55,16 +56,18 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${pretendard.variable}`}>
-      <body cz-shortcut-listen="true">
-        {process.env.NODE_ENV === 'production' && (
-          <Suspense fallback={<></>}>
-            <Analytics />
-          </Suspense>
-        )}
-        {children}
-        <div id="modal"></div>
-        <Toaster position="bottom-center" />
+    <html lang="ko" className={pretendard.className}>
+      <body>
+        <QueryProvider>
+          {process.env.NODE_ENV === 'production' && (
+            <Suspense fallback={<></>}>
+              <Analytics />
+            </Suspense>
+          )}
+          {children}
+          <div id="modal"></div>
+          <Toaster position="bottom-center" />
+        </QueryProvider>
       </body>
     </html>
   );

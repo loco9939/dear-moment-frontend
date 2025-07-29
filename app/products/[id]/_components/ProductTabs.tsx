@@ -120,7 +120,7 @@ export default function ProductTabs({ productOptions, product }: ProductTabsProp
             <ReactMarkdown>{studio?.reservationNotice || ''}</ReactMarkdown>
           </div>
         </div>
-        <div className="">
+        <div className="border border-transparent">
           <p className="text-body2Normal font-semibold text-gray-95">취소 및 환불 규정</p>
           <div className="my-[3rem] whitespace-pre-line">
             <ReactMarkdown>{studio?.cancellationPolicy || ''}</ReactMarkdown>
