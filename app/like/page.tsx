@@ -5,9 +5,9 @@ export default async function LikeMainPage({ searchParams }: { searchParams: Pro
   const { products, studios, error } = await getLikeProductsAndStudios();
   const params = await searchParams;
 
-  let initialTab = 'product';
-  if (params.isSelected === 'studio') {
-    initialTab = 'studio';
+  let initialTab = 'studio';
+  if (params.isSelected === 'product') {
+    initialTab = 'product';
   }
 
   return (

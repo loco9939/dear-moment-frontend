@@ -1,4 +1,5 @@
 import { getStorage } from '@/utils/localStorage';
+import { checkTokenExpiration } from '@/utils/auth';
 import { searchLikeStudioList, searchLikeOptionList } from '../../api/likes';
 
 export interface userInfo {
@@ -27,6 +28,7 @@ export const getMyInfo = async (): Promise<{ data: userInfo }> => {
   const token = getStorage('accessToken') || '';
 
   if (!token) {
+    checkTokenExpiration();
     throw new Error('토큰이 없습니다.');
   }
 
@@ -60,6 +62,7 @@ export const getMyInfo = async (): Promise<{ data: userInfo }> => {
 export const deleteUserInfo = async (data: deleteUserInfo): Promise<{ data: { message: string } }> => {
   const token = getStorage('accessToken') || '';
   if (!token) {
+    checkTokenExpiration();
     throw new Error('토큰이 없습니다.');
   }
 

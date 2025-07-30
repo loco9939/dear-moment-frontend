@@ -75,20 +75,7 @@ export default function ClientFilteringWrapper({
   return (
     <>
       <Tab isSelected={isSelected} onSelect={handleTabSelected} />
-      {isSelected === 'product' ? (
-        <>
-          <Filtering
-            open={open}
-            filterType={filterType}
-            selectedFilters={selectedFilters}
-            handleFilterClick={handleFilterClick}
-            setOpen={setOpen}
-            setSelectedFilters={setSelectedFilters}
-            applyFiltersAndSearch={applyFiltersAndSearch}
-          />
-          <ProductList likeProducts={likeProducts} loading={loading} error={error} />
-        </>
-      ) : (
+      {isSelected === 'studio' ? (
         <>
           <Filtering
             open={studioOpen}
@@ -100,6 +87,19 @@ export default function ClientFilteringWrapper({
             applyFiltersAndSearch={studioApplyFiltersAndSearch}
           />
           <StudioList likeStudios={likeStudios} loading={loading} error={error} />
+        </>
+      ) : (
+        <>
+          <Filtering
+            open={open}
+            filterType={filterType}
+            selectedFilters={selectedFilters}
+            handleFilterClick={handleFilterClick}
+            setOpen={setOpen}
+            setSelectedFilters={setSelectedFilters}
+            applyFiltersAndSearch={applyFiltersAndSearch}
+          />
+          <ProductList likeProducts={likeProducts} loading={loading} error={error} />
         </>
       )}
     </>
