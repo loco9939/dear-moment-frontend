@@ -47,6 +47,9 @@ export const checkTokenExpiration = (): void => {
   const localStorageToken = getStorage('accessToken');
   const isExpired = isTokenExpired();
 
+  // 로그인하지 않은 사용자는 토큰 체크를 하지 않음
+  if (!cookieToken && !localStorageToken) return;
+
   // 쿠키에 토큰이 없거나, localStorage에 토큰이 없거나, 만료 시간이 지났으면 초기화
   if ((!cookieToken && localStorageToken) || isExpired) {
     isHandlingTokenExpiration = true;
