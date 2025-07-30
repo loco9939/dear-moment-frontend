@@ -101,24 +101,24 @@ export const clearUserData = (): void => {
  * localStorage와 쿠키에 동시 저장
  */
 export const saveToken = (token: string): void => {
-  // 1분 후 만료 시간 계산 (테스트용)
-  const expirationTime = Date.now() + 1 * 60 * 1000; // 1분
+  // 24시간 후 만료 시간 계산
+  const expirationTime = Date.now() + 24 * 60 * 60 * 1000; // 24시간
 
   // localStorage에 저장
   setStorage('accessToken', token);
   setStorage('isLoggedIn', 'true');
   setStorage('tokenExpiration', expirationTime.toString());
 
-  // 쿠키에 저장 (1분)
-  document.cookie = `accessToken=${token}; path=/; max-age=60; secure; samesite=strict`;
+  // 쿠키에 저장 (24시간)
+  document.cookie = `accessToken=${token}; path=/; max-age=86400; secure; samesite=strict`;
 
-  // 토큰 만료 감지 타이머 설정 (1분 후)
+  // 토큰 만료 감지 타이머 설정 (24시간 후)
   setTimeout(
     () => {
       checkTokenExpiration();
     },
-    1 * 60 * 1000
-  ); // 1분을 밀리초로 변환
+    24 * 60 * 60 * 1000
+  ); // 24시간을 밀리초로 변환
 };
 
 /**
@@ -130,8 +130,8 @@ export const initializeTokenExpirationCheck = (): void => {
   // 페이지 로드 시 즉시 체크
   checkTokenExpiration();
 
-  // 주기적으로 체크 (10초마다 - 테스트용)
-  setInterval(checkTokenExpiration, 10 * 1000);
+  // 주기적으로 체크 (5분마다)
+  setInterval(checkTokenExpiration, 5 * 60 * 1000);
 
   // 페이지 포커스 시 체크
   window.addEventListener('focus', checkTokenExpiration);
