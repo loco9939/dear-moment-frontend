@@ -2,6 +2,7 @@
 
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getMyInfo } from '@/my/_services/my';
+import { saveToken } from '@/utils/auth';
 import { setStorage } from '@/utils/localStorage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
@@ -34,16 +35,7 @@ export default function LoginSuccessPageUI() {
     const accessToken = searchParams.get('accessToken');
 
     if (accessToken) {
-      // accessToken을 localStorage에 저장
-      setStorage('accessToken', accessToken);
-      setStorage('isLoggedIn', 'true');
-
-      // accessToken을 쿠키에 저장
-      // path=/: 쿠키가 전체 사이트에서 접근 가능하도록 설정
-      // max-age=86400: 쿠키의 유효 기간을 24시간(86400초)으로 설정
-      // secure: HTTPS 연결에서만 쿠키가 전송되도록 설정
-      // samesite=strict: 같은 도메인에서만 쿠키가 전송되도록 설정
-      document.cookie = `accessToken=${accessToken}; path=/; max-age=86400; secure; samesite=strict`;
+      saveToken(accessToken);
     }
 
     // NOTE: 내 정보 조회하여 addInfoIsSkip 값을 기반으로 회원정보 입력 페이지 이동 결정

@@ -14,11 +14,11 @@ export default function LoginConfirmModal({ onClose }: LoginConfirmModalProps) {
       isOpen={true}
       title={'로그인'}
       description={
-        <div className="py-[1.5rem]">
+        <span className="block py-[1.5rem]">
           로그인이 필요한 서비스입니다.
           <br />
           로그인 후 이용 부탁드립니다.
-        </div>
+        </span>
       }
       primaryButton={{
         text: '로그인하기',

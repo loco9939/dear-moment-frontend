@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import { Suspense } from 'react';
 import QueryProvider from './providers/QueryProvider';
 import Analytics from './components/Analytics';
+import TokenExpirationHandler from './components/TokenExpirationHandler';
 import { Toaster } from './components/ui/sonner';
 import './globals.css';
 
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Analytics />
             </Suspense>
           )}
+          <TokenExpirationHandler />
           {children}
           <div id="modal"></div>
           <Toaster position="bottom-center" />
