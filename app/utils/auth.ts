@@ -104,24 +104,24 @@ export const clearUserData = (): void => {
  * localStorage와 쿠키에 동시 저장
  */
 export const saveToken = (token: string): void => {
-  // 24시간 후 만료 시간 계산
-  const expirationTime = Date.now() + 24 * 60 * 60 * 1000; // 24시간
+  // 1시간 후 만료 시간 계산
+  const expirationTime = Date.now() + 60 * 60 * 1000; // 1시간
 
   // localStorage에 저장
   setStorage('accessToken', token);
   setStorage('isLoggedIn', 'true');
   setStorage('tokenExpiration', expirationTime.toString());
 
-  // 쿠키에 저장 (24시간)
-  document.cookie = `accessToken=${token}; path=/; max-age=86400; secure; samesite=strict`;
+  // 쿠키에 저장 (1시간)
+  document.cookie = `accessToken=${token}; path=/; max-age=3600; secure; samesite=strict`;
 
-  // 토큰 만료 감지 타이머 설정 (24시간 후)
+  // 토큰 만료 감지 타이머 설정 (1시간 후)
   setTimeout(
     () => {
       checkTokenExpiration();
     },
-    24 * 60 * 60 * 1000
-  ); // 24시간을 밀리초로 변환
+    60 * 60 * 1000
+  ); // 1시간을 밀리초로 변환
 };
 
 /**
