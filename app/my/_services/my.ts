@@ -1,6 +1,6 @@
-import { getStorage } from '@/utils/localStorage';
 import { checkTokenExpiration } from '@/utils/auth';
-import { searchLikeStudioList, searchLikeOptionList } from '../../api/likes';
+import { getStorage } from '@/utils/localStorage';
+import { searchLikeOptionList, searchLikeStudioList } from '../../api/likes';
 
 export interface userInfo {
   id: string;
@@ -12,6 +12,7 @@ export interface userInfo {
   createdAt: string;
   updatedAt: string | null;
   addInfoIsSkip: boolean;
+  addInfoIsAgree: boolean;
   likeStudioCount: number;
   likeProductCount: number;
 }

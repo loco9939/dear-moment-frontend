@@ -32,7 +32,6 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
       const scrollPosition = scrollContainerRef.current.scrollTop;
       // 스크롤 위치가 0이 아닌 경우에만 저장
       if (scrollPosition > 0) {
-        console.log('Saving scroll position:', scrollPosition);
         localStorage.setItem(SCROLL_POSITION_KEY, scrollPosition.toString());
       }
     }, 100);
@@ -43,12 +42,10 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
     if (!scrollContainerRef.current) return false;
 
     const savedPosition = localStorage.getItem(SCROLL_POSITION_KEY);
-    console.log('Restoring scroll position:', savedPosition);
 
     if (savedPosition) {
       const scrollPosition = parseInt(savedPosition, 10);
       if (!isNaN(scrollPosition)) {
-        console.log('Setting scroll position to:', scrollPosition);
         scrollContainerRef.current.scrollTop = scrollPosition;
         return true;
       }
@@ -60,7 +57,6 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
   const handleScroll = useCallback(() => {
     if (scrollContainerRef.current) {
       const scrollTop = scrollContainerRef.current.scrollTop;
-      console.log('Current scroll position:', scrollTop);
       saveScrollPosition();
     }
   }, [saveScrollPosition]);
@@ -87,14 +83,8 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
   useLayoutEffect(() => {
     // 초기 마운트 시에만 스크롤 위치 복원 시도
     if (isInitialMount.current) {
-      console.log('Initial mount, attempting to restore scroll position...');
       const timer = setTimeout(() => {
-        const restored = restoreScrollPosition();
-        if (restored) {
-          console.log('Scroll position restored from initial mount');
-        } else {
-          console.log('No saved scroll position found');
-        }
+        restoreScrollPosition();
       }, 300); // 더 긴 지연 시간으로 변경
 
       isInitialMount.current = false;
@@ -103,7 +93,6 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
 
     // 필터가 실제로 변경된 경우에만 스크롤 위치 초기화
     if (hasFilterChanged(prevFilterOptions.current, filterOptions)) {
-      console.log('Filter actually changed, resetting scroll position');
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0;
         localStorage.removeItem(SCROLL_POSITION_KEY);
@@ -124,13 +113,10 @@ export const useScroll = ({ scrollContainerRef, filterOptions }: UseScrollProps)
       const scrollPosition = parseInt(savedPosition, 10);
       if (isNaN(scrollPosition)) return;
 
-      console.log('Page loaded, restoring scroll position:', scrollPosition);
-
       // 짧은 지연 후 스크롤 복원 시도 (DOM이 완전히 준비될 시간을 줌)
       const restoreTimer = setTimeout(() => {
         if (scrollContainerRef.current) {
           scrollContainerRef.current.scrollTop = scrollPosition;
-          console.log('Scroll position restored to:', scrollPosition);
           // 복원 후 스크롤 위치 제거 (한 번만 복원하기 위함)
           localStorage.removeItem(SCROLL_POSITION_KEY);
         }

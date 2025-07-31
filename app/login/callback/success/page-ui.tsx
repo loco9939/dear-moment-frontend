@@ -3,7 +3,6 @@
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { getMyInfo } from '@/my/_services/my';
 import { saveToken } from '@/utils/auth';
-import { setStorage } from '@/utils/localStorage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
@@ -17,7 +16,7 @@ export default function LoginSuccessPageUI() {
 
       const timer = setTimeout(() => {
         // skip 했거나 이미 회원정보 입력했으면 메인 페이지로 이동
-        if (response.data.addInfoIsSkip) {
+        if (response.data.addInfoIsSkip || response.data.addInfoIsAgree) {
           router.push('/');
         } else {
           router.push('/onboarding');
