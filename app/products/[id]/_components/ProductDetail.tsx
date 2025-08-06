@@ -55,6 +55,8 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
     }
   };
 
+  const showImageViewerModal = selectedImageIndex !== null;
+
   if (initialError) {
     return (
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform p-[2rem]">
@@ -191,12 +193,13 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
       />
 
       {/* 이미지 뷰어 모달 */}
-      <ImageViewerModal
-        isOpen={selectedImageIndex !== null}
-        onClose={onResetImage}
-        images={portfolioImages ?? []}
-        initialImageIndex={selectedImageIndex || 0}
-      />
+      {showImageViewerModal && (
+        <ImageViewerModal
+          onClose={onResetImage}
+          images={portfolioImages ?? []}
+          initialImageIndex={selectedImageIndex || 0}
+        />
+      )}
 
       <MainImageViewerModal
         isOpen={showMainImageModal}

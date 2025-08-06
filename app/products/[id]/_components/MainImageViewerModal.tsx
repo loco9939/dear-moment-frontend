@@ -1,7 +1,6 @@
 'use client';
 
 import { Icon_ChevronDown } from '@/assets/icons';
-import Image from 'next/image';
 
 interface ImageViewerModalProps {
   isOpen: boolean;
@@ -17,12 +16,11 @@ export function MainImageViewerModal({ isOpen, onClose, images }: ImageViewerMod
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-95">
       {/* 이미지 컨테이너 */}
       <div className="container relative flex h-full items-center justify-center" onClick={e => e.stopPropagation()}>
-        <div className="relative h-full w-full">
-          <Image
+        <div className="flex h-full w-full items-center justify-center">
+          <img
             src={images}
             alt="포트폴리오 이미지"
-            fill
-            className="h-full w-full object-cover"
+            className="object-contain"
             draggable={false} // 이미지 드래그 방지
           />
         </div>
