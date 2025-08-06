@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import { Suspense } from 'react';
-import QueryProvider from './providers/QueryProvider';
 import Analytics from './components/Analytics';
 import TokenExpirationHandler from './components/TokenExpirationHandler';
 import { Toaster } from './components/ui/sonner';
 import './globals.css';
+import QueryProvider from './providers/QueryProvider';
 
 const pretendard = localFont({
   src: [
@@ -50,8 +50,8 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   minimumScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 2,
+  userScalable: true,
   themeColor: '#ffffff',
 };
 
