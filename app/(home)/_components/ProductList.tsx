@@ -7,6 +7,8 @@ import { FilterType, FilterValue, PriceRange } from '../type';
 import ProductCard from './ProductCard';
 import SkeletonCard from './SkeletonCard';
 
+const MAX_PRICE = 100_000_000;
+
 interface ProductListProps {
   filterOptions?: Record<FilterType, FilterValue>; // 필터 옵션 추가
 }
@@ -27,7 +29,7 @@ export default function ProductList({ filterOptions }: ProductListProps) {
         retouchStyles: [],
         partnerShopCategories: [],
         minPrice: 0,
-        maxPrice: 1000000,
+        maxPrice: MAX_PRICE,
       };
     }
     // FilteringController.ts의 변환 로직 참고
@@ -48,7 +50,7 @@ export default function ProductList({ filterOptions }: ProductListProps) {
         typeof filters.priceRange === 'object' &&
         (filters.priceRange as PriceRange).max !== undefined
           ? ((filters.priceRange as unknown as PriceRange).max as number) * 10000
-          : 1000000, // 기본값 100만원
+          : MAX_PRICE,
     };
   };
   // React Query를 사용한 상품 데이터 가져오기
