@@ -1,24 +1,17 @@
-import { MainPageProduct, ProductSearchFilter } from '@/api/products/types';
+import { ProductSearchFilter } from '@/api/products/types';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useEffect, useRef } from 'react';
 import { useProducts } from '../hooks/products/useProducts';
 import { useScroll } from '../hooks/useScroll';
 import { FilterType, FilterValue, PriceRange } from '../type';
 import ProductCard from './ProductCard';
+import SkeletonCard from './SkeletonCard';
 
 interface ProductListProps {
-  mainProducts?: MainPageProduct[];
-  loading?: boolean;
-  error?: string | null;
   filterOptions?: Record<FilterType, FilterValue>; // 필터 옵션 추가
 }
 
-export default function ProductList({
-  mainProducts = [],
-  loading: initialLoading,
-  error: initialError,
-  filterOptions,
-}: ProductListProps) {
+export default function ProductList({ filterOptions }: ProductListProps) {
   // 스크롤 관찰 대상 요소 참조
   const observerTarget = useRef<HTMLDivElement>(null);
   // 스크롤 컨테이너 참조
@@ -59,8 +52,8 @@ export default function ProductList({
     };
   };
   // React Query를 사용한 상품 데이터 가져오기
-  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status } = useProducts({
-    initialData: mainProducts,
+  const { data, error, fetchNextPage, hasNextPage, isFetchingNextPage, status, isLoading } = useProducts({
+    initialData: [],
     filters: convertFiltersToApiFormat(filterOptions),
   });
 
@@ -91,8 +84,7 @@ export default function ProductList({
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   // 로딩 및 에러 상태
-  const isLoading = initialLoading;
-  const isError = status === 'error' || initialError;
+  const isError = status === 'error';
 
   // 모든 페이지의 상품을 하나의 배열로 병합
   const allProducts = data?.pages.flatMap(page => page.content) || [];
@@ -105,15 +97,11 @@ export default function ProductList({
         ref={scrollContainerRef}
         className="relative h-[calc(100vh-20rem)] space-y-[1.7rem] overflow-y-auto scrollbar-hide"
       >
-        {isLoading && allProducts.length === 0 && (
-          <div className="flex h-64 items-center justify-center">
-            <LoadingSpinner />
-          </div>
-        )}
+        {isLoading && <SkeletonCard />}
         {isError && (
           <div className="py-10 text-center text-red-500">
             <p>상품을 불러오는 중 오류가 발생했습니다.</p>
-            <p>{error?.message || initialError}</p>
+            <p>{error?.message}</p>
           </div>
         )}
         {allProducts.length === 0 && !isLoading && !isError && (

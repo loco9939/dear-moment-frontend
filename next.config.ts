@@ -20,7 +20,10 @@ const nextConfig: NextConfig = {
       },
     ],
     unoptimized: true,
+    formats: ['image/webp'],
+    minimumCacheTTL: 31536000,
   },
+  output: 'standalone',
   // API 요청에 대한 프록시 설정 추가
   async rewrites() {
     return [

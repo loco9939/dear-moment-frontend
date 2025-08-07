@@ -82,9 +82,9 @@ export default function ProductCard({
                 <Image
                   src={thumbnail || '/author_thumb.png'}
                   alt={`상품 이미지 ${index + 1}`}
-                  fill
                   className="object-cover"
-                  loading="lazy"
+                  fill
+                  priority
                 />
               </div>
             ))

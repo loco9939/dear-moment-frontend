@@ -69,7 +69,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
     <div className="mx-auto w-full max-w-screen-md">
       {/* 대표 이미지 */}
       <div className="relative h-[286px] w-full cursor-pointer" onClick={() => setShowMainImageModal(true)}>
-        <Image src={product?.mainImage.url ?? ''} alt="main_image" fill className="object-contain" loading="lazy" />
+        <Image src={product?.mainImage.url ?? ''} alt="main_image" fill className="object-contain" priority />
       </div>
 
       {/* 작가 정보 섹션 */}
@@ -141,7 +141,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
                     className="relative flex h-[78px] w-[78px] cursor-pointer items-center"
                     onClick={() => onSelectImage(index)}
                   >
-                    <Image src={imgSrc} alt="sub_image" fill className="object-cover" loading="lazy" />
+                    <Image src={imgSrc} alt="sub_image" fill className="object-cover" priority />
                     {index === 7 && (
                       <div className="absolute left-0 top-0 flex h-full w-full items-center justify-center bg-gray-30 opacity-90">
                         <span className="text-body3Normal text-common-0">+{8 - index}</span>
