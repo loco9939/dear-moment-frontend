@@ -39,6 +39,8 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
 
   const studio = product?.studio;
 
+  console.log('====product: ', product);
+
   // 로그인 여부 확인 후 좋아요 또는 문의하기 진행
   const handleLoginComfirm = (type: 'like' | 'inquiry') => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -97,7 +99,12 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
             </button>
           </div>
           <div className="mt-[1.4rem]">
-            <p className="text-body2Reading font-bold">{studio?.studioIntro}</p>
+            <p className="mb-2 text-label2 font-bold">스튜디오 소개</p>
+            <p className="text-body3Reading font-normal">{studio?.studioIntro}</p>
+          </div>
+          <div className="mt-[1.4rem]">
+            <p className="mb-2 text-label2 font-bold">작가 소개</p>
+            <p className="text-body3Reading font-normal">{studio?.artistsIntro}</p>
           </div>
           <div className="mt-[1.4rem] flex items-center gap-[0.5rem]">
             <Icon_Calendar width={14} height={14} />
