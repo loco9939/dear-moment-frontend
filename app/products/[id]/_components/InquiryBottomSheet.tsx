@@ -31,6 +31,13 @@ export const InquiryBottomSheet = ({ product, open, onOpenChange, isLiked, onCli
     if (!selectedItem) return;
     const currOption = product?.options.find(option => option.optionId === Number(selectedItem.id));
 
+    // product_sheet 문의하기 이벤트 발생(GA)
+    window.gtag('event', 'product_sheet_inquiry', {
+      event_category: 'cta_click',
+      event_label: 'product_sheet_inquiry',
+      value: 'product_sheet_inquiry',
+    });
+
     try {
       if (!currOption) return;
 
@@ -47,16 +54,14 @@ export const InquiryBottomSheet = ({ product, open, onOpenChange, isLiked, onCli
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetOverlay className="data-[state=open]:animate-fadeIn data-[state=closed]:animate-fadeOut" />
+      <SheetOverlay className="data-[state=closed]:animate-fadeOut data-[state=open]:animate-fadeIn" />
       <SheetContent
         onOpenAutoFocus={e => e.preventDefault()}
         side="bottom"
-        className="container h-[28.2rem] rounded-t-[2rem] border-none px-[2rem] bg-common-0
-        data-[state=open]:animate-slideUp
-        data-[state=closed]:animate-slideDown"
+        className="container h-[28.2rem] rounded-t-[2rem] border-none bg-common-0 px-[2rem] data-[state=closed]:animate-slideDown data-[state=open]:animate-slideUp"
       >
         <SheetHeader>
-          <SheetTitle className="mt-[3.2rem] mb-[2rem] text-subtitle2 font-bold">
+          <SheetTitle className="mb-[2rem] mt-[3.2rem] text-subtitle2 font-bold">
             이 상품에 대해 작가에게 문의할게요
           </SheetTitle>
         </SheetHeader>
@@ -66,21 +71,21 @@ export const InquiryBottomSheet = ({ product, open, onOpenChange, isLiked, onCli
           selectedItem={selectedItem}
           onChangeProps={handleProductSelect}
         />
-        <div className="mt-[1.4rem] pt-[2.4rem] border-t border-gray-20 flex justify-between">
+        <div className="mt-[1.4rem] flex justify-between border-t border-gray-20 pt-[2.4rem]">
           <span className="text-body1Normal font-bold text-gray-70">문의 상품 금액</span>
           <span className="text-body1Normal font-semibold text-gray-90">
             {Boolean(selectedItem?.value) ? `${selectedItem?.value.toLocaleString()}원` : '-'}
           </span>
         </div>
-        <div className="h-[5.6rem] mt-[3.2rem] flex gap-[1rem] justify-between items-center">
+        <div className="mt-[3.2rem] flex h-[5.6rem] items-center justify-between gap-[1rem]">
           <button
-            className="w-[6.8rem] h-full flex justify-center items-center bg-red-0 border border-red-40 rounded-[0.4rem] cursor-pointer"
+            className="bg-red-0 flex h-full w-[6.8rem] cursor-pointer items-center justify-center rounded-[0.4rem] border border-red-40"
             onClick={onClickHeart}
           >
             {isLiked ? <Icon_Heart_Filled /> : <Icon_Heart className="stroke-red-40" />}
           </button>
           <button
-            className={`w-full h-full text-body1Normal font-semibold text-gray-10 rounded-[0.4rem] ${
+            className={`h-full w-full rounded-[0.4rem] text-body1Normal font-semibold text-gray-10 ${
               selectedItem ? 'bg-red-40' : 'bg-gray-40'
             }`}
             disabled={!selectedItem}

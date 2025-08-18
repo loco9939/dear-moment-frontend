@@ -3,7 +3,7 @@
 import { Product, ProductOption } from '@/api/products/types';
 import { Icon_Heart, Icon_Heart_Filled, Icon_Studio } from '@/assets/icons';
 import LoginConfirmModal from '@/auth/LoginConfirmModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useProductOptionController } from '../controllers/productOptionController';
 interface OptionDetailProps {
@@ -27,6 +27,12 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
       if (type === 'like') {
         onClickHeart();
       } else {
+        // option 문의하기 이벤트 발생(GA)
+        window.gtag('event', 'option_inquiry', {
+          event_category: 'cta_click',
+          event_label: 'option_inquiry',
+          value: 'option_inquiry',
+        });
         onClickInquiry();
       }
     } else {
@@ -43,6 +49,20 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
       (initialProductOption?.originalPrice ?? 0)) *
       100
   );
+
+  useEffect(() => {
+    // 상품 상세 페이지 진입 시 option_view 이벤트 발생
+    if (initialProduct) {
+      window.gtag('event', 'option_view', {
+        items: [
+          {
+            item_id: initialProduct.productId,
+            item_title: initialProduct.title,
+          },
+        ],
+      });
+    }
+  }, [initialProduct]);
 
   if (initialError) {
     return (

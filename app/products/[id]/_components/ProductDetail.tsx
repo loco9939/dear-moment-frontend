@@ -7,7 +7,7 @@ import { Icon_Calendar, Icon_Heart, Icon_Heart_Filled, Icon_Studio } from '@/ass
 import Icon_Camera from '@/assets/icons/Icon_Camera';
 import LoginConfirmModal from '@/auth/LoginConfirmModal';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useProductDetailController } from '../controllers/productDetailController';
 import { ImageViewerModal } from './ImageViewerModal';
 import { InquiryBottomSheet } from './InquiryBottomSheet';
@@ -53,11 +53,32 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
       onClickHeart();
     } else {
       // 문의하기
+
+      // product 문의하기 이벤트 발생(GA)
+      window.gtag('event', 'product_inquiry', {
+        event_category: 'cta_click',
+        event_label: 'product_inquiry',
+        value: 'product_inquiry',
+      });
       setIsOpenInquiry(true);
     }
   };
 
   const showImageViewerModal = selectedImageIndex !== null;
+
+  useEffect(() => {
+    // 상품 상세 페이지 진입 시 product_view 이벤트 발생
+    if (product) {
+      window.gtag('event', 'product_view', {
+        items: [
+          {
+            item_id: product.productId,
+            item_title: product.title,
+          },
+        ],
+      });
+    }
+  }, [product]);
 
   if (initialError) {
     return (

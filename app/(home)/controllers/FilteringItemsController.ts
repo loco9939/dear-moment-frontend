@@ -101,6 +101,13 @@ export function useFilteringItemsController({
     setSelectedFilters(tempFilters);
     onOpenChange(false);
 
+    // 필터 적용 이벤트 발생(GA)
+    window.gtag('event', 'filter_apply', {
+      event_category: 'cta_click',
+      event_label: 'filter_apply',
+      value: 'filter_apply',
+    });
+
     // 검색 API 호출 (제공된 경우에만)
     if (applyFiltersAndSearch) {
       await applyFiltersAndSearch(tempFilters);
