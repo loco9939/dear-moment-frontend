@@ -69,6 +69,7 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
   useEffect(() => {
     // 상품 상세 페이지 진입 시 product_view 이벤트 발생
     if (product) {
+      if (!window.gtag) return;
       window.gtag('event', 'product_view', {
         items: [
           {

@@ -53,6 +53,7 @@ export default function OptionDetail({ initialProduct, initialProductOption, ini
   useEffect(() => {
     // 상품 상세 페이지 진입 시 option_view 이벤트 발생
     if (initialProduct) {
+      if (!window.gtag) return;
       window.gtag('event', 'option_view', {
         items: [
           {
