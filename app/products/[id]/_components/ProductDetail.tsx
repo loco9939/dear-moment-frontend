@@ -39,8 +39,6 @@ export default function ProductDetail({ initProduct, initialError }: ProductDeta
 
   const studio = product?.studio;
 
-  console.log('====product: ', product);
-
   // 로그인 여부 확인 후 좋아요 또는 문의하기 진행
   const handleLoginComfirm = (type: 'like' | 'inquiry') => {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
